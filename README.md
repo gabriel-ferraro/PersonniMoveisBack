@@ -35,6 +35,7 @@ O sistema oferecerá as seguintes funcionalidades:
   * Java
   * Spring Boot
   * To do;
+</details>
 
 ## Instalação
 
@@ -43,6 +44,7 @@ O sistema oferecerá as seguintes funcionalidades:
 
   * Utilização da imagem docker...
   * To do;
+</details>
 
 ## Uso
 
@@ -50,6 +52,7 @@ O sistema oferecerá as seguintes funcionalidades:
   <summary><b>Clique para expandir</b></summary>
 
   * To do;
+</details>
 
 ## Licença
 
@@ -57,3 +60,4 @@ O sistema oferecerá as seguintes funcionalidades:
   <summary><b>Clique para expandir</b></summary>
 
   * To do;
+</details>
