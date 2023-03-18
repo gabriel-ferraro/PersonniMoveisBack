@@ -23,7 +23,7 @@ O sistema oferecerá as seguintes funcionalidades:
 
 ### É previsto no MVP 1:
 
-  * Registro de entidades de Cliente, Produto e Pedido, persistência no banco de dados e vizualização.
+  * Registro de entidades de Cliente, Produto e orçamento, persistência no banco de dados e vizualização.
   * Registro de vendas, vizualização de itens vendidos e clientes.
   * Gerar orçamento para cliente, vizualização de orçamento.
 
