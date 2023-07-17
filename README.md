@@ -1,6 +1,6 @@
 # Personni Móveis Back-end
 
-Este projeto de software é parte integrante do trabalho de conclusão de curso em Engenharia de Software. O objetivo principal do projeto é desenvolver um sistema de e-commerce com elementos criação e visualização de móveis em passos, entregando ferramentas gerenciáveis para administradores do e-commerce entregarem uma experiência dinâmica e interativa à seus clientes.
+Este projeto de software é parte integrante do trabalho de conclusão de curso em Engenharia de Software. O objetivo principal do projeto é desenvolver um sistema de e-commerce com elementos criação e visualização de móveis em passos, entregando ferramentas gerenciáveis para que os administradores do e-commerce possam disponibilizar uma experiência dinâmica e interativa à seus clientes.
 
 ## Sumário
 
