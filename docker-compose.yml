@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  postgresDB:
+    image: postgres:latest
+    container_name: postgresDB
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    # networks: 
+    #   - personniNetWork
+
+# networks:
+#   personniNetWork:
+#     driver: bridge
