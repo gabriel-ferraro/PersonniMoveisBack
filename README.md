@@ -1,63 +1,49 @@
-# BackEndHabitableCadeiras
+# Personni Móveis Back-end
 
-Este projeto de software é parte integrante do trabalho de conclusão de curso em Engenharia de Software. O objetivo principal do projeto é desenvolver um sistema de gerenciamento de vendas e estoque para empresa Habitable Industria e Comércio de Móveis e Luminárias Ltda.
+Este projeto de software é parte integrante do trabalho de conclusão de curso em Engenharia de Software. O objetivo principal do projeto é desenvolver um sistema de e-commerce com elementos criação e visualização de móveis em passos, entregando ferramentas gerenciáveis para administradores do e-commerce entregarem uma experiência dinâmica e interativa à seus clientes.
 
 ## Sumário
 
   * [Funcionalidades](#Funcionalidades)
+  * [Arquitetura](#Arquitetura)
   * [Tecnologias](#Tecnologias)
-  * [Instalação](#Instalação)
-  * [Uso](#Uso)
-  * [Licença](#Licença)
+  * [Setup](#Setup)
+  * [Bibliotecas](#Bibliotecas)
 
 ## Funcionalidades
 
-O sistema oferecerá as seguintes funcionalidades:
+<details>
+  <summary><b>Clique para expandir</b></summary>
 
-  * Cadastro de clientes, produtos e fornecedores;
-  * Registro de vendas;
-  * Controle de estoque;
-  * Geração de relatórios de vendas e estoque.
-  * Geração de nota fiscal eletrônica
-  * Vizualização e disponibilização de relatórios em diferentes formatos (pdf, xlsm, etc...) 
+  * A fazer...
+</details>
 
-### É previsto no MVP 1:
+## Arquitetura
 
-  * Registro de entidades de Cliente, Produto e orçamento, persistência no banco de dados e vizualização.
-  * Registro de vendas, vizualização de itens vendidos e clientes.
-  * Gerar orçamento para cliente, vizualização de orçamento.
+  * Diagrama de implantação
+
+  ![Diagrama de implantação](./github%20resources/diagrama%20de%20implantação.png)
 
 ## Tecnologias
 
-<details>
-  <summary><b>Clique para expandir</b></summary>
-
-  * Java
+  * Java 17
   * Spring Boot
-  * To do;
-</details>
+  * Docker
+  * Gerenciador de dependências: Maven
 
-## Instalação
+## Setup
 
-<details>
-  <summary><b>Clique para expandir</b></summary>
+Faça o docker para iniciar o projeto. Use sua IDE para iniciar o projeto manualmente, ou, para rodar com comandos, vá para pasta raiz do projeto e execute:
 
-  * Utilização da imagem docker...
-  * To do;
-</details>
+  * Rodar o projeto: ./mvnw spring-boot:run
+  * Atualizar dependências: ./mvnw install - Em caso de poblemas com dependências, tente rodar: ./mvnw clean install
 
-## Uso
+## Bibliotecas
 
-<details>
-  <summary><b>Clique para expandir</b></summary>
+  * Spring boot [Exemplo de uso](https://www.youtube.com/playlist?list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H) - [Página oficial](https://spring.io/projects/spring-boot)
+  * Lombok - Oferece anotações para reduzir o código boilerplate. [Exemplo de uso](https://www.youtube.com/watch?v=L0hTlaIEObM&ab_channel=FelipeP%C3%BAblio) - [Página oficial](https://projectlombok.org/)
+  * Mapstruct - Oferece anotações e classes para realizar o mapeamento de DTOs ou entidades, tornando a instanciação de objetos e validação mais simples e menos verbosa. [Exemplo de uso](https://www.youtube.com/watch?v=A9-Inky1Fjo&list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H&index=16&ab_channel=DevDojo) - [Página oficial](https://mapstruct.org/)
+  * Spring Security - biblioteca integrada ao spring-boot para gerenciar autenticação e autorização. [Exemplo de uso](https://www.youtube.com/watch?v=tpGGuCyuSnw&list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H&index=41) - [Página oficial](https://spring.io/projects/spring-security)
+  * Java Mail Sender - Entrega classes facilitadoras para o envio de e-mails. [Exemplo de uso](https://pt.linkedin.com/pulse/envio-de-e-mail-com-spring-boot-tiago-perroni) - [Página oficial](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mail.html)
 
-  * To do;
-</details>
-
-## Licença
-
-<details>
-  <summary><b>Clique para expandir</b></summary>
-
-  * To do;
-</details>
+  - <b style="color:red">ATENÇÃO</b>: Este projeto usa Spring-boot v3, algumas bibliotecas podem ser incompátiveis com suas versões do Spring v2, ou podem precisar de outras bibliotecas adicionais para o funcionamento esperado, como é o caso das libs lombok e mastruct que precisam de outra lib adicional para funcionar em conjunto.
