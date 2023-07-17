@@ -33,7 +33,7 @@ Este projeto de software é parte integrante do trabalho de conclusão de curso 
 
 ## Setup
 
-Faça o docker compose para rodar o projeto senão, use sua IDE para iniciar manualmente, ou, para rodar com comandos, vá para pasta raiz do projeto e execute:
+Faça o docker compose para rodar o projeto, senão, use sua IDE para iniciar manualmente, ou, para rodar com comandos, vá para pasta raiz do projeto e execute:
 
   * Rodar o projeto: ./mvnw spring-boot:run
   * Atualizar dependências: ./mvnw install - Em caso de poblemas com dependências, tente rodar: ./mvnw clean install
