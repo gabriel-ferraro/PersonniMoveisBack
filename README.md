@@ -4,11 +4,11 @@ Este projeto de software é parte integrante do trabalho de conclusão de curso 
 
 ## Sumário
 
-  * [Funcionalidades](#Funcionalidades)
-  * [Arquitetura](#Arquitetura)
-  * [Tecnologias](#Tecnologias)
-  * [Setup](#Setup)
-  * [Bibliotecas](#Bibliotecas)
+  * [Funcionalidades](#funcionalidades)
+  * [Arquitetura](#arquitetura)
+  * [Tecnologias](#tecnologias)
+  * [Setup](#setup)
+  * [Bibliotecas](#bibliotecas)
 
 ## Funcionalidades
 
