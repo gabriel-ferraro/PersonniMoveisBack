@@ -21,9 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("products")
 public class ProductController {
 
-//    @Operation(summary = "",
-//            description = "")
-//    @ApiResponse(responseCode = "200", description = ".")
     private final ProductService productService;
     //private final Environment environment;
 

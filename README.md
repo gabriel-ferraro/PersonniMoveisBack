@@ -38,12 +38,17 @@ Faça o docker compose para rodar o projeto, senão, use sua IDE para iniciar ma
   * Rodar o projeto: ./mvnw spring-boot:run
   * Atualizar dependências: ./mvnw install - Em caso de poblemas com dependências, tente rodar: ./mvnw clean install
 
+Para ver os endpoints da API, acessar a URL do swagger-ui:
+
+  * http://localhost:8081/swagger-ui/index.html
+
 ## Bibliotecas
 
-  * Spring boot [Exemplo de uso](https://www.youtube.com/playlist?list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H) - [Página oficial](https://spring.io/projects/spring-boot)
+  * Spring boot - [Exemplo de uso](https://www.youtube.com/playlist?list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H) - [Página oficial](https://spring.io/projects/spring-boot)
   * Lombok - Oferece anotações para reduzir o código boilerplate. [Exemplo de uso](https://www.youtube.com/watch?v=L0hTlaIEObM&ab_channel=FelipeP%C3%BAblio) - [Página oficial](https://projectlombok.org/)
   * Mapstruct - Oferece anotações e classes para realizar o mapeamento de DTOs ou entidades, tornando a instanciação de objetos e validação mais simples e menos verbosa. [Exemplo de uso](https://www.youtube.com/watch?v=A9-Inky1Fjo&list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H&index=16&ab_channel=DevDojo) - [Página oficial](https://mapstruct.org/)
   * Spring Security - biblioteca integrada ao spring-boot para gerenciar autenticação e autorização. [Exemplo de uso](https://www.youtube.com/watch?v=tpGGuCyuSnw&list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H&index=41) - [Página oficial](https://spring.io/projects/spring-security)
   * Java Mail Sender - Entrega classes facilitadoras para o envio de e-mails. [Exemplo de uso](https://pt.linkedin.com/pulse/envio-de-e-mail-com-spring-boot-tiago-perroni) - [Página oficial](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mail.html)
+  * springdoc-openapi-starter-webmvc-ui - Oferece uma interface gráfica que expões os enpoints da API.
 
   - <b>ATENÇÃO</b>: Este projeto usa Spring-boot v3, algumas bibliotecas podem ser incompátiveis com suas versões do Spring v2, ou podem precisar de outras bibliotecas adicionais para o funcionamento esperado, como é o caso das libs lombok e mapstruct que precisam de outra lib adicional para funcionar em conjunto.

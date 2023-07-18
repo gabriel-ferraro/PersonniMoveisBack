@@ -1,19 +1,49 @@
 version: '3'
 
+networks:
+  personniNetwork:
+    driver: bridge
+
 services:
   postgresDB:
     image: postgres:latest
     container_name: postgresDB
+    restart: always
+    networks: 
+      - personniNetwork
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
-    restart: always
-    # networks: 
-    #   - personniNetWork
 
-# networks:
-#   personniNetWork:
-#     driver: bridge
+  spring_api:
+    build: "./personniMoveisBack"
+    container_name: spring_api
+    depends_on: 
+      - postgresDB
+    networks:
+      - personniNetwork
+    environment:
+      - PORT=8081
+      - DB_HOST=postgresDB
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=admin
+      - DB_PASSWORD=123456
+    ports:
+      - "8081:8081"
+  
+  vuejs_app:
+    build: "./personniMoveisFront"
+    container_name: vuejs_app
+    depends_on:
+      - spring_api
+    networks:
+      - personniNetwork
+    environment:
+      - PORT=8080
+      - NODE_ENV=container
+    ports:
+      - 8080:8080
