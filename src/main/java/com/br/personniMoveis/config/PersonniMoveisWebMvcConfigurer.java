@@ -8,6 +8,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+/**
+ * Contém a implementação de configurações default para aplicação e requisições.
+ */
 public class PersonniMoveisWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override
