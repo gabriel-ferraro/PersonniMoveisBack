@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controladora do produto editável e produto convencional.
+ */
 @RestController
 @RequestMapping("products")
 public class ProductController {
 
     private final ProductService productService;
-    //private final Environment environment;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -35,12 +37,12 @@ public class ProductController {
     public ResponseEntity<Page<Product>> getAllProducts(Pageable pageable) {
         return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
-
-    @GetMapping(path = "home")
-    public ResponseEntity<Page<Product>> getHomeProducts(Pageable pageable) {
-        return ResponseEntity.ok(productService.getHomeProducts(pageable));
-    }
-
+    
+//    @GetMapping
+//    public ResponseEntity<Page<Product>> SearchProducts(Pageable pageable) {
+//        return ResponseEntity.ok(productService.getAllProducts(pageable));
+//    }
+    
     @PostMapping
     public ResponseEntity<String> createProduct(@RequestBody @Valid ProductPostDto productDto) {
         productService.createProduct(productDto);

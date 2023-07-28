@@ -7,15 +7,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Classe template para o produto CMP.
+ */
 //@Data
 //@Builder
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Entity
 //@Table(name = "cmp_product")
-/**
- * Classe template para o produto CMP.
- */
 public class CmpProduct {
     // a fazer...
 }
