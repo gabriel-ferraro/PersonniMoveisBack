@@ -15,22 +15,20 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository productRepository;
+//    private final GenericService<Product> genericService;
 
     @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
+//        this.genericService = genericService;
     }
 
     public Product findProductByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(exceptionMessage));
     }
-    
-    public Page<Product> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
-    }
 
-    public Page<Product> getHomeProducts(Pageable pageable) {
+    public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 

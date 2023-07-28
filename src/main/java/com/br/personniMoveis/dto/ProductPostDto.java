@@ -8,4 +8,5 @@ public class ProductPostDto {
     private Double value;
     private Long quantity;
     private String description;
+    private Boolean isEditable;
 }

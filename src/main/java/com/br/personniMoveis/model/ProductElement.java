@@ -1,51 +1,39 @@
 package com.br.personniMoveis.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Mapeamento para endereço do cliente.
+ * Mapeamento para elemento produto (elementos que compõem o produto editável)
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ClientAddress {
-    
+@Table(name = "product_element")
+public class ProductElement {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     
-    @NotNull
-    private String addressNickname;
+    private String name;
     
-    @NotNull
-    private String country;
+    private Double value;
     
-    @NotNull
-    private String city;
-    
-    @NotNull
-    private String district;
-    
-    @NotNull
-    private String street;
-    
-    @NotNull
-    private String number;
+    private String elementImagePath;
     
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private UserEntity clientAddress;
+    @JoinColumn(name = "product_id")
+    private Product productElement;
 }

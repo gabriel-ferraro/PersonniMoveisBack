@@ -19,6 +19,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Mapeamento de pedido do cliente.
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -45,6 +48,6 @@ public class ClientOrder {
     @JsonIgnore
     @OneToMany(mappedBy = "clientOrder")
     @Setter(AccessLevel.NONE)
-    private ArrayList<Product> products = new ArrayList<>();
+    private final ArrayList<Product> products = new ArrayList<>();
     
 }
