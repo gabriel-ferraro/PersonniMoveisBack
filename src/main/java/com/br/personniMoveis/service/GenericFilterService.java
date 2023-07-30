@@ -12,25 +12,27 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Serviço genérico para realização de filtros. Gerencia filtros, paginação e
+ * ordenação de recursos.
+ */
 @Service
-public class GenericService<T> {
+public class GenericFilterService<T> {
 
     private final JpaSpecificationExecutor<T> jpaSpecificationExecutor;
-            
+
     @Autowired
-    public GenericService(JpaSpecificationExecutor<T> jpaSpecificationExecutor) {
+    public GenericFilterService(JpaSpecificationExecutor<T> jpaSpecificationExecutor) {
         this.jpaSpecificationExecutor = jpaSpecificationExecutor;
     }
 
     /**
      * Realiza consulta de dados de uma entidade com base nos filtros recebidos.
      *
-     * @param filters Mapa de chaves para filtro (nome dos atributos de
-     * pesquisa).
-     * @param page Quantidade de páginas para paginação.
+     * @param filters Mapa de itens para filtro.
+     * @param page Quantidade de páginas para realizar paginação.
      * @param size Quantidade de itens por página.
-     * @return Os resultados encontrados com base nas chaves recebidas de
-     * filtro.
+     * @return O reultado da consulta com base nos filtros recebidos.
      */
     public Page<T> findFilteredEntity(Map<String, Object> filters, int page, int size) {
         // Constroi o objeto de paginação.
@@ -45,7 +47,7 @@ public class GenericService<T> {
      * Retorna a especificação da busca com base nos filtros informados. Valores
      * preenchidos na busca se tornam parte do filtro, vazios são ignorados.
      *
-     * @param filters Mapa de atributos para criar filtro de busca.
+     * @param filters Mapa de atributos para criar o filtro de busca.
      * @return retorna a especificação da busca com base nos filtros.
      */
     private Specification<T> buildSpecification(Map<String, Object> filters) {

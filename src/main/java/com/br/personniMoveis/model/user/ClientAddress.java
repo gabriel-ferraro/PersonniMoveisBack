@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model;
+package com.br.personniMoveis.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Mapeamento para endereço do cliente.
+ * Mapeamento ORM para endereço do cliente.
  */
 @Data
 @Builder

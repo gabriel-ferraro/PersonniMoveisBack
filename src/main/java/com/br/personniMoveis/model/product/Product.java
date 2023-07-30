@@ -1,5 +1,6 @@
-package com.br.personniMoveis.model;
+package com.br.personniMoveis.model.product;
 
+import com.br.personniMoveis.model.user.ClientOrder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Classe template temporária para o produto "padrão" e produto "editável".
+ * Mapeamento ORM para o produto "padrão" e produto "editável".
  */
 @Data
 @Builder
@@ -34,29 +35,31 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_id")
     private Long productId;
-    
+
     @NotEmpty
     private String name;
-    
+
     @NotEmpty
     private Double value;
-    
+
     @NotEmpty
     private Long quantity;
-    
+
     @NotEmpty
     private String description;
-    
+
     @NotEmpty
     @Builder.Default
-    // Produto não é editável por padrão.
-    private Boolean editable = false;
+    private Boolean editable = false; // Produto não é editável por padrão.
     
+    @Column(name = "main_image_path")
+    private String mainImagePath;
+
     @JsonIgnore
     @OneToMany(mappedBy = "productElement")
     @Setter(AccessLevel.NONE)
     private final ArrayList<ProductElement> productElementList = new ArrayList<>();
-    
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private ClientOrder clientOrder;

@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model;
+package com.br.personniMoveis.model.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Classe template para o produto CMP.
+ * Mapeamento ORM para o produto CMP.
  */
 //@Data
 //@Builder

@@ -4,7 +4,7 @@ import com.br.personniMoveis.dto.ProductPostDto;
 import com.br.personniMoveis.dto.ProductPutDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ProductMapper;
-import com.br.personniMoveis.model.Product;
+import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

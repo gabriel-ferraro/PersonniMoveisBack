@@ -2,7 +2,7 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.ProductPostDto;
 import com.br.personniMoveis.dto.ProductPutDto;
-import com.br.personniMoveis.model.Product;
+import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class ProductController {
     }
     
 //    @GetMapping
-//    public ResponseEntity<Page<Product>> SearchProducts(Pageable pageable) {
+//    public ResponseEntity<Page<Product>> searchProducts(Pageable pageable) {
 //        return ResponseEntity.ok(productService.getAllProducts(pageable));
 //    }
     

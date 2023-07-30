@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model;
+package com.br.personniMoveis.model.user;
 
 import com.br.personniMoveis.constant.UserEntityRoleType;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Mapeament para papéis "roles" dos usuários do sistema.
+ * Mapeament ORM para papéis (roles) dos usuários do sistema.
  * Cada usuário SÓ DEVE TER UM de 3 papéis, como expresso no enum UserEntityRole:
  * 0 - ADMIN,
  * 1 - COLLABORATOR,

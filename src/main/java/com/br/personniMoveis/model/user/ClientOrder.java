@@ -1,5 +1,6 @@
-package com.br.personniMoveis.model;
+package com.br.personniMoveis.model.user;
 
+import com.br.personniMoveis.model.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Mapeamento de pedido do cliente.
+ * Mapeamento ORM de pedido do cliente.
  */
 @Data
 @Builder
@@ -29,25 +30,24 @@ import lombok.Setter;
 @Entity
 @Table(name = "client_order")
 public class ClientOrder {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    
+
     @Column(name = "generated_at")
     private Instant generatedAt;
-    
-    // Por padrão, o pedido de um cliente não precisa ser aprovado.
+
     @Builder.Default
-    private Boolean needApprovement = false;
-    
+    private Boolean needApprovement = false; // Por padrão, o pedido de um cliente não precisa ser aprovado.
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private UserEntity clientOrder;
-    
+
     @JsonIgnore
     @OneToMany(mappedBy = "clientOrder")
     @Setter(AccessLevel.NONE)
     private final ArrayList<Product> products = new ArrayList<>();
-    
+
 }
