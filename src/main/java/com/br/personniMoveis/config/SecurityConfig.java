@@ -21,9 +21,19 @@ public class SecurityConfig {
      * @throws Exception 
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/moveis/**").permitAll()
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(requests -> requests
+                .requestMatchers(
+                        // Qualquer requisição para as seguintes URIs não precisa de autenticação.
+                        "/", 
+                        "/home", 
+                        "/users/**", 
+                        "/products"
+                )
+                .permitAll()
+                // Requisições para URIs diferentes das especificadas exigem 
+                // autenticação e/ou autorização de um role específico 
+                // falta implementar...
                 .anyRequest().authenticated()
             )
             .formLogin(formLogin -> formLogin
@@ -33,4 +43,14 @@ public class SecurityConfig {
             .rememberMe(Customizer.withDefaults());
         return http.build();
     }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user = PasswordEncoderFactories.createDelegatingPasswordEncoder().
+//                            .username("user")
+//                            .password("password")
+//                            .roles("USER")
+//                            .build();
+//        
+//        return new InMemoryUserDetailsManager(user);
+//    }
 }

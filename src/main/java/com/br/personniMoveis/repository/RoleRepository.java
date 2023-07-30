@@ -1,6 +1,6 @@
 package com.br.personniMoveis.repository;
 
-import com.br.personniMoveis.model.UserEntityRole;
+import com.br.personniMoveis.model.user.UserEntityRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

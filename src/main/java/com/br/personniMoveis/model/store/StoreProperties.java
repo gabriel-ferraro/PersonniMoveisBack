@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model;
+package com.br.personniMoveis.model.store;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Mapeamento para propriedades do e-commerce.
+ * Mapeamento ORM para propriedades da loja do e-commerce.
  */
 @Data
 @Builder
@@ -26,12 +26,25 @@ public class StoreProperties {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column
+    @Column(name = "store_name")
     private String storeName;
 
+    @Column(name = "store_logo_path")
+    private String storeLogoPath;
+
+    @Column(name = "store_email")
+    private String storeEmail;
+
+    @Column(name = "primary_collor")
     private String primaryCollor;
 
+    @Column(name = "secondary_collor")
     private String secondaryCollor;
 
-    private String storeLogoPath;
+    /**
+     * Controle "global" para deinir se pedidos CMP devem ser avaliados ou não
+     * antes do cliente poder realizar a compra.
+     */
+    @Column(name = "is_client_order_evaluatd")
+    private Boolean isClientOrderEvaluated;
 }

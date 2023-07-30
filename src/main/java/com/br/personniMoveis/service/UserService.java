@@ -1,6 +1,6 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.model.UserEntity;
+import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
