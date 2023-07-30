@@ -2,10 +2,12 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.TestMessageRequestDto;
 import com.br.personniMoveis.service.EmailService;
+import jakarta.mail.MessagingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,11 +100,19 @@ public class UserController {
 //
 //    }
     /**
-     * Método para testar envio de um email configurado para gerar conteúdo MIME.
+     * Método para testar envio de um email configurado para gerar conteúdo
+     * MIME.
+     *
+     * @param request Dto com conteúdo para envio da mensagem.
+     * @return Http status 204 - No Content.
      */
     @GetMapping(path = "test-message")
     public ResponseEntity<String> testMessageToUserEmail(@RequestBody TestMessageRequestDto request) {
-        emailService.test(request.getTo(), request.getStoreName(), request.getClientName());
+        try {
+            emailService.test(request.getTo(), request.getStoreName(), request.getClientName());
+        } catch (MessagingException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, "Erro no processo de envio de e-mail", ex);
+        }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
