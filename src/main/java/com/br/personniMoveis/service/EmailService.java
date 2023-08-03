@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
  * Serviço para fazer gerenciamento de envio de e-mails. Para ampliar
  * capacidades de transmissão de dados via e-mail, usa MIME (Multipurpose
  * Internet Mail Extensions) do objeto MimeMessage.
+ * 
+ * E-mail Personni Móveis: personnimoveis@gmail.com
+ * senha: PersonniMoveis123
+ * senha para uso como cliente do g-mail: nzszgltxuasaauok
  */
 @Service
 public class EmailService {
@@ -53,15 +57,15 @@ public class EmailService {
             String buttonMessage, String redirectLink) {
         // Se houver imagem para mostrar no e-mail.
         String imgTag = imgPath.map(
-                path -> String.format("<img src=\"%s\"></br></br>", path)
+                path -> String.format("<img src=\"%s\"><br><br>", path)
         ).orElse(null);
         // Se houver mensagem complementar para mostrar, cria parágrado com msg.
         String complementMessagePtag = complementMessage.map(
-                msg -> String.format("<p>\"%s\"</p></br></br>", msg)
+                msg -> String.format("<p>\"%s\"</p><br><br>", msg)
         ).orElse(null);
         // Retorna HTML com argumentos formatados no corpo do e-mail.
         return """
-                <div style="display: flex; justify-content: center;">
+                <div style="justify-content: center;">
                     <h1>%s</h1> <!-- Mesagem de "propósito" do e-mail -->
                     %s <!-- Mesagem complementar (opcional) -->
                     %s <!-- imagem (opcional) -->
@@ -146,6 +150,7 @@ public class EmailService {
      * @param to Endereço de e-mail de destino.
      * @param clientName Nome do cliente recém cadastrado.
      * @param storeName Nome da loja do e-commerce.
+     * @throws jakarta.mail.MessagingException Exceção no envio da mensagem.
      */
     public void validateAccount(String to, String clientName, String storeName) throws MessagingException {
         // sets de propriedades do email.
@@ -182,12 +187,12 @@ public class EmailService {
         // sets de propriedades do e-mail.
         MimeMessageHelper helper = buildMimeHelper();
         helper.setTo(to);
-        helper.setSubject("Olá vindo da " + storeName);
+        helper.setSubject("Olá vindo da ".concat(storeName));
         // Anexa imagem:
         //helper.addInline("imagem_anexada", new ClassPathResource(testImg)); // Adiciona conteúdo como anexo. manter em caso de uso futuro.
         helper.setText(generateDiv(
                 "Olá ".concat(clientName).concat(" isso é uma mensagem teste. Imagem teste abaixo:"),
-                Optional.empty(),
+                Optional.of("Mesagem complementar de teste aqui!"),
                 Optional.of("https://cloudfront-us-east-1.images.arcpublishing.com/estadao/HJTUCODBWJKFJK4BUEG4ZA5XYU.jpg"),
                 "Clique aqui",
                 "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")

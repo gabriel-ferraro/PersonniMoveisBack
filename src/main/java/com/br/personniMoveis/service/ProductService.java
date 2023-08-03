@@ -15,12 +15,10 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository productRepository;
-//    private final GenericService<Product> genericService;
 
     @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-//        this.genericService = genericService;
     }
 
     public Product findProductByIdOrThrowBadRequestException(Long id, String exceptionMessage) {

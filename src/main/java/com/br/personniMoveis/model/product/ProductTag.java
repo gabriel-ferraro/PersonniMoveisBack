@@ -14,34 +14,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Mapeamento ORM para elementos do produto (elementos que compõem o produto
- * editável).
+ * Mapeamento ORM para tags de um produto.
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product_element")
-public class ProductElement {
+@Table(name = "product_tag")
+public class ProductTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @Column(name = "tag_id")
+    private Long tagId;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private Double value;
-
-    /**
-     * Imagem referente à parte editável do produto.
-     */
-    @Column(name = "element_image_path")
-    private String elementImagePath;
-
+    @Column(name = "tag_name")
+    private String tagName;
+    
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product productElement;
+    private Product productTag;
 }

@@ -1,6 +1,7 @@
 package com.br.personniMoveis.model.product;
 
 import com.br.personniMoveis.model.user.ClientOrder;
+import com.br.personniMoveis.model.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import java.util.ArrayList;
+import java.util.HashSet;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,31 +36,39 @@ public class Product {
     @Column(name = "product_id")
     private Long productId;
 
-    @NotEmpty
+    @Column(nullable = false)
     private String name;
 
-    @NotEmpty
+    @Column(nullable = false)
     private Double value;
 
-    @NotEmpty
+    @Column(nullable = false)
     private Long quantity;
 
-    @NotEmpty
     private String description;
 
-    @NotEmpty
+    @Column(nullable = false)
     @Builder.Default
     private Boolean editable = false; // Produto não é editável por padrão.
     
     @Column(name = "main_image_path")
     private String mainImagePath;
-
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "productTag")
+    @Setter(AccessLevel.NONE)
+    private final HashSet<ProductTag> tagsList = new HashSet<>();
+    
     @JsonIgnore
     @OneToMany(mappedBy = "productElement")
     @Setter(AccessLevel.NONE)
-    private final ArrayList<ProductElement> productElementList = new ArrayList<>();
+    private final HashSet<ProductElement> productElementList = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_order_id")
     private ClientOrder clientOrder;
+    
+    @ManyToOne
+    @JoinColumn(name = "client_waiting_product_id")
+    private UserEntity productWaiting;
 }

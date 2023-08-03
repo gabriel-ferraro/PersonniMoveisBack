@@ -34,6 +34,15 @@ public class StoreProperties {
 
     @Column(name = "store_email")
     private String storeEmail;
+    
+    @Column(name = "about_us_info")
+    private String aboutUsInfo;
+    
+    @Column(name = "store_address")
+    private String storeAddress;
+    
+    @Column(name = "store_phone")
+    private String storePhone;
 
     @Column(name = "primary_collor")
     private String primaryCollor;
@@ -42,8 +51,8 @@ public class StoreProperties {
     private String secondaryCollor;
 
     /**
-     * Controle "global" para deinir se pedidos CMP devem ser avaliados ou não
-     * antes do cliente poder realizar a compra.
+     * Controle para definir se pedidos CMP devem ser avaliados ou não antes do
+     * cliente poder realizar a compra.
      */
     @Column(name = "is_client_order_evaluatd")
     private Boolean isClientOrderEvaluated;
