@@ -4,7 +4,7 @@ import com.br.personniMoveis.dto.ProductPostDto;
 import com.br.personniMoveis.dto.ProductPutDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ProductMapper;
-import com.br.personniMoveis.model.Product;
+import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,12 +25,8 @@ public class ProductService {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(exceptionMessage));
     }
-    
-    public Page<Product> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
-    }
 
-    public Page<Product> getHomeProducts(Pageable pageable) {
+    public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 
