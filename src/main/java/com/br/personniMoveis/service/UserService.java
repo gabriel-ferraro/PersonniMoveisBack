@@ -1,6 +1,6 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.model.UserEntity;
+import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class UserService {
     
-    private static UserRepository userRepository;
+    private final UserRepository userRepository;
     
     @Autowired
     public UserService(UserRepository userRepository) {
