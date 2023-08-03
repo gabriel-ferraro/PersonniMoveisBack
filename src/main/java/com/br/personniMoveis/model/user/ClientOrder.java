@@ -38,6 +38,7 @@ public class ClientOrder {
     @Column(name = "generated_at")
     private Instant generatedAt;
 
+    @Column(name = "need_approvement", nullable = false)
     @Builder.Default
     private Boolean needApprovement = false; // Por padrão, o pedido de um cliente não precisa ser aprovado.
 

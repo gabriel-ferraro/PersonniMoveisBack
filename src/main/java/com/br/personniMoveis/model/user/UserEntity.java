@@ -12,10 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,20 +43,19 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotEmpty
+    @Column(nullable = false)
     private String name;
 
-    @NotEmpty
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @NotEmpty
+    @Column(nullable = false)
     private String password;
 
     @Column(unique = true)
     private String cpf;
 
-    @Column(name = "phone_number", unique = true)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "user_entity_role")
@@ -78,9 +77,9 @@ public class UserEntity implements UserDetails {
      * aguarda o retorno.
      */
     @JsonIgnore
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "productWaiting")
     @Setter(AccessLevel.NONE)
-    private final ArrayList<Product> productWaitingList = new ArrayList<>();
+    private final HashSet<Product> productWaitingList = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

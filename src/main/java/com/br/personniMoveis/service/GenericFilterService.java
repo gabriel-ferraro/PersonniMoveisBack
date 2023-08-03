@@ -1,6 +1,7 @@
 package com.br.personniMoveis.service;
 
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,13 +60,23 @@ public class GenericFilterService<T> {
             for (String key : filters.keySet()) {
                 // Adquire o valor mapeado para a chave atual.
                 Object value = filters.get(key);
-                if (value != null) {
-                    // Se valor do atributo não é nulo, cria predicado (chave e valor de pesquisa) e adiciona na lista.
+                // Verifica se o atributo existe na entidade (Product) antes de adicioná-lo aos predicados.
+                if (isAttributePresent(root, key) && value != null) {
                     predicates.add(criteriaBuilder.equal(root.get(key), value));
                 }
             }
             // Retorna uma especificação de filtros para realização da busca.
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
         };
+    }
+
+    // Método para verificar se um atributo está presente na entidade.
+    private boolean isAttributePresent(Root<T> root, String attributeName) {
+        try {
+            root.get(attributeName);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
