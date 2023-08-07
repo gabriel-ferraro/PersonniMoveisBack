@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProductPutDto {
-    private Long productId;
+
     private String name;
     private Double value;
     private Long quantity;

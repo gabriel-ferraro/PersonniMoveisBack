@@ -1,7 +1,7 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.ProductPostDto;
-import com.br.personniMoveis.dto.ProductPutDto;
+import com.br.personniMoveis.dto.ProductDto;
+import com.br.personniMoveis.dto.ProductGetDto;
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.ProductService;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,10 +38,20 @@ public class ProductController {
         this.genericFilterService = genericFilterService;
     }
 
-    @GetMapping
-    public ResponseEntity<Page<Product>> getAllProducts(Pageable pageable) {
-        return ResponseEntity.ok(productService.getAllProducts(pageable));
+    @GetMapping(path = "/{productId}")
+    public ResponseEntity<ProductGetDto> getProductById (@PathVariable("productId") Long productId) {
+        return ResponseEntity.ok(productService.findProductByIdOrThrowBadRequestException(productId, "Product not found"));
     }
+    
+//    @GetMapping
+//    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
+//        return ResponseEntity.ok(productService.getAllProducts());
+//    }
+    
+//    @GetMapping
+//    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
+//        return ResponseEntity.ok(productService.getAllProducts(pageable));
+//    }
     
 //    @GetMapping(path = "search")
 //    public ResponseEntity<Page<Product>> searchProducts(Map<String, Object> ) {
@@ -59,14 +68,14 @@ public class ProductController {
     }
     
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody @Valid ProductPostDto productDto) {
+    public ResponseEntity<String> createProduct(@RequestBody @Valid ProductDto productDto) {
         productService.createProduct(productDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{productId}")
-    public ResponseEntity updateProduct(@RequestBody @Valid ProductPutDto productPutDto, @PathVariable("productId") Long productId) {
-        productService.updateProduct(productPutDto, productId);
+    public ResponseEntity updateProduct(@RequestBody @Valid ProductDto productDto, @PathVariable("productId") Long productId) {
+        productService.updateProduct(productDto, productId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

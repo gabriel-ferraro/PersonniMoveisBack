@@ -3,7 +3,7 @@ package com.br.personniMoveis.dto;
 import lombok.Data;
 
 @Data
-public class ProductPostDto {
+public class ProductDto {
 
     private String name;
     private Double value;
