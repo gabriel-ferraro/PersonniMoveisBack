@@ -67,19 +67,19 @@ public class UserEntity implements UserDetails {
     @Setter(AccessLevel.NONE)
     private final ArrayList<ClientAddress> addresses = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "clientOrder")
-    @Setter(AccessLevel.NONE)
-    private final ArrayList<ClientOrder> orders = new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "clientOrder")
+//    @Setter(AccessLevel.NONE)
+//    private final ArrayList<ClientOrder> orders = new ArrayList<>();
 
     /**
      * Lista de espera de produtos indisponíveis na loja dos quais o cliente
      * aguarda o retorno.
      */
-    @JsonIgnore
-    @OneToMany(mappedBy = "productWaiting")
-    @Setter(AccessLevel.NONE)
-    private final HashSet<Product> productWaitingList = new HashSet<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "productWaiting")
+//    @Setter(AccessLevel.NONE)
+//    private final HashSet<Product> productWaitingList = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
