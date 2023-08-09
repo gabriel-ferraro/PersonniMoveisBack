@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model.product;
+package com.br.personniMoveis.model.productCmp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
