@@ -1,14 +1,7 @@
 package com.br.personniMoveis.model.product;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -53,6 +46,6 @@ public class Product {
     @ManyToMany
     @JoinTable(name = "product_tag", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private final Set<Tag> tags = new HashSet<>();
-    
-//    private final HashSet<ProductElement> productElements = new HashSet<>();
+
+
 }
