@@ -2,10 +2,13 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.ProductDto;
 import com.br.personniMoveis.dto.ProductGetDto;
+import com.br.personniMoveis.mapper.ProductMapper;
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.ProductService;
+import com.br.personniMoveis.service.TagService;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,40 +36,49 @@ public class ProductController {
     private final GenericFilterService<Product> genericFilterService;
 
     @Autowired
-    public ProductController(ProductService productService, GenericFilterService<Product> genericFilterService) {
+    public ProductController(ProductService productService, TagService tagService, GenericFilterService<Product> genericFilterService) {
         this.productService = productService;
         this.genericFilterService = genericFilterService;
     }
 
     @GetMapping(path = "/{productId}")
-    public ResponseEntity<ProductGetDto> getProductById (@PathVariable("productId") Long productId) {
-        return ResponseEntity.ok(productService.findProductByIdOrThrowBadRequestException(productId, "Product not found"));
+    public ResponseEntity<ProductGetDto> getProductById(@PathVariable("productId") Long productId) {
+        return ResponseEntity.ok(ProductMapper.INSTANCE.productToProductGetDto(
+                productService.findProductByIdOrThrowNotFoundException(productId)));
     }
-    
-//    @GetMapping
-//    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
-//        return ResponseEntity.ok(productService.getAllProducts());
-//    }
-    
-//    @GetMapping
-//    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
-//        return ResponseEntity.ok(productService.getAllProducts(pageable));
-//    }
-    
-//    @GetMapping(path = "search")
-//    public ResponseEntity<Page<Product>> searchProducts(Map<String, Object> ) {
-//        return ResponseEntity.ok(productService.getAllProducts(pageable));
-//    }
-    
-    @GetMapping(path = "search")
-    public ResponseEntity<Page<Product>> searchProducts(
+
+    @GetMapping
+    public ResponseEntity<Page<ProductGetDto>> getAllProducts(Pageable pageable) {
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
+    }
+
+    @GetMapping(path = "/search")
+    public ResponseEntity<Page<ProductGetDto>> searchProducts(
             @RequestParam Map<String, Object> filters,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
-        return ResponseEntity.ok(genericFilterService.findFilteredEntity(filters, page, size));
+        return ResponseEntity.ok(genericFilterService.findFilteredEntity(filters, page, size)
+                .map(ProductMapper.INSTANCE::productToProductGetDto));
     }
-    
+
+    /**
+     * Recebe o id de uma tag, retorna todos os produtos que possuem a tag.
+     *
+     * @param tagId Id de uma tag.
+     * @return todos os produtos que possuem a tag do id indicado.
+     */
+    @GetMapping("with-tag/{tagId}")
+    public ResponseEntity<List<ProductGetDto>> getProductsWithTagById(@PathVariable(value = "tagId") Long tagId) {
+        return ResponseEntity.ok(productService.getAllProductsWithTagId(tagId));
+    }
+
+    @PostMapping("assign-tag/{productId}/{tagId}")
+    public ResponseEntity assignTagToProduct(@PathVariable("productId") Long productId, @PathVariable("tagId") Long tagId) {
+        productService.assignTagToProduct(productId, tagId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     @PostMapping
     public ResponseEntity<String> createProduct(@RequestBody @Valid ProductDto productDto) {
         productService.createProduct(productDto);

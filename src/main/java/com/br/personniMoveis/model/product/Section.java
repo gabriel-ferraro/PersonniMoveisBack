@@ -1,13 +1,14 @@
 package com.br.personniMoveis.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Mapeamento ORM para elementos do produto (elementos que compõem o produto
@@ -28,9 +29,13 @@ public class Section {
 
     @Column(nullable = false)
     private String name;
+    
+    @JsonIgnore
+    @ManyToMany(mappedBy = "sections")
+    private final List<Product> products = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "section_type", joinColumns = @JoinColumn(name = "section_id"), inverseJoinColumns = @JoinColumn(name = "type_id"))
-    private final Set<Type> types = new HashSet<>();
+    private final List<Type> types = new ArrayList<>();
 
 }

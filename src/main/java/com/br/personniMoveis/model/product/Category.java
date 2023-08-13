@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model.category;
+package com.br.personniMoveis.model.product;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

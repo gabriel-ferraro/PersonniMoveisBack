@@ -1,11 +1,11 @@
 package com.br.personniMoveis.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@Setter
-public class TestMessageRequestDto {
+@Data
+@AllArgsConstructor
+public class MessageRequestDto {
 
     private String to;
     private String storeName;

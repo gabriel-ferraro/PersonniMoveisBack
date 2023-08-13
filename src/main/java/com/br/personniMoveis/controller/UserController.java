@@ -1,6 +1,6 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.TestMessageRequestDto;
+import com.br.personniMoveis.dto.MessageRequestDto;
 import com.br.personniMoveis.service.EmailService;
 import jakarta.mail.MessagingException;
 import java.util.logging.Level;
@@ -107,7 +107,7 @@ public class UserController {
      * @return Http status 204 - No Content.
      */
     @GetMapping(path = "test-message")
-    public ResponseEntity<String> testMessageToUserEmail(@RequestBody TestMessageRequestDto request) {
+    public ResponseEntity<String> testMessageToUserEmail(@RequestBody MessageRequestDto request) {
         try {
             emailService.test(request.getTo(), request.getStoreName(), request.getClientName());
         } catch (MessagingException ex) {
