@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model.product;
+package com.br.personniMoveis.model.productCmp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,29 +6,32 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Mapeamento ORM para opção de elemento de um produto editável.
- */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "type")
-public class Type {
+@Table(name = "option_cmp")
+public class OptionCmp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "type_id")
-    private Long typeId;
-
+    @Column(name = "option_cmp_id")
+    private Long optionId;
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String imgUrl;
+
+    @Column(nullable = false)
+    private Double price;
+
     @JsonIgnore
-    @ManyToMany(mappedBy = "types")
-    private final Set<Section> section = new HashSet<>();
+    @ManyToMany(mappedBy = "optionCmps")
+    private final Set<TypeCmp> type_cmp = new HashSet<>();
 }
