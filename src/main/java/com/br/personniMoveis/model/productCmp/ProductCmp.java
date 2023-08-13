@@ -9,24 +9,32 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Mapeamento ORM para o produto "padrão" e produto "editável".
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "section_cmp")
-public class SectionCmp {
+@Table(name = "product_cmp")
+public class ProductCmp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "section_cmp_id")
-    private Long section_cmp_id;
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(nullable = false)
-    private String name;
+    private Double value;
 
-    @ManyToMany
-    @JoinTable(name = "section_type_cmp", joinColumns = @JoinColumn(name = "section_cmp_id"), inverseJoinColumns = @JoinColumn(name = "type_cmp_id"))
-    private final Set<TypeCmp> typeCmps = new HashSet<>();
+    @Column(nullable = false)
+    private Long quantity;
+
+    @Column(name = "img_url")
+    private String imgUrl;
+
+    private String description;
+
 
 }
