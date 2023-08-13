@@ -1,8 +1,8 @@
 package com.br.personniMoveis.model.product;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,9 +43,28 @@ public class Product {
 
     private String description;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "product_tag", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private final Set<Tag> tags = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_section", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "section_id"))
+    private final Set<Section> sections = new HashSet<>();
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId);
+    }
 
+    public static void addTag(Product product, Tag tag) {
+        // Associa tag à produto.
+        product.tags.add(tag);
+        tag.getProducts().add(product);
+    }
+
+    public static void removeTag(Product product, Tag tag) {
+        // Remove tag.
+        product.tags.remove(tag);
+        tag.getProducts().remove(product);
+    }
 }

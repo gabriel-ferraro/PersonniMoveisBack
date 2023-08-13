@@ -14,8 +14,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 
 /**
- * Serviço genérico para realização de filtros. Gerencia filtros, paginação e
+ * Serviço genérico para realização de filtros.Gerencia filtros, paginação e
  * ordenação de recursos.
+ *
+ * @param <T> Tipo genérico para "entidade" que sera filtrada.
  */
 @Service
 public class GenericFilterService<T> {
@@ -70,7 +72,13 @@ public class GenericFilterService<T> {
         };
     }
 
-    // Método para verificar se um atributo está presente na entidade.
+    /**
+     * Método para verificar se um atributo está presente na entidade.
+     *
+     * @param root Referência à entidade.
+     * @param attributeName Nome do atributo de filtro.
+     * @return Valida se atributo existe na entidade.
+     */
     private boolean isAttributePresent(Root<T> root, String attributeName) {
         try {
             root.get(attributeName);

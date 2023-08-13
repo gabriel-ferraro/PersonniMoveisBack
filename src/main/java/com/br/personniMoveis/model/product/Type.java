@@ -1,15 +1,14 @@
 package com.br.personniMoveis.model.product;
 
-import com.br.personniMoveis.constant.FieldType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Mapeamento ORM para opção de elemento de um produto editável.
@@ -29,8 +28,8 @@ public class Type {
 
     @Column(nullable = false)
     private String name;
-
+    
     @JsonIgnore
-    @ManyToMany(mappedBy = "sections")
-    private final Set<Section> sections = new HashSet<>();
+    @ManyToMany(mappedBy = "types")
+    private final List<Section> sections = new ArrayList<>();
 }

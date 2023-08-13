@@ -24,7 +24,7 @@ public class StoreProperties {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long storeId;
 
     @Column(name = "store_name")
     private String storeName;

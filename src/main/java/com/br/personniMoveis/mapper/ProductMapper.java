@@ -7,7 +7,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-
+/**
+ * Mapeamento para dtos de Product.
+ */
 @Mapper(componentModel = "spring")
 public abstract class ProductMapper {
 
@@ -16,5 +18,5 @@ public abstract class ProductMapper {
     @Mapping(target = "productId", ignore = true)
     public abstract Product toProduct(ProductDto productDto);
     
-    public abstract ProductGetDto ProductToProductGetDto(Product product);
+    public abstract ProductGetDto productToProductGetDto(Product product);
 }
