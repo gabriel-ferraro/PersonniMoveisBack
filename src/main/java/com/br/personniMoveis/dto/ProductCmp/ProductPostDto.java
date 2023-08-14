@@ -1,13 +1,6 @@
 package com.br.personniMoveis.dto.ProductCmp;
 
-
-import lombok.Data;
-
-import java.util.List;
-
-@Data
-public class ProductCmpDto {
-
+public class ProductPostDto {
     private Double value;
 
     private Long quantity;
@@ -15,6 +8,4 @@ public class ProductCmpDto {
     private String imgUrl;
 
     private String description;
-
-    private List<ProductCmpSectionDto> productSectionDtoList;
 }

@@ -1,18 +1,14 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpDtoCmp;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
-import com.br.personniMoveis.model.productCmp.ProductCmp;
 //import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.ProductCmpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("products_cmp")
@@ -58,14 +54,14 @@ public class ProductCmpController {
 //    }
 
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody @Valid ProductCmpDto productCmpDto) {
-        productCmpService.createProductCmp(productCmpDto);
+    public ResponseEntity<String> createProduct(@RequestBody @Valid ProductCmpDtoCmp productCmpDtoCmp) {
+        productCmpService.createProductCmp(productCmpDtoCmp);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{product_cmp_id}")
-    public ResponseEntity updateProduct(@RequestBody @Valid ProductCmpDto productCmpDto, @PathVariable("product_cmp_id") Long productCmpId) {
-        productCmpService.updateProduct(productCmpDto, productCmpId);
+    public ResponseEntity updateProduct(@RequestBody @Valid ProductCmpDtoCmp productCmpDtoCmp, @PathVariable("product_cmp_id") Long productCmpId) {
+        productCmpService.updateProduct(productCmpDtoCmp, productCmpId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

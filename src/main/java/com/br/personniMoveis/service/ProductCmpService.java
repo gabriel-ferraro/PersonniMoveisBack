@@ -1,13 +1,9 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpDtoCmp;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
-import com.br.personniMoveis.dto.ProductDto;
-import com.br.personniMoveis.dto.ProductGetDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ProductCmp.ProductCmpMapper;
-import com.br.personniMoveis.mapper.ProductMapper;
-import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.productCmp.ProductCmp;
 import com.br.personniMoveis.repository.ProductCmpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +31,18 @@ public class ProductCmpService {
 //    public Page<ProductDto> getAllProducts(Pageable pageable) {
 //        return productRepository.findAllProducts(pageable);
 //    }
-    public void createProductCmp(ProductCmpDto productCmpDto) {
+    public void createProductCmp(ProductCmpDtoCmp productCmpDtoCmp) {
         // cria novo produto.
-        ProductCmp newProductCmp = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDto);
+        ProductCmp newProductCmp = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDtoCmp);
         // persiste no BD.
         productCmpRepository.save(newProductCmp);
     }
 
-    public void updateProduct(ProductCmpDto productCmpDto, Long productId) {
+    public void updateProduct(ProductCmpDtoCmp productCmpDtoCmp, Long productId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         findProductByIdOrThrowBadRequestException(productId, "Product not found");
         // Faz alteracoes no produto.
-        ProductCmp productCmpoBeUpdated = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDto);
+        ProductCmp productCmpoBeUpdated = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDtoCmp);
         productCmpoBeUpdated.setProductCmpId(productId);
         // Persiste alteracoes.
         productCmpRepository.save(productCmpoBeUpdated);
