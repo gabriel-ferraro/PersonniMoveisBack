@@ -1,7 +1,11 @@
 package com.br.personniMoveis.dto.ProductCmp;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+import java.util.List;
+@Data
+@AllArgsConstructor
 public class ProductCmpTypeDto {
     private String name;
     private List<ProductCmpOptionDto> productCmpOptionDtoList;

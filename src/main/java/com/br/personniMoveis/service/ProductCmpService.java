@@ -1,6 +1,6 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpDtoCmp;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ProductCmp.ProductCmpMapper;
@@ -31,18 +31,18 @@ public class ProductCmpService {
 //    public Page<ProductDto> getAllProducts(Pageable pageable) {
 //        return productRepository.findAllProducts(pageable);
 //    }
-    public void createProductCmp(ProductCmpDtoCmp productCmpDtoCmp) {
+    public void createProductCmp(ProductCmpDto productCmpDto) {
         // cria novo produto.
-        ProductCmp newProductCmp = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDtoCmp);
+        ProductCmp newProductCmp = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDto);
         // persiste no BD.
         productCmpRepository.save(newProductCmp);
     }
 
-    public void updateProduct(ProductCmpDtoCmp productCmpDtoCmp, Long productId) {
+    public void updateProduct(ProductCmpDto productCmpDto, Long productId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         findProductByIdOrThrowBadRequestException(productId, "Product not found");
         // Faz alteracoes no produto.
-        ProductCmp productCmpoBeUpdated = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDtoCmp);
+        ProductCmp productCmpoBeUpdated = ProductCmpMapper.INSTANCE.toProductCmp(productCmpDto);
         productCmpoBeUpdated.setProductCmpId(productId);
         // Persiste alteracoes.
         productCmpRepository.save(productCmpoBeUpdated);
