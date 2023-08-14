@@ -36,5 +36,8 @@ public class ProductCmp {
 
     private String description;
 
+    @ManyToMany
+    @JoinTable(name = "section_type_cmp", joinColumns = @JoinColumn(name = "product_cmp_id"), inverseJoinColumns = @JoinColumn(name = "section_cmp_id"))
+    private final Set<SectionCmp> sectionCmps = new HashSet<>();
 
 }
