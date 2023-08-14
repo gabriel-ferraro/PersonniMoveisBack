@@ -61,10 +61,4 @@ public class Product {
         product.tags.add(tag);
         tag.getProducts().add(product);
     }
-
-    public static void removeTag(Product product, Tag tag) {
-        // Remove tag.
-        product.tags.remove(tag);
-        tag.getProducts().remove(product);
-    }
 }
