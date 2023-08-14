@@ -1,12 +1,10 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.dto.StorePropertiesDto;
 import com.br.personniMoveis.model.store.StoreProperties;
 import com.br.personniMoveis.repository.StorePropertiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class StorePropertiesService {
@@ -18,23 +16,15 @@ public class StorePropertiesService {
         this.storePropertiesRepository = storePropertiesRepository;
     }
 
-//    public ResponseEntity setStoreName(@RequestBody StoreProperties StoreProperties) {
-//        storePropertiesRepository.;
-//    }
-//    
-//    public ResponseEntity setStoreLogoImage(String storeLogoPath) {
-//        
-//    }
-//    public ResponseEntity setStoreEmail(String storeEmail) {
-//        storePropertiesRepository.;
-//    }
-//    
-//    public ResponseEntity setStorePrimaryCollor(String hexColor) {
-//        storePropertiesRepository.;
-//    }
-//    
-//    public ResponseEntity setStoreSecondaryCollor(String hexColor) {
-//        storePropertiesRepository.;
-//    }
-//    
+    public void updateStore(StorePropertiesDto spd) {
+        // Só deve haver uma configuração persistida, então registro único deve possuir id 1.
+        if(storePropertiesRepository.findById(1L).isEmpty()) {
+
+        }
+    }
+
+    public StoreProperties createStore(StoreProperties spd) {
+        spd.setStoreId(1L);
+        return storePropertiesRepository.save(spd);
+    }
 }

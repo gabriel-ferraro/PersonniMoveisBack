@@ -108,7 +108,7 @@ public class UserController {
      * @return Http status 204 - No Content.
      */
     @PostMapping(path = "test-message")
-    public ResponseEntity<String> testMessageToUserEmail(@RequestBody @Valid MessageRequestDto request) {
+    public ResponseEntity<HttpStatus> testMessageToUserEmail(@RequestBody @Valid MessageRequestDto request) {
         emailService.test(request.getTo(), request.getStoreName(), request.getClientName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
