@@ -4,7 +4,9 @@ import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.TagService;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,7 @@ public class TagController {
 //    public ResponseEntity<List<Tag>> searchTags() {
 //        return ResponseEntity.ok(genericFilterService.findFilteredEntity(filters, 0, 0));
 //    }
+
     /**
      * Recebe o id de um produto e identifica o produto no banco, retorna uma
      * lista de todas tags que o produto contém.
@@ -59,21 +62,22 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity createTag(@RequestBody Tag tag) {
+    public ResponseEntity<HttpStatus> createTag(@RequestBody Tag tag) {
         tagService.createTag(tag);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{tagId}")
-    public ResponseEntity updateTag(@PathVariable("tagId") Long tagId, @RequestBody JsonNode reqBody) {
+    public ResponseEntity<HttpStatus> updateTag(@PathVariable("tagId") Long tagId, @RequestBody JsonNode reqBody) {
+        // Adquire atributo "tagName" do json.
         String tagName = reqBody.get("tagName").asText();
         tagService.updateTag(tagId, tagName);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{tagId}")
-    public ResponseEntity deleteTag(@PathVariable("tagId") Long tagId) {
+    public ResponseEntity<HttpStatus> deleteTag(@PathVariable("tagId") Long tagId) {
         tagService.deleteTag(tagId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

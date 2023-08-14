@@ -3,7 +3,10 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.repository.TagRepository;
+
 import java.util.List;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +29,11 @@ public class TagService {
     public Page<Tag> getAllTags(Pageable pageable) {
         return tagRepository.findAll(pageable);
     }
-    
+
     public List<Tag> getAllTagsFromProductById(Long productId) {
         return tagRepository.findTagsByProductsProductId(productId);
     }
-    
+
     public void createTag(Tag tag) {
         tagRepository.save(tag);
     }
@@ -41,8 +44,12 @@ public class TagService {
         tagRepository.save(updatedTag);
     }
 
+    @Transactional
     public void deleteTag(Long tagId) {
-        findTagByIdOrThrowNotFoundException(tagId);
+        Tag tag = findTagByIdOrThrowNotFoundException(tagId);
+        // Deleta a tag de todos os produtos que a possuem.
+        tag.getProducts().forEach(p -> p.getTags().clear());
+        // Deleta tag
         tagRepository.deleteById(tagId);
     }
 }
