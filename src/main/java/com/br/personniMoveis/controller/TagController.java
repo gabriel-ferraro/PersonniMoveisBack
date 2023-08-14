@@ -1,7 +1,7 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.model.product.Tag;
-import com.br.personniMoveis.service.GenericFilterService;
+//import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.TagService;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TagController {
 
     private final TagService tagService;
-    private final GenericFilterService<Tag> genericFilterService;
+//    private final GenericFilterService<Tag> genericFilterService;
 
     @Autowired
-    public TagController(TagService tagService, GenericFilterService<Tag> genericFilterService) {
+    public TagController(TagService tagService) {
         this.tagService = tagService;
-        this.genericFilterService = genericFilterService;
+//        this.genericFilterService = genericFilterService;
     }
 
     @GetMapping(path = "/{tagId}")

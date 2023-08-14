@@ -22,8 +22,8 @@ public class ProductCmp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "product_id")
-    private Long productId;
+    @Column(name = "product_cmp_id")
+    private Long productCmpId;
 
     @Column(nullable = false)
     private Double value;
