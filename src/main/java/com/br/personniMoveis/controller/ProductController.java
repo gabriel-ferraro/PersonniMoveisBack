@@ -4,7 +4,7 @@ import com.br.personniMoveis.dto.ProductDto;
 import com.br.personniMoveis.dto.ProductGetDto;
 import com.br.personniMoveis.mapper.ProductMapper;
 import com.br.personniMoveis.model.product.Product;
-import com.br.personniMoveis.service.GenericFilterService;
+//import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.ProductService;
 import com.br.personniMoveis.service.TagService;
 import jakarta.validation.Valid;
@@ -35,12 +35,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductService productService;
-    private final GenericFilterService<Product> genericFilterService;
+//    private final GenericFilterService<Product> genericFilterService;
 
     @Autowired
-    public ProductController(ProductService productService, TagService tagService, GenericFilterService<Product> genericFilterService) {
+    public ProductController(ProductService productService, TagService tagService) {
         this.productService = productService;
-        this.genericFilterService = genericFilterService;
+//        this.genericFilterService = genericFilterService;
     }
 
     @GetMapping(path = "/{productId}")
@@ -54,15 +54,15 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 
-    @GetMapping(path = "/search")
-    public ResponseEntity<Page<ProductGetDto>> searchProducts(
-            @RequestParam Map<String, Object> filters,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
-        return ResponseEntity.ok(genericFilterService.findFilteredEntity(filters, page, size)
-                .map(ProductMapper.INSTANCE::productToProductGetDto));
-    }
+//    @GetMapping(path = "/search")
+//    public ResponseEntity<Page<ProductGetDto>> searchProducts(
+//            @RequestParam Map<String, Object> filters,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "20") int size
+//    ) {
+//        return ResponseEntity.ok(genericFilterService.findFilteredEntity(filters, page, size)
+//                .map(ProductMapper.INSTANCE::productToProductGetDto));
+//    }
 
     /**
      * Recebe o id de uma tag, retorna todos os produtos que possuem a tag.
