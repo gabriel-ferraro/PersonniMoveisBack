@@ -27,6 +27,6 @@ public class Budget {
     private Long budgetId;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "Budget")
+    @ManyToMany(mappedBy = "budgets")
     private final Set<Category> category = new HashSet<>();
 }
