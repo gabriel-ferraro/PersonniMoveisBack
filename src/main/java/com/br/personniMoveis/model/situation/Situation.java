@@ -1,10 +1,15 @@
 package com.br.personniMoveis.model.situation;
 
+import com.br.personniMoveis.model.requests.Requests;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.coyote.Request;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -21,4 +26,8 @@ public class Situation {
 
     @Column(nullable = false)
     private String name;
+
+    @ManyToMany
+    @JoinTable(name = "request_situation", joinColumns = @JoinColumn(name = "requests_id"), inverseJoinColumns = @JoinColumn(name = "situation_id"))
+    private final Set<Requests> requests = new HashSet<>();
 }
