@@ -9,9 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Mapeamento ORM para o produto "padrão" e produto "editável".
- */
 @Data
 @Builder
 @AllArgsConstructor

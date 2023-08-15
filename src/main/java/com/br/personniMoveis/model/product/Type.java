@@ -30,5 +30,5 @@ public class Type {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "types")
-    private final Set<Section> section = new HashSet<>();
+    private final Set<Section> sections = new HashSet<>();
 }
