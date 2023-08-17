@@ -12,10 +12,4 @@ public class CategoryPutDto {
 
     private String name;
 
-    private List<SectionCmpPostDto> sectionCmpPostDtos;
-
-    // Construtor adicional para lidar com o caso da lista ser nula
-    public CategoryPutDto(String name) {
-        this.name = name;
-    }
 }

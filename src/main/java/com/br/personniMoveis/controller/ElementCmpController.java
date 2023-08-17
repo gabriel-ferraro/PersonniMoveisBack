@@ -1,8 +1,8 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.ElementsDto.ElementCmpGetDto;
-import com.br.personniMoveis.dto.ElementsDto.ElementCmpPostDto;
-import com.br.personniMoveis.dto.ElementsDto.ElementCmpPutDto;
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPostDto;
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPutDto;
 import com.br.personniMoveis.service.ElementCmpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

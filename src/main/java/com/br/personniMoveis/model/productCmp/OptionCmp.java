@@ -31,6 +31,10 @@ public class OptionCmp {
     @Column(nullable = false)
     private Double price;
 
+    @ManyToOne
+    @JoinColumn(name = "element_cmp_id")
+    private ElementCmp elementCmp;
+
 //    @JsonIgnore
 //    @ManyToMany(mappedBy = "optionCmps")
 //    private final Set<ElementCmp> elementCmps = new HashSet<>();
