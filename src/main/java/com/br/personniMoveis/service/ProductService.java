@@ -48,28 +48,28 @@ public class ProductService {
         productRepository.save(newProduct);
     }
 
-    @Transactional
-    public void assignTagToProduct(Long productId, Long tagId) {
-        // Recupera tag e id do BD.
-        Product product = findProductByIdOrThrowNotFoundException(productId);
-        Tag tag = tagService.findTagByIdOrThrowNotFoundException(tagId);
-        // Se produto já tem a tag.
-        if (product.getTags().contains(tag)) {
-            throw new AlreadyExistsException("Product already has this tag.");
-        }
-        // Faz associação entre tag e produto no BD.
-        Product.addTag(product, tag);
-    }
-
-    public void updateProduct(ProductDto productDto, Long productId) {
-        // Encontra produto existente para atualiza-lo ou joga exceção.
-        findProductByIdOrThrowNotFoundException(productId);
-        // Faz alteracoes no produto.
-        Product productToBeUpdated = ProductMapper.INSTANCE.toProduct(productDto);
-        productToBeUpdated.setProductId(productId);
-        // Persiste alteracoes.
-        productRepository.save(productToBeUpdated);
-    }
+//    @Transactional
+//    public void assignTagToProduct(Long productId, Long tagId) {
+//        // Recupera tag e id do BD.
+//        Product product = findProductByIdOrThrowNotFoundException(productId);
+//        Tag tag = tagService.findTagByIdOrThrowNotFoundException(tagId);
+//        // Se produto já tem a tag.
+//        if (product.getTags().contains(tag)) {
+//            throw new AlreadyExistsException("Product already has this tag.");
+//        }
+//        // Faz associação entre tag e produto no BD.
+//        Product.addTag(product, tag);
+//    }
+//
+//    public void updateProduct(ProductDto productDto, Long productId) {
+//        // Encontra produto existente para atualiza-lo ou joga exceção.
+//        findProductByIdOrThrowNotFoundException(productId);
+//        // Faz alteracoes no produto.
+//        Product productToBeUpdated = ProductMapper.INSTANCE.toProduct(productDto);
+//        productToBeUpdated.setProductId(productId);
+//        // Persiste alteracoes.
+//        productRepository.save(productToBeUpdated);
+//    }
 
     public void deleteProductById(Long productId) {
         findProductByIdOrThrowNotFoundException(productId);
@@ -79,24 +79,24 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    @Transactional
-    public void removeTagInProduct(Long productId, Long tagId) {
-        // Encontra produto e tag.
-        Product product = findProductByIdOrThrowNotFoundException(productId);
-        Tag tag = tagService.findTagByIdOrThrowNotFoundException(tagId);
-        // Se produto tem a tag.
-        product.getTags().stream().filter(t -> t.getTagId().equals(tagId))
-                .findFirst().orElseThrow(() -> new ResourceNotFoundException("Product doesn't have tag."));
-        // Remove tag e atualiza produto.
-        product.getTags().remove(tag);
-        productRepository.save(product);
-    }
-
-    @Transactional
-    public void removeAllTagsInProduct(Long productId) {
-        Product product = findProductByIdOrThrowNotFoundException(productId);
-        // Remove todas as tags do produto e salva alterações.
-        product.getTags().clear();
-        productRepository.save(product);
-    }
+//    @Transactional
+//    public void removeTagInProduct(Long productId, Long tagId) {
+//        // Encontra produto e tag.
+//        Product product = findProductByIdOrThrowNotFoundException(productId);
+//        Tag tag = tagService.findTagByIdOrThrowNotFoundException(tagId);
+//        // Se produto tem a tag.
+//        product.getTags().stream().filter(t -> t.getTagId().equals(tagId))
+//                .findFirst().orElseThrow(() -> new ResourceNotFoundException("Product doesn't have tag."));
+//        // Remove tag e atualiza produto.
+//        product.getTags().remove(tag);
+//        productRepository.save(product);
+//    }
+//
+//    @Transactional
+//    public void removeAllTagsInProduct(Long productId) {
+//        Product product = findProductByIdOrThrowNotFoundException(productId);
+//        // Remove todas as tags do produto e salva alterações.
+//        product.getTags().clear();
+//        productRepository.save(product);
+//    }
 }

@@ -53,9 +53,9 @@ public class Product {
         return Objects.hash(productId);
     }
 
-    public static void addTag(Product product, Tag tag) {
-        // Associa tag à produto.
-        product.tags.add(tag);
-        tag.getProducts().add(product);
-    }
+//    public static void addTag(Product product, Tag tag) {
+//        // Associa tag à produto.
+//        product.tags.add(tag);
+//        tag.getProducts().add(product);
+//    }
 }

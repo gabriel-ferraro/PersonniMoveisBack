@@ -75,11 +75,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProductsWithTagId(tagId));
     }
 
-    @PostMapping("assign-tag/{productId}/{tagId}")
-    public ResponseEntity<HttpStatus> assignTagToProduct(@PathVariable("productId") Long productId, @PathVariable("tagId") Long tagId) {
-        productService.assignTagToProduct(productId, tagId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @PostMapping("assign-tag/{productId}/{tagId}")
+//    public ResponseEntity<HttpStatus> assignTagToProduct(@PathVariable("productId") Long productId, @PathVariable("tagId") Long tagId) {
+//        productService.assignTagToProduct(productId, tagId);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
     @PostMapping
     public ResponseEntity<HttpStatus> createProduct(@RequestBody @Valid ProductDto productDto) {
@@ -87,11 +87,11 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{productId}")
-    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductDto productDto, @PathVariable("productId") Long productId) {
-        productService.updateProduct(productDto, productId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @PutMapping(path = "/{productId}")
+//    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductDto productDto, @PathVariable("productId") Long productId) {
+//        productService.updateProduct(productDto, productId);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
     @DeleteMapping(path = "/{productId}")
     public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("productId") Long productId) {
@@ -99,15 +99,15 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping(path = "delete-tag/{productId}/{tagId}")
-    public ResponseEntity<HttpStatus> removeTagInProduct(@PathVariable("productId") Long productId, @PathVariable("tagId") Long tagId) {
-        productService.removeTagInProduct(productId, tagId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping(path = "/{productId}/delete-all-tags")
-    public ResponseEntity<HttpStatus> removeAllInProduct(@PathVariable("productId") Long productId) {
-        productService.removeAllTagsInProduct(productId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @DeleteMapping(path = "delete-tag/{productId}/{tagId}")
+//    public ResponseEntity<HttpStatus> removeTagInProduct(@PathVariable("productId") Long productId, @PathVariable("tagId") Long tagId) {
+//        productService.removeTagInProduct(productId, tagId);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
+//
+//    @DeleteMapping(path = "/{productId}/delete-all-tags")
+//    public ResponseEntity<HttpStatus> removeAllInProduct(@PathVariable("productId") Long productId) {
+//        productService.removeAllTagsInProduct(productId);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 }

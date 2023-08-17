@@ -1,5 +1,7 @@
 package com.br.personniMoveis.model.productCmp;
 
+import com.br.personniMoveis.model.category.Category;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,13 +22,24 @@ public class SectionCmp {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "section_cmp_id")
-    private Long section_cmp_id;
+    private Long sectionCmpId;
 
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "section_type_cmp", joinColumns = @JoinColumn(name = "section_cmp_id"), inverseJoinColumns = @JoinColumn(name = "type_cmp_id"))
-    private final Set<TypeCmp> typeCmps = new HashSet<>();
+    @Column(name = "img_url")
+    private String imgUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+//    @JsonIgnore
+//    @ManyToMany(mappedBy = "sectionCmps")
+//    private final Set<ProductCmp> productCmps = new HashSet<>();
+//
+//    @ManyToMany
+//    @JoinTable(name = "section_element_cmp", joinColumns = @JoinColumn(name = "section_cmp_id"), inverseJoinColumns = @JoinColumn(name = "element_cmp_id"))
+//    private final Set<ElementCmp> elementCmps = new HashSet<>();
 
 }

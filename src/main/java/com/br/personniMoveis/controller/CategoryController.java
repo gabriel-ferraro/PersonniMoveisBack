@@ -1,30 +1,32 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
-//import com.br.personniMoveis.service.GenericFilterService;
-import com.br.personniMoveis.service.ProductCmpService;
+import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
+import com.br.personniMoveis.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
-@RequestMapping("products_cmp")
-public class ProductCmpController {
+@RequestMapping("category")
+public class CategoryController {
 
-    private final ProductCmpService productCmpService;
+    private final CategoryService categoryService;
 
 //    private final GenericFilterService<ProductCmp> genericFilterService;
 
     @Autowired
-    public ProductCmpController(ProductCmpService productCmpService) {
-        this.productCmpService = productCmpService;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
 //        this.genericFilterService = genericFilterService;
     }
 
-
+    @GetMapping(path = "/{categoryId}")
+    public ResponseEntity<CategoryGetDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
+        return ResponseEntity.ok(categoryService.findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found"));
+    }
 
 //    @GetMapping
 //    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
@@ -51,21 +53,20 @@ public class ProductCmpController {
 //    }
 
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody @Valid ProductCmpDto productCmpDto) {
-        productCmpService.createProductCmp(productCmpDto);
+    public ResponseEntity<String> createCategory(@RequestBody @Valid CategoryPostDto categoryPostDto) {
+        categoryService.createCategoryCmp(categoryPostDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{product_cmp_id}")
-    public ResponseEntity updateProduct(@RequestBody @Valid ProductCmpDto productCmpDto, @PathVariable("product_cmp_id") Long productCmpId) {
-        productCmpService.updateProduct(productCmpDto, productCmpId);
+    @PutMapping(path = "/{cateogoryId}")
+    public ResponseEntity updateProduct(@RequestBody @Valid CategoryPutDto categoryPutDto, @PathVariable("cateogoryId") Long cateogoryId) {
+        categoryService.updateCategory(categoryPutDto, cateogoryId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping(path = "/{product_cmp_id}")
-    public ResponseEntity deleteProductById(@PathVariable("product_cmp_id") Long productCmpId) {
-        productCmpService.deleteProductById(productCmpId);
+    @DeleteMapping(path = "/{cateogoryId}")
+    public ResponseEntity deleteProductById(@PathVariable("cateogoryId") Long cateogoryId) {
+        categoryService.deleteCategoryById(cateogoryId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
 }

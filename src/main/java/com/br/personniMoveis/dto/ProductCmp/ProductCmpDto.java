@@ -10,6 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductCmpDto {
 
+    private Long productCmpId;
+
     private Double value;
 
     private Long quantity;
@@ -18,5 +20,6 @@ public class ProductCmpDto {
 
     private String description;
 
-    private List<ProductCmpSectionDto> productSectionDtoList;
+    private List<ProductCmpSectionDto> productCmpSectionDtos;
+
 }
