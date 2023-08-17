@@ -7,10 +7,10 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ProductCmpSectionDto {
+public class ProductCmpElementDto {
 
-    private String productCmpSectionId;
+    private String productCmpElementId;
     private String name;
-    private List<ProductCmpElementDto> productCmpElementDtos;
+    private List<ProductCmpOptionDto> productCmpOptionDtos;
 
 }

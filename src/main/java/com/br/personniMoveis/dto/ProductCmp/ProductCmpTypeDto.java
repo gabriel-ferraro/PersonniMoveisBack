@@ -7,6 +7,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class ProductCmpTypeDto {
+
+    private String productCmpTypeId;
     private String name;
-    private List<ProductCmpOptionDto> productCmpOptionDtoList;
+
 }

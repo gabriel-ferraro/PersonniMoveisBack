@@ -1,5 +1,7 @@
 package com.br.personniMoveis.model.productCmp;
 
+import com.br.personniMoveis.model.category.Category;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +28,7 @@ public class ProductCmp {
     private Long productCmpId;
 
     @Column(nullable = false)
-    private Double value;
+    private Double valueTotal;
 
     @Column(nullable = false)
     private Long quantity;
@@ -37,7 +39,7 @@ public class ProductCmp {
     private String description;
 
     @ManyToMany
-    @JoinTable(name = "section_type_cmp", joinColumns = @JoinColumn(name = "product_cmp_id"), inverseJoinColumns = @JoinColumn(name = "section_cmp_id"))
+    @JoinTable(name = "section_product_cmp", joinColumns = @JoinColumn(name = "product_cmp_id"), inverseJoinColumns = @JoinColumn(name = "section_cmp_id"))
     private final Set<SectionCmp> sectionCmps = new HashSet<>();
 
 }
