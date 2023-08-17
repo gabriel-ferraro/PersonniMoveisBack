@@ -1,8 +1,8 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.ElementsDto.ElementCmpGetDto;
-import com.br.personniMoveis.dto.ElementsDto.ElementCmpPostDto;
-import com.br.personniMoveis.dto.ElementsDto.ElementCmpPutDto;
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPostDto;
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPutDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ElementCmp.ElementCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
