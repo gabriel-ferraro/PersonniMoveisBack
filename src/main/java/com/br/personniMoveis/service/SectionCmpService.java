@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,29 +42,35 @@ public class SectionCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createSectionCmp(SectionCmpPostDto sectionCmpPostDto, Long categoryId) {
+    public void createSectionCmp(Set<SectionCmpPostDto> sectionCmpPostDto, Long categoryId) {
         // Busca a categoria
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new BadRequestException("Category not found"));
-        //seta a categoria na seção
-        sectionCmpPostDto.setCategory(category);
 
-        SectionCmp newSection = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpPostDto);
-
+        // Setando categorias para cada seção
+        sectionCmpPostDto.forEach(item -> item.setCategoryId(category.getCategoryId()));
+        //Salvando seção
+        Set<SectionCmp> newSection = SectionCmpMapper.INSTANCE.toSectionCmpPost(sectionCmpPostDto);
         // Persiste a nova instância no banco de dados
-        sectionCmpRepository.save(newSection);
+        newSection.forEach(item -> sectionCmpRepository.save(item));
+        
     }
 
-    public void updateSectionCmp(SectionCmpPutDto sectionCmpPutDto, Long sectionCmpId) {
-        // Faz alteracoes no produto.
-        // Busca a categoria
-        SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
-        var categoria = sectionCmp.getCategory();
-        sectionCmpPutDto.setCategory(categoria);
-        SectionCmp SectionBeUpdated = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpPutDto);
-        SectionBeUpdated.setSectionCmpId(sectionCmpId);
-        // Persiste alteracoes.
-        sectionCmpRepository.save(SectionBeUpdated);
-    }
+//    public void updateSectionCmp(Set<SectionCmpPutDto> sectionCmpPutDto, Long sectionCmpId) {
+//        // Faz alteracoes no produto.
+//        // Busca a categoria
+//        SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
+//        var category = sectionCmp.getCategory();
+//        // Setando categorias para cada seção
+//        sectionCmpPutDto.forEach(item -> item.setCategoryId(category.getCategoryId()));
+//
+//        Set<SectionCmp> SectionBeUpdated = SectionCmpMapper.INSTANCE.toSectionCmpPut(sectionCmpPutDto);
+//
+//        SectionBeUpdated.forEach(item -> item.setSectionCmpId(sectionCmpId));
+//
+//        SectionBeUpdated.setSectionCmpId(sectionCmpId);
+//        // Persiste alteracoes.
+//        sectionCmpRepository.save(SectionBeUpdated);
+//    }
 
 
     public void deleteSectionCmpById(Long sectionCmpId) {

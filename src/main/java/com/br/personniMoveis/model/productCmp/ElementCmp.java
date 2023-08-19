@@ -33,4 +33,8 @@ public class ElementCmp {
     @ManyToOne
     @JoinColumn(name = "section_cmp_id")
     private SectionCmp sectionCmp;
+
+    @OneToMany
+    private final Set<OptionCmp> optionCmps = new HashSet<>();
+
 }

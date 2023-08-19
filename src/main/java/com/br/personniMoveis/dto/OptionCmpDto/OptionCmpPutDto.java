@@ -16,5 +16,5 @@ public class OptionCmpPutDto {
 
     private String imgUrl;
 
-    private ElementCmp elementCmp;
+    private Long elementCmpId;
 }

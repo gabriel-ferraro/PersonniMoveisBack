@@ -15,8 +15,13 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    private SectionCmpService sectionCmpService;
+
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository){this.categoryRepository = categoryRepository;}
+    public CategoryService(CategoryRepository categoryRepository,SectionCmpService sectionCmpService){
+        this.categoryRepository = categoryRepository;
+        this.sectionCmpService = sectionCmpService;
+    }
 
     public CategoryGetDto findCategoryByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
         return CategoryMapper.INSTANCE.CategotyToCategoryGetDto(
@@ -35,14 +40,22 @@ public class CategoryService {
 //    }
     public void createCategoryCmp(CategoryPostDto categoryPostDto) {
         // cria novo produto.
+
+
         Category newCategory = CategoryMapper.INSTANCE.toCategoryPost(categoryPostDto);
         // persiste no BD.
         categoryRepository.save(newCategory);
+
+        if(categoryPostDto.getSectionCmpPostDtos() != null){
+            sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpPostDtos(), newCategory.getCategoryId());
+        }
+
     }
 
     public void updateCategory(CategoryPutDto categoryPutDto, Long categoryId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found");
+
 
         // Faz alteracoes no produto.
         Category CategoryBeUpdated = CategoryMapper.INSTANCE.toCategoryPut(categoryPutDto);
