@@ -30,9 +30,11 @@ public class SectionCmp {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private Long categoryId;
+
+    @OneToMany
+    private final Set<ElementCmp> elementCmps = new HashSet<>();
+
 
 //    @JsonIgnore
 //    @ManyToMany(mappedBy = "sectionCmps")

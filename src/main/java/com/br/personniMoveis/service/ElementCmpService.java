@@ -49,7 +49,7 @@ public class ElementCmpService {
         // Busca a categoria
         SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
         //seta a categoria na seção
-        elementCmpPostDto.setSectionCmp(sectionCmp);
+        elementCmpPostDto.setSectionCmpId(sectionCmp.getSectionCmpId());
 
         ElementCmp newElement = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpPostDto);
 
@@ -62,7 +62,7 @@ public class ElementCmpService {
         // Busca a categoria
         ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
         SectionCmp Section = elementCmp.getSectionCmp();
-        elementCmpPutDto.setSectionCmp(Section);
+        elementCmpPutDto.setSectionCmpId(Section.getSectionCmpId().longValue());
 
         ElementCmp ElementBeUpdated = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpPutDto);
         ElementBeUpdated.setElementCmpId(elementCmpId);

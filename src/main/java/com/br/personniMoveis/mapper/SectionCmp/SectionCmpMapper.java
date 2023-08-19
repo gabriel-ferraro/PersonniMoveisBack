@@ -8,16 +8,18 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Set;
+
 @Mapper(componentModel = "spring")
 public abstract class SectionCmpMapper {
 
     public static final SectionCmpMapper INSTANCE = Mappers.getMapper(SectionCmpMapper.class);
 
     @Mapping(target = "sectionCmpId", ignore = true)
-    public abstract SectionCmp toSectionCmp(SectionCmpPostDto sectionCmpPostDto);
+    public abstract Set<SectionCmp> toSectionCmpPost(Set<SectionCmpPostDto> sectionCmpPostDto);
 
     @Mapping(target = "sectionCmpId", ignore = true)
-    public abstract SectionCmp toSectionCmp(SectionCmpPutDto sectionCmpPutDto);
+    public abstract Set<SectionCmp> toSectionCmpPut(Set<SectionCmpPutDto> sectionCmpPutDto);
 
     public abstract SectionCmpGetDto SectionToSectionGetDto(SectionCmp sectionCmp);
 
