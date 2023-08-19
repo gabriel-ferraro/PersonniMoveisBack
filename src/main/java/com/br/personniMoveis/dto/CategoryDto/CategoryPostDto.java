@@ -4,6 +4,7 @@ import com.br.personniMoveis.dto.ProductCmp.ProductCmpOptionDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class CategoryPostDto {
 
     private Long categoryId;
 
+    @NotNull
     private String name;
 
     private Set<SectionCmpPostDto> sectionCmpPostDtos;

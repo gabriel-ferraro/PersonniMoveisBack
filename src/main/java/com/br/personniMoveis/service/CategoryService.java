@@ -39,16 +39,19 @@ public class CategoryService {
 //        return productRepository.findAllProducts(pageable);
 //    }
     public void createCategoryCmp(CategoryPostDto categoryPostDto) {
-        // cria novo produto.
-
-
+        // cria nova categoria.
         Category newCategory = CategoryMapper.INSTANCE.toCategoryPost(categoryPostDto);
         // persiste no BD.
         categoryRepository.save(newCategory);
 
-        if(categoryPostDto.getSectionCmpPostDtos() != null){
-            sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpPostDtos(), newCategory.getCategoryId());
-        }
+        //Vê se tem alguma seção cadastrada junto com a categoria
+        categoryPostDto.getSectionCmpPostDtos().forEach(item -> {
+            if (item.getName() != "") {
+                sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpPostDtos(), newCategory.getCategoryId());
+            }
+        });
+
+
 
     }
 
@@ -56,13 +59,19 @@ public class CategoryService {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found");
 
-
         // Faz alteracoes no produto.
         Category CategoryBeUpdated = CategoryMapper.INSTANCE.toCategoryPut(categoryPutDto);
 
         CategoryBeUpdated.setCategoryId(categoryId);
         // Persiste alteracoes.
         categoryRepository.save(CategoryBeUpdated);
+
+        //Vê se tem alguma seção cadastrada junto com a categoria
+        categoryPutDto.getSectionCmpPutDtos().forEach(item -> {
+            if (item.getName() != "" && item.getSectionCmpId() != null || item.getSectionCmpId() != 0 ) {
+                sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpPutDtos(), item.getSectionCmpId());
+            }
+        });
     }
 
     public void deleteCategoryById(Long categoryId) {
