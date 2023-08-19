@@ -55,22 +55,18 @@ public class SectionCmpService {
         
     }
 
-//    public void updateSectionCmp(Set<SectionCmpPutDto> sectionCmpPutDto, Long sectionCmpId) {
-//        // Faz alteracoes no produto.
-//        // Busca a categoria
-//        SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
-//        var category = sectionCmp.getCategory();
-//        // Setando categorias para cada seção
-//        sectionCmpPutDto.forEach(item -> item.setCategoryId(category.getCategoryId()));
-//
-//        Set<SectionCmp> SectionBeUpdated = SectionCmpMapper.INSTANCE.toSectionCmpPut(sectionCmpPutDto);
-//
-//        SectionBeUpdated.forEach(item -> item.setSectionCmpId(sectionCmpId));
-//
-//        SectionBeUpdated.setSectionCmpId(sectionCmpId);
-//        // Persiste alteracoes.
-//        sectionCmpRepository.save(SectionBeUpdated);
-//    }
+    public void updateSectionCmp(Set<SectionCmpPutDto> sectionCmpPutDto, Long sectionCmpId) {
+        // Faz alteracoes no produto.
+        // Busca a categoria
+        SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
+        var category = sectionCmp.getCategoryId();
+        // Setando categorias para cada seção
+        sectionCmpPutDto.forEach(item -> item.setCategoryId(category));
+
+        Set<SectionCmp> SectionBeUpdated = SectionCmpMapper.INSTANCE.toSectionCmpPut(sectionCmpPutDto);
+
+        SectionBeUpdated.forEach(item -> sectionCmpRepository.save(item));
+    }
 
 
     public void deleteSectionCmpById(Long sectionCmpId) {
