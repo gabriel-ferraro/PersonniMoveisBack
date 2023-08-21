@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
+/**
+ * Mapeamento ORM para detalhes do produto.
+ */
 @Data
 @Builder
 @AllArgsConstructor

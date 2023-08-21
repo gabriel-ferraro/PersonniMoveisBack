@@ -1,6 +1,7 @@
 package com.br.personniMoveis.service.product;
 
-import com.br.personniMoveis.dto.product.DetailPostDto;
+import com.br.personniMoveis.dto.product.DetailDto;
+import com.br.personniMoveis.dto.product.DetailGetDto;
 import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.ProductGetDto;
 import com.br.personniMoveis.exception.AlreadyExistsException;
@@ -39,9 +40,14 @@ public class ProductService {
                 () -> new ResourceNotFoundException("Produto não encontrado."));
     }
 
-    public Tag findTagInProductOrThrowNotFoundException(Product product, Long tagId) {
+    private Tag findTagInProductOrThrowNotFoundException(Product product, Long tagId) {
         return product.getTags().stream().filter(tag -> tag.getTagId().equals(tagId)).findAny().orElseThrow(
                 () -> new ResourceNotFoundException("Tag não encontrada no produto."));
+    }
+
+    private Detail findDetailInProductOrThrowNotfoundException(Product product, Long detailId) {
+        return product.getDetails().stream().filter(detail -> detail.getDetailId().equals(detailId)).findAny().orElseThrow(
+                () -> new ResourceNotFoundException("Detalhe não encontrada no produto."));
     }
 
     /**
@@ -78,21 +84,42 @@ public class ProductService {
         return ProductMapper.INSTANCE.productToProductGetDto(product);
     }
 
+    public List<DetailGetDto> getAllDetailsFromProduct(Long productId) {
+        Product product = findProductOrThrowNotFoundException(productId);
+        return product.getDetails().stream().map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
+    }
+
     /**
      * Persiste detalhe e insere no produto.
-     * @param productId id do produto.
-     * @param detailPostDto Detail que se deseja criar e associar ao produto.
+     *
+     * @param productId     id do produto.
+     * @param detailDto Detail que se deseja criar e associar ao produto.
      */
     @Transactional
-    public Detail assignDetailToProduct(Long productId, DetailPostDto detailPostDto) {
+    public Detail assignDetailToProduct(Long productId, DetailDto detailDto) {
         Product product = findProductOrThrowNotFoundException(productId);
         // Adquire model de detail.
-        Detail detail = DetailMapper.INSTANCE.toDetail(detailPostDto);
+        Detail detail = DetailMapper.INSTANCE.toDetail(detailDto);
         detail.setProduct(product);
         // Faz associação.
         product.getDetails().add(detail);
         // Retorna detail criado e associado.
         return detail;
+    }
+
+    public void updateDetail(Long productId, Long detailId, DetailDto detailDto) {
+        Product product = findProductOrThrowNotFoundException(productId);
+        findDetailInProductOrThrowNotfoundException(product, detailId);
+        Detail newDetail = DetailMapper.INSTANCE.toDetail(detailDto);
+        newDetail.setDetailId(detailId);
+        detailService.updateDetail(newDetail);
+    }
+
+    @Transactional
+    public void removeDetailInProduct(Long productId, Long detailId) {
+        Product product = findProductOrThrowNotFoundException(productId);
+        Detail detail = findDetailInProductOrThrowNotfoundException(product, detailId);
+        product.getDetails().remove(detail);
     }
 
     /**

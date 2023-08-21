@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Mapeamento ORM para produtp.
+ */
 @Data
 @Builder
 @AllArgsConstructor
