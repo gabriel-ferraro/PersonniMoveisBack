@@ -10,8 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Mapeamento ORM para elementos do produto (elementos que compõem o produto
- * editável).
+ * Mapeamento ORM para seções do produto.
  */
 @Data
 @Builder
@@ -28,12 +27,15 @@ public class Section {
 
     @Column(nullable = false)
     private String name;
+
+    @Column(name = "img_url")
+    private String imgUrl;
     
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
     @OneToMany(mappedBy = "section", orphanRemoval = true, cascade = CascadeType.PERSIST)
-    private final Set<Type> type = new HashSet<>();
+    private final Set<Option> type = new HashSet<>();
 
 }
