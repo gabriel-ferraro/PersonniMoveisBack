@@ -34,16 +34,3 @@ services:
       - DB_PASSWORD=123456
     ports:
       - "8081:8081"
-  
-  # vuejs_app:
-  #   build: "./personniMoveisFront"
-  #   container_name: vuejs_app
-  #   depends_on:
-  #     - spring_api
-  #   networks:
-  #     - personniNetwork
-  #   environment:
-  #     - PORT=8080
-  #     - NODE_ENV=container
-  #   ports:
-  #     - 8080:8080

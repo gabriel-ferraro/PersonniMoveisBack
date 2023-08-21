@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class BadRequestExceptionDetails {
+public class RequestExceptionDetails {
 
     private String title;
     private int status;
