@@ -1,11 +1,11 @@
-package com.br.personniMoveis.dto;
+package com.br.personniMoveis.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ProductGetDto {
+public class ProductPutDto {
 
     private String name;
     private Double value;

@@ -1,16 +1,16 @@
-package com.br.personniMoveis.dto;
+package com.br.personniMoveis.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ProductDto {
+public class ProductPostDto {
 
     private String name;
-    private String value;
-    private String quantity;
-    private String editable;
+    private Double value;
+    private Long quantity;
+    private Boolean editable;
     private String imgUrl;
     private String description;
 }

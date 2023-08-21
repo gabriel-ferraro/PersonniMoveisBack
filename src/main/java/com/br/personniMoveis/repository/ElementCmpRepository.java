@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-
 public interface ElementCmpRepository extends JpaRepository<ElementCmp, Long>, JpaSpecificationExecutor<ElementCmp> {
 
 }

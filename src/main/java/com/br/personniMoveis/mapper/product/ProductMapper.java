@@ -1,7 +1,7 @@
-package com.br.personniMoveis.mapper;
+package com.br.personniMoveis.mapper.product;
 
-import com.br.personniMoveis.dto.ProductDto;
-import com.br.personniMoveis.dto.ProductGetDto;
+import com.br.personniMoveis.dto.product.ProductDto;
+import com.br.personniMoveis.dto.product.ProductGetDto;
 import com.br.personniMoveis.model.product.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

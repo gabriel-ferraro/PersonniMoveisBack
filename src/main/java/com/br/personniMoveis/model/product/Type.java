@@ -28,7 +28,7 @@ public class Type {
     @Column(nullable = false)
     private String name;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "types")
-    private final Set<Section> sections = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Section section;
 }

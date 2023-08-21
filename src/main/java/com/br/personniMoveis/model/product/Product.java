@@ -1,13 +1,14 @@
 package com.br.personniMoveis.model.product;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Builder
@@ -40,22 +41,24 @@ public class Product {
 
     private String description;
 
+    /**
+     * Details são campos descritivos do produto, exemplo: peso do produto - A cadeira X é leve e tem só x kg.
+     */
+    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private final Set<Detail> details = new HashSet<>();
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private final Set<Material> materialList = new HashSet<>();
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private final Set<Section> sections = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "product_tag", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private final Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "product_section", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "section_id"))
-    private final Set<Section> sections = new HashSet<>();
-    
     @Override
     public int hashCode() {
         return Objects.hash(productId);
     }
-
-//    public static void addTag(Product product, Tag tag) {
-//        // Associa tag à produto.
-//        product.tags.add(tag);
-//        tag.getProducts().add(product);
-//    }
 }
