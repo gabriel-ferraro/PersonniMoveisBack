@@ -1,32 +1,58 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
+import com.br.personniMoveis.mapper.SectionCmp.SectionCmpMapper;
 import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.productCmp.SectionCmp;
 import com.br.personniMoveis.repository.CategoryRepository;
+import com.br.personniMoveis.repository.SectionCmpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    private SectionCmpService sectionCmpService;
+    private final SectionCmpService sectionCmpService;
+
+    private final SectionCmpRepository sectionCmpRepository;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository,SectionCmpService sectionCmpService){
+    public CategoryService(CategoryRepository categoryRepository,SectionCmpService sectionCmpService, SectionCmpRepository sectionCmpRepository){
         this.categoryRepository = categoryRepository;
         this.sectionCmpService = sectionCmpService;
+        this.sectionCmpRepository = sectionCmpRepository;
     }
 
-    public CategoryGetDto findCategoryByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
-        return CategoryMapper.INSTANCE.CategotyToCategoryGetDto(
-                categoryRepository.findById(id).orElseThrow(
-                        () -> new BadRequestException(exceptionMessage)));
+
+    public List<CategoryGetDto> getAllCategory() {
+        List<Category> category = categoryRepository.findAll();
+        List<CategoryGetDto> categoryDtos = category.stream()
+                .map(CategoryMapper.INSTANCE::CategotyToCategoryGetDto)
+                .collect(Collectors.toList());
+        return categoryDtos;
+    }
+
+
+    public CategoryGetByIdDto findCategoryByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(exceptionMessage));
+        Set<SectionCmp> sectionCmps = sectionCmpRepository.findByCategoryId(id);
+        CategoryGetByIdDto categoryGetByIdDto = CategoryMapper.INSTANCE.CategotyToCategoryGetByIdDto(category);
+        categoryGetByIdDto.setSectionCmps(sectionCmps);
+
+        return categoryGetByIdDto;
     }
 
     //    public Page<ProductDto> getAllProducts(Pageable pageable) {
@@ -45,9 +71,9 @@ public class CategoryService {
         categoryRepository.save(newCategory);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
-        categoryPostDto.getSectionCmpPostDtos().forEach(item -> {
+        categoryPostDto.getSectionCmpDtos().forEach(item -> {
             if (item.getName() != "") {
-                sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpPostDtos(), newCategory.getCategoryId());
+                sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpDtos(), newCategory.getCategoryId());
             }
         });
 
@@ -67,9 +93,11 @@ public class CategoryService {
         categoryRepository.save(CategoryBeUpdated);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
-        categoryPutDto.getSectionCmpPutDtos().forEach(item -> {
-            if (item.getName() != "" && item.getSectionCmpId() != null || item.getSectionCmpId() != 0 ) {
-                sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpPutDtos(), item.getSectionCmpId());
+        categoryPutDto.getSectionCmpDtos().forEach(item -> {
+            if (item.getName() != "" && item.getSectionCmpId() > 0 ) {
+                sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpDtos(), item.getSectionCmpId());
+            }else{
+                sectionCmpService.createSectionCmp(categoryPutDto.getSectionCmpDtos(), categoryId);
             }
         });
     }

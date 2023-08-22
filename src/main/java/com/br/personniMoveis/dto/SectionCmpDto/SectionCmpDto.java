@@ -1,12 +1,11 @@
 package com.br.personniMoveis.dto.SectionCmpDto;
 
-import com.br.personniMoveis.model.category.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SectionCmpGetDto {
+public class SectionCmpDto {
 
     private Long sectionCmpId;
 

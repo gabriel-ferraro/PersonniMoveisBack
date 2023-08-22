@@ -1,5 +1,6 @@
 package com.br.personniMoveis.controller;
 
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPutDto;
@@ -40,8 +41,8 @@ public class SectionCmpController {
     }
 
     @PostMapping(path = "/{cateogoryId}")
-    public ResponseEntity<String> createSectionCmp(@RequestBody @Valid Set<SectionCmpPostDto> sectionCmpPostDto, @PathVariable("cateogoryId") Long cateogoryId) {
-        sectionCmpService.createSectionCmp(sectionCmpPostDto, cateogoryId);
+    public ResponseEntity<String> createSectionCmp(@RequestBody @Valid Set<SectionCmpDto> sectionCmpDtos, @PathVariable("cateogoryId") Long cateogoryId) {
+        sectionCmpService.createSectionCmp(sectionCmpDtos, cateogoryId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
