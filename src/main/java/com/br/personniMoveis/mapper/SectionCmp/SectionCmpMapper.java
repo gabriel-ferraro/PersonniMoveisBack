@@ -1,5 +1,6 @@
 package com.br.personniMoveis.mapper.SectionCmp;
 
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPutDto;
@@ -20,6 +21,9 @@ public abstract class SectionCmpMapper {
 
     @Mapping(target = "sectionCmpId", ignore = true)
     public abstract Set<SectionCmp> toSectionCmpPut(Set<SectionCmpPutDto> sectionCmpPutDto);
+
+    @Mapping(target = "sectionCmpId", ignore = true)
+    public abstract Set<SectionCmp> toSectionCmp(Set<SectionCmpDto> sectionCmpDtos);
 
     public abstract SectionCmpGetDto SectionToSectionGetDto(SectionCmp sectionCmp);
 

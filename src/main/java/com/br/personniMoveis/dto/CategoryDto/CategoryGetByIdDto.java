@@ -1,16 +1,18 @@
 package com.br.personniMoveis.dto.CategoryDto;
 
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpSectionDto;
+import com.br.personniMoveis.model.productCmp.SectionCmp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
-public class CategoryGetDto {
+public class CategoryGetByIdDto {
 
     private Long categoryId;
 
     private String name;
 
+    private Set<SectionCmp> sectionCmps;
 }

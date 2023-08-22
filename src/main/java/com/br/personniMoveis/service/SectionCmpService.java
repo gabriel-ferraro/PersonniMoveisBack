@@ -1,5 +1,6 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPutDto;
@@ -42,28 +43,28 @@ public class SectionCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createSectionCmp(Set<SectionCmpPostDto> sectionCmpPostDto, Long categoryId) {
+    public void createSectionCmp(Set<SectionCmpDto> sectionCmpDtos, Long categoryId) {
         // Busca a categoria
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new BadRequestException("Category not found"));
 
         // Setando categorias para cada seção
-        sectionCmpPostDto.forEach(item -> item.setCategoryId(category.getCategoryId()));
+        sectionCmpDtos.forEach(item -> item.setCategoryId(category.getCategoryId()));
         //Salvando seção
-        Set<SectionCmp> newSection = SectionCmpMapper.INSTANCE.toSectionCmpPost(sectionCmpPostDto);
+        Set<SectionCmp> newSection = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpDtos);
         // Persiste a nova instância no banco de dados
         newSection.forEach(item -> sectionCmpRepository.save(item));
         
     }
 
-    public void updateSectionCmp(Set<SectionCmpPutDto> sectionCmpPutDto, Long sectionCmpId) {
+    public void updateSectionCmp(Set<SectionCmpDto> sectionCmpDtos, Long sectionCmpId) {
         // Faz alteracoes no produto.
         // Busca a categoria
         SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
         var category = sectionCmp.getCategoryId();
         // Setando categorias para cada seção
-        sectionCmpPutDto.forEach(item -> item.setCategoryId(category));
+        sectionCmpDtos.forEach(item -> item.setCategoryId(category));
 
-        Set<SectionCmp> SectionBeUpdated = SectionCmpMapper.INSTANCE.toSectionCmpPut(sectionCmpPutDto);
+        Set<SectionCmp> SectionBeUpdated = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpDtos);
 
         SectionBeUpdated.forEach(item -> sectionCmpRepository.save(item));
     }

@@ -1,5 +1,6 @@
 package com.br.personniMoveis.mapper.Category;
 
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
@@ -22,4 +23,6 @@ public abstract class CategoryMapper {
     public abstract Category toCategoryPut(CategoryPutDto categoryPutDto);
 
     public abstract CategoryGetDto CategotyToCategoryGetDto(Category category);
+
+    public abstract CategoryGetByIdDto CategotyToCategoryGetByIdDto(Category category);
 }

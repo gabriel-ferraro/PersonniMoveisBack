@@ -1,14 +1,19 @@
 package com.br.personniMoveis.controller;
 
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
 import com.br.personniMoveis.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("category")
 public class CategoryController {
@@ -23,8 +28,18 @@ public class CategoryController {
 //        this.genericFilterService = genericFilterService;
     }
 
+
+    @GetMapping
+    public ResponseEntity<List<CategoryGetDto>> getAllCategoria() {
+        List<CategoryGetDto> Category = categoryService.getAllCategory();
+        if (Category.isEmpty()) {
+            return ResponseEntity.ok(Category); // Retorna uma lista vazia
+        }
+        return ResponseEntity.ok(Category);
+    }
+
     @GetMapping(path = "/{categoryId}")
-    public ResponseEntity<CategoryGetDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity<CategoryGetByIdDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found"));
     }
 

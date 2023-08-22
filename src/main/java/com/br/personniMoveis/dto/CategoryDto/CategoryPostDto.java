@@ -1,6 +1,7 @@
 package com.br.personniMoveis.dto.CategoryDto;
 
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpOptionDto;
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
@@ -21,6 +22,6 @@ public class CategoryPostDto {
     @NotNull
     private String name;
 
-    private Set<SectionCmpPostDto> sectionCmpPostDtos;
+    private Set<SectionCmpDto> sectionCmpDtos;
 
 }
