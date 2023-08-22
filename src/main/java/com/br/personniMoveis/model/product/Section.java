@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -30,12 +31,17 @@ public class Section {
 
     @Column(name = "img_url")
     private String imgUrl;
-    
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
     @OneToMany(mappedBy = "section", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private final Set<Option> type = new HashSet<>();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(section_id);
+    }
 
 }
