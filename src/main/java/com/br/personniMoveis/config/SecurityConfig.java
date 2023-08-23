@@ -17,49 +17,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    /**
-     * Todas requisições para API são autorizadas e validadas no filtro.
-     *
-     * @param http
-     * @return
-     * @throws Exception
-     */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests(requests -> requests;
-//                .requestMatchers(
-//                        // Qualquer requisição para as seguintes URIs não precisa de autenticação.
-//                        "/", 
-//                        "/home", 
-//                        "/users/**", 
-//                        "/products",
-//                               "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html"
-//                )
-        //.permitAll()
-        // Requisições para URIs diferentes das especificadas exigem 
-        // autenticação e/ou autorização de um role específico 
-        // falta implementar...
-        //.anyRequest().anonymous()
-//        http
-//                .httpBasic().disable() // Desabilita a autenticação básica
-//                .authorizeRequests()
-//                .anyRequest().permitAll() // Libera todas as requisições
-//                .and()
-//                .cors(Customizer.withDefaults()); // Habilita a configuração CORS
-//
-//        return http.build();
-////        );
-//            .formLogin(formLogin -> formLogin
-//                .loginPage("/login")
-//                .permitAll()
-//            )
-//            .rememberMe(Customizer.withDefaults());
-            http.csrf().disable()
-                .authorizeRequests().anyRequest().permitAll();
-            
-            return http.build();
-    }
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -71,14 +28,12 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user = PasswordEncoderFactories.createDelegatingPasswordEncoder().
-//                            .username("user")
-//                            .password("password")
-//                            .roles("USER")
-//                            .build();
-//        
-//        return new InMemoryUserDetailsManager(user);
-//    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf(csrf -> csrf.disable()); // Desabilitando CSRF
+        httpSecurity.cors(cors -> cors.disable()); // Desabilitando CORS
+        return httpSecurity.build();
+    }
+
 }
