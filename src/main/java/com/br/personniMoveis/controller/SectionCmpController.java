@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("SectionCmp")
@@ -39,18 +40,18 @@ public class SectionCmpController {
     }
 
     @PostMapping(path = "/{cateogoryId}")
-    public ResponseEntity<String> createSectionCmp(@RequestBody @Valid SectionCmpPostDto sectionCmpPostDto, @PathVariable("cateogoryId") Long cateogoryId) {
+    public ResponseEntity<String> createSectionCmp(@RequestBody @Valid Set<SectionCmpPostDto> sectionCmpPostDto, @PathVariable("cateogoryId") Long cateogoryId) {
         sectionCmpService.createSectionCmp(sectionCmpPostDto, cateogoryId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
 
 
-    @PutMapping(path = "/{sectionCmpId}")
-    public ResponseEntity updateSectionCmp(@RequestBody @Valid SectionCmpPutDto sectionCmpPutDto, @PathVariable("sectionCmpId") Long sectionCmpId) {
-        sectionCmpService.updateSectionCmp(sectionCmpPutDto, sectionCmpId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
+//    @PutMapping(path = "/{sectionCmpId}")
+//    public ResponseEntity updateSectionCmp(@RequestBody @Valid Set<SectionCmpPutDto> sectionCmpPutDto, @PathVariable("sectionCmpId") Long sectionCmpId) {
+//        sectionCmpService.updateSectionCmp(sectionCmpPutDto, sectionCmpId);
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+//    }
 
     @DeleteMapping(path = "/{sectionCmpId}")
     public ResponseEntity deleteSectionCmpById(@PathVariable("sectionCmpId") Long sectionCmpId) {

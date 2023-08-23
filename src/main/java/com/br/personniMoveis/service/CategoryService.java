@@ -15,8 +15,13 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    private SectionCmpService sectionCmpService;
+
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository){this.categoryRepository = categoryRepository;}
+    public CategoryService(CategoryRepository categoryRepository,SectionCmpService sectionCmpService){
+        this.categoryRepository = categoryRepository;
+        this.sectionCmpService = sectionCmpService;
+    }
 
     public CategoryGetDto findCategoryByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
         return CategoryMapper.INSTANCE.CategotyToCategoryGetDto(
@@ -34,10 +39,20 @@ public class CategoryService {
 //        return productRepository.findAllProducts(pageable);
 //    }
     public void createCategoryCmp(CategoryPostDto categoryPostDto) {
-        // cria novo produto.
+        // cria nova categoria.
         Category newCategory = CategoryMapper.INSTANCE.toCategoryPost(categoryPostDto);
         // persiste no BD.
         categoryRepository.save(newCategory);
+
+        //Vê se tem alguma seção cadastrada junto com a categoria
+        categoryPostDto.getSectionCmpPostDtos().forEach(item -> {
+            if (item.getName() != "") {
+                sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpPostDtos(), newCategory.getCategoryId());
+            }
+        });
+
+
+
     }
 
     public void updateCategory(CategoryPutDto categoryPutDto, Long categoryId) {
@@ -50,6 +65,13 @@ public class CategoryService {
         CategoryBeUpdated.setCategoryId(categoryId);
         // Persiste alteracoes.
         categoryRepository.save(CategoryBeUpdated);
+
+        //Vê se tem alguma seção cadastrada junto com a categoria
+        categoryPutDto.getSectionCmpPutDtos().forEach(item -> {
+            if (item.getName() != "" && item.getSectionCmpId() != null || item.getSectionCmpId() != 0 ) {
+                sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpPutDtos(), item.getSectionCmpId());
+            }
+        });
     }
 
     public void deleteCategoryById(Long categoryId) {

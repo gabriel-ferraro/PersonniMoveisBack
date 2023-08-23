@@ -56,7 +56,7 @@ public class OptionCmpService {
         // Busca a categoria
         ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
         //seta a categoria na seção
-        optionCmpPostDto.setElementCmp(elementCmp);
+        optionCmpPostDto.setElementCmpId(elementCmp.getElementCmpId());
 
         OptionCmp newOption = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpPostDto);
 
@@ -69,7 +69,7 @@ public class OptionCmpService {
         // Busca a categoria
         OptionCmp optionCmp = optionCmpRepository.findById(optionCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
         ElementCmp elementCmp = optionCmp.getElementCmp();
-        optionCmpPutDto.setElementCmp(elementCmp);
+        optionCmpPutDto.setElementCmpId(elementCmp.getElementCmpId().longValue());
 
         OptionCmp  OptionBeUpdated = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpPutDto);
         OptionBeUpdated.setOptionCmpId(optionCmpId);

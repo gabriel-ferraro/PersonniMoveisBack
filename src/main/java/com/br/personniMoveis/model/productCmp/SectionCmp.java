@@ -3,6 +3,7 @@ package com.br.personniMoveis.model.productCmp;
 import com.br.personniMoveis.model.category.Category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,14 +26,18 @@ public class SectionCmp {
     private Long sectionCmpId;
 
     @Column(nullable = false)
+    @NotNull
     private String name;
 
     @Column(name = "img_url")
     private String imgUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @NotNull
+    private Long categoryId;
+
+    @OneToMany
+    private final Set<ElementCmp> elementCmps = new HashSet<>();
+
 
 //    @JsonIgnore
 //    @ManyToMany(mappedBy = "sectionCmps")
