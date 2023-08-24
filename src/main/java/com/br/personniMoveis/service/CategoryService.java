@@ -2,7 +2,7 @@ package com.br.personniMoveis.service;
 
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
+import com.br.personniMoveis.dto.product.CategoryProductPost;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.model.category.Category;
@@ -15,29 +15,23 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    private SectionCmpService sectionCmpService;
+    private final SectionCmpService sectionCmpService;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository,SectionCmpService sectionCmpService){
+    public CategoryService(CategoryRepository categoryRepository, SectionCmpService sectionCmpService) {
         this.categoryRepository = categoryRepository;
         this.sectionCmpService = sectionCmpService;
     }
 
-    public CategoryGetDto findCategoryByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
-        return CategoryMapper.INSTANCE.CategotyToCategoryGetDto(
-                categoryRepository.findById(id).orElseThrow(
-                        () -> new BadRequestException(exceptionMessage)));
+    public Category findCategoryOrThrowNotFoundException(Long id) {
+        return categoryRepository.findById(id).orElseThrow(
+                () -> new BadRequestException("categoria não encontrada"));
     }
 
-    //    public Page<ProductDto> getAllProducts(Pageable pageable) {
-//        return productRepository.findAllProducts(pageable);
-//    }
-//    public Page<ProductDto> getAllProducts(Pageable pageable) {
-//        return productRepository.findAllProducts(pageable);
-//    }
-//    public Page<ProductDto> getAllProducts(Pageable pageable) {
-//        return productRepository.findAllProducts(pageable);
-//    }
+    public void createRegularProduct(CategoryProductPost cpp) {
+        // A fazer...
+    }
+
     public void createCategoryCmp(CategoryPostDto categoryPostDto) {
         // cria nova categoria.
         Category newCategory = CategoryMapper.INSTANCE.toCategoryPost(categoryPostDto);
@@ -52,12 +46,11 @@ public class CategoryService {
         });
 
 
-
     }
 
     public void updateCategory(CategoryPutDto categoryPutDto, Long categoryId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
-        findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found");
+        findCategoryOrThrowNotFoundException(categoryId);
 
         // Faz alteracoes no produto.
         Category CategoryBeUpdated = CategoryMapper.INSTANCE.toCategoryPut(categoryPutDto);
@@ -68,7 +61,7 @@ public class CategoryService {
 
         //Vê se tem alguma seção cadastrada junto com a categoria
         categoryPutDto.getSectionCmpPutDtos().forEach(item -> {
-            if (item.getName() != "" && item.getSectionCmpId() != null || item.getSectionCmpId() != 0 ) {
+            if (item.getName() != "" && item.getSectionCmpId() != null || item.getSectionCmpId() != 0) {
                 sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpPutDtos(), item.getSectionCmpId());
             }
         });
@@ -76,7 +69,7 @@ public class CategoryService {
 
     public void deleteCategoryById(Long categoryId) {
         // Econtra produto ou joga exceção.
-        findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found");
+        findCategoryOrThrowNotFoundException(categoryId);
         // Deleta produto via id.
         categoryRepository.deleteById(categoryId);
     }

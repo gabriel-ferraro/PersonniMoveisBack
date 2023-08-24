@@ -1,5 +1,6 @@
 package com.br.personniMoveis.model.product;
 
+import com.br.personniMoveis.model.category.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,10 +46,11 @@ public class Product {
     private String description;
 
     /**
-     * Produto pode ser de uma categoria, como: caderias, armários, mesas, etc...
+     * Produto pode ser de SOMENTE UMA categoria, ou de nehuma, como: caderias, armários, mesas, etc...
      */
-    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.PERSIST)
-    private final Set<Category> categories = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     /**
      * Details são campos descritivos do produto, exemplo: peso do produto - A cadeira X é leve e tem só x kg.

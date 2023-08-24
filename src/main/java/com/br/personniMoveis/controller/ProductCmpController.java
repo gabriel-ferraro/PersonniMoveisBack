@@ -1,8 +1,6 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
-//import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.ProductCmpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,21 +49,21 @@ public class ProductCmpController {
 //    }
 
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody @Valid ProductCmpDto productCmpDto) {
+    public ResponseEntity<HttpStatus> createProduct(@RequestBody @Valid ProductCmpDto productCmpDto) {
         productCmpService.createProductCmp(productCmpDto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{product_cmp_id}")
-    public ResponseEntity updateProduct(@RequestBody @Valid ProductCmpDto productCmpDto, @PathVariable("product_cmp_id") Long productCmpId) {
+    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductCmpDto productCmpDto, @PathVariable("product_cmp_id") Long productCmpId) {
         productCmpService.updateProduct(productCmpDto, productCmpId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/{product_cmp_id}")
-    public ResponseEntity deleteProductById(@PathVariable("product_cmp_id") Long productCmpId) {
+    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("product_cmp_id") Long productCmpId) {
         productCmpService.deleteProductById(productCmpId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

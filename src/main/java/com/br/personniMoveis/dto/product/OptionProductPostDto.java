@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DetailGetDto {
+public class OptionProductPostDto {
 
-    private String detail_id;
-    private String detailField;
-    private String fieldContent;
+    private String name;
+    private String imgUrl;
+    private Double price;
 }
