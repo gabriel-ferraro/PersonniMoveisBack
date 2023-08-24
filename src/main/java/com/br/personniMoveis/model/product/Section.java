@@ -24,7 +24,7 @@ public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "section_id")
-    private Long section_id;
+    private Long sectionId;
 
     @Column(nullable = false)
     private String name;
@@ -41,7 +41,7 @@ public class Section {
 
     @Override
     public int hashCode() {
-        return Objects.hash(section_id);
+        return Objects.hash(sectionId);
     }
 
 }

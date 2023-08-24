@@ -5,9 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DetailGetDto {
+public class MaterialPostDto {
 
-    private String detail_id;
-    private String detailField;
-    private String fieldContent;
+    private String materialName;
+    private String imgUrl;
 }

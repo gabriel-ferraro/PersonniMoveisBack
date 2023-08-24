@@ -24,6 +24,9 @@ public class Material {
     @Column(name = "material_name", nullable = false)
     private String materialName;
 
+    @Column(name = "img_url")
+    private String imgUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
