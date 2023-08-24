@@ -1,6 +1,6 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.product.DetailPostDto;
+import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.ProductGetDto;
 import com.br.personniMoveis.mapper.product.ProductMapper;
@@ -75,12 +75,30 @@ public class ProductController {
      * Cria e associa detail à um produto. Ao criar um detail, deve se associar à um produto existente.
      *
      * @param productId     id do produto
-     * @param detailPostDto dto para criação do detail.
+     * @param detailDto dto para criação do detail.
      * @return Detail persistido e associado ao produto indicado.
      */
     @PostMapping("assign-detail/{productId}/")
-    public ResponseEntity<Detail> assignDetailToProduct(@PathVariable("productId") Long productId, @RequestBody @Valid DetailPostDto detailPostDto) {
-        return ResponseEntity.ok(productService.assignDetailToProduct(productId, detailPostDto));
+    public ResponseEntity<Detail> assignDetailToProduct(@PathVariable("productId") Long productId, @RequestBody @Valid DetailDto detailDto) {
+        return ResponseEntity.ok(productService.assignDetailToProduct(productId, detailDto));
+    }
+
+    /**
+     * Remove um detalhe de um prduto e deleta o detalhe.
+     *
+     * @param productId Id do produto
+     * @param detailId  id do detalhe.
+     * @return Http status 201.
+     */
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> removeDetailInProduct(Long productId, Long detailId) {
+        productService.removeDetailInProduct(productId, detailId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    public ResponseEntity<HttpStatus> updateDetail(Long productId, Long detailId, DetailDto detailDto) {
+        productService.updateDetail(productId, detailId, detailDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{productId}/tags")
