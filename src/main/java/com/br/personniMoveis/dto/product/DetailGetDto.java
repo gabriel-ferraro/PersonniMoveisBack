@@ -7,7 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class DetailGetDto {
 
-    private Long detailId;
     private String detailField;
     private String fieldContent;
 }

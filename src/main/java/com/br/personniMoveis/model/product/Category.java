@@ -7,30 +7,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Mapeamento ORM para tipos do campo de uma seção.
+ * Mapeamento ORM para categoria do produto.
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "option")
-public class Option {
+@Table(name = "category")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "option_id")
-    private Long optionId;
+    @Column(name = "cat_id")
+    private Long catId;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "cat_name", nullable = false)
+    private String catName;
 
-    @Column(name = "img_url")
-    private String imgUrl;
-
-    private Double price;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Section section;
+    private Product product;
 }

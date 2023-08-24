@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Mapeamento ORM para produto.
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -40,6 +43,12 @@ public class Product {
     private String imgUrl;
 
     private String description;
+
+    /**
+     * Produto pode ser de uma categoria, como: caderias, armários, mesas, etc...
+     */
+    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private final Set<Category> categories = new HashSet<>();
 
     /**
      * Details são campos descritivos do produto, exemplo: peso do produto - A cadeira X é leve e tem só x kg.

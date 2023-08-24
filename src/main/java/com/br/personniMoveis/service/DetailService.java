@@ -1,13 +1,11 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.DetailGetDto;
-import com.br.personniMoveis.dto.product.DetailPostDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.model.product.Detail;
-import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.repository.DetailRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,11 +29,15 @@ public class DetailService {
                 .map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
     }
 
-    public void updateDetail(Long detailId, DetailPostDto detailPostDto) {
+    public void updateDetail(Long detailId, DetailDto detailPostDto) {
         this.findDetailOrThrowNotFoundException(detailId);
         Detail detailToBeUpdated = DetailMapper.INSTANCE.toDetail(detailPostDto);
         detailToBeUpdated.setDetailId(detailId);
         detailRepository.save(detailToBeUpdated);
+    }
+
+    public void updateDetail(Detail detail) {
+        detailRepository.save(detail);
     }
 
     public void deleteDetail(Long detailId) {
