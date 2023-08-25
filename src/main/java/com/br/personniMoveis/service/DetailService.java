@@ -1,7 +1,7 @@
 package com.br.personniMoveis.service;
 
 import com.br.personniMoveis.dto.product.DetailDto;
-import com.br.personniMoveis.dto.product.DetailGetDto;
+import com.br.personniMoveis.dto.product.get.DetailGetDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.model.product.Detail;

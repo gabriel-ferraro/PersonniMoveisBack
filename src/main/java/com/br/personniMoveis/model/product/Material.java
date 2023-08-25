@@ -24,6 +24,9 @@ public class Material {
     @Column(name = "material_name", nullable = false)
     private String materialName;
 
+    @Column(nullable = false)
+    private Double price;
+
     @Column(name = "img_url")
     private String imgUrl;
 

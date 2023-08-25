@@ -1,6 +1,6 @@
 package com.br.personniMoveis.repository;
 
-import com.br.personniMoveis.dto.product.ProductGetDto;
+import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.product.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-    @Query("SELECT new com.br.personniMoveis.dto.product.ProductGetDto(p.id, p.name, p.value, p.quantity, p.editable, p.imgUrl, p.description) " +
+    @Query("SELECT new com.br.personniMoveis.dto.product.get.ProductGetDto(p.id, p.name, p.value, p.quantity, p.editable, p.imgUrl, p.description) " +
             "FROM Product p LEFT JOIN p.tags t WHERE t.id = :tagId")
     List<ProductGetDto> findProductsTag(Long tagId);
 

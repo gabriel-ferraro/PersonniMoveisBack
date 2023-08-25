@@ -1,6 +1,5 @@
-package com.br.personniMoveis.dto.product;
+package com.br.personniMoveis.dto.product.post;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -21,7 +20,6 @@ public class ProductPostDto {
     private Boolean editable;
     private String imgUrl;
     private String description;
-    private Set<CategoryPostDto> categoryPostList;
     private Set<DetailPostDto> detailPostList;
     private Set<TagPostDto> tagPostList;
     private Set<SectionPostDto> sectionPostList;

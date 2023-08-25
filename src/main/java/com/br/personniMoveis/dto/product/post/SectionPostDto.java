@@ -1,4 +1,4 @@
-package com.br.personniMoveis.dto.product;
+package com.br.personniMoveis.dto.product.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class SectionPostDto {
 
-    private Long sectionId;
     private String name;
     private String imgUrl;
     private Set<OptionProductPostDto> optionPostDtoList;

@@ -48,9 +48,9 @@ public class Product {
     /**
      * Produto pode ser de SOMENTE UMA categoria, ou de nehuma, como: caderias, armários, mesas, etc...
      */
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+//    @ManyToOne
+//    @JoinColumn(name = "category_id")
+//    private Category category;
 
     /**
      * Details são campos descritivos do produto, exemplo: peso do produto - A cadeira X é leve e tem só x kg.

@@ -1,26 +1,40 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
-import com.br.personniMoveis.dto.product.CategoryProductPost;
+import com.br.personniMoveis.dto.product.post.CategoryProductPost;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
+import com.br.personniMoveis.mapper.product.ProductMapper;
 import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.repository.CategoryRepository;
+import com.br.personniMoveis.service.product.ProductService;
+import com.br.personniMoveis.utils.ValidationUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    private final ProductService productService;
+
     private final SectionCmpService sectionCmpService;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, SectionCmpService sectionCmpService) {
+    public CategoryService(CategoryRepository categoryRepository, ProductService productService, SectionCmpService sectionCmpService) {
         this.categoryRepository = categoryRepository;
         this.sectionCmpService = sectionCmpService;
+        this.productService = productService;
     }
 
     public Category findCategoryOrThrowNotFoundException(Long id) {
@@ -28,13 +42,37 @@ public class CategoryService {
                 () -> new BadRequestException("categoria não encontrada"));
     }
 
-    public void createRegularProduct(CategoryProductPost cpp) {
-        // A fazer...
+    public List<CategoryGetDto> getAllCategories() {
+        return categoryRepository.findAll().stream().map(
+                CategoryMapper.INSTANCE::categoryToCategoryGetDto).toList();
+    }
+
+    /**
+     * Retorna o produto regular criado com uma única requisição ao endpoint.
+     *
+     * @param cpp Dto com info para criação do produto regular inteiro.
+     * @return o produto regular persistido após uma única requisição ao endpoint.
+     */
+    @Transactional
+    public CategoryGetDto createRegularProduct(CategoryProductPost cpp) {
+        // Traduzindo dto e persistindo categoria.
+        Category newCategory = categoryRepository.save(CategoryMapper.INSTANCE.categoryProductPostDtoToCategory(cpp));
+        // Adquirindo produtos.
+        Set<Product> newProductList = cpp.getProductList().stream().map(ProductMapper.INSTANCE::toProduct)
+                .collect(Collectors.toSet());
+        // Persistindo produtos
+        newProductList = newProductList.stream().map(productService::createProduct).collect(Collectors.toSet());
+        // Associando produtos com a categoria.
+        newCategory.setProducts(newProductList);
+//        newProductList.forEach(p -> p.setCategory(newCategory));
+
+        // Retornando criação completa.
+        return CategoryMapper.INSTANCE.categoryToCategoryGetDto(newCategory);
     }
 
     public void createCategoryCmp(CategoryPostDto categoryPostDto) {
         // cria nova categoria.
-        Category newCategory = CategoryMapper.INSTANCE.toCategoryPost(categoryPostDto);
+        Category newCategory = CategoryMapper.INSTANCE.toCategory(categoryPostDto);
         // persiste no BD.
         categoryRepository.save(newCategory);
 
