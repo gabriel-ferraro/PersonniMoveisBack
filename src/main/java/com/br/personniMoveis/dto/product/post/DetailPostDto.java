@@ -1,13 +1,12 @@
-package com.br.personniMoveis.dto.product;
+package com.br.personniMoveis.dto.product.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DetailGetDto {
+public class DetailPostDto {
 
-    private String detail_id;
     private String detailField;
     private String fieldContent;
 }

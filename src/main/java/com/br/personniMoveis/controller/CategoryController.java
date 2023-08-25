@@ -3,14 +3,17 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
-import com.br.personniMoveis.dto.product.CategoryProductPost;
+import com.br.personniMoveis.dto.product.post.CategoryProductPost;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
+import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("category")
@@ -27,14 +30,19 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{categoryId}")
-    public ResponseEntity<CategoryGetDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity<CategoryGetDto> getCategoryById(@PathVariable("categoryId") Long categoryId) {
         return ResponseEntity.ok(CategoryMapper.INSTANCE.CategotyToCategoryGetDto(
                 categoryService.findCategoryOrThrowNotFoundException(categoryId)));
     }
 
-    public ResponseEntity<HttpStatus> createRegularProduct(CategoryProductPost dto) {
-        categoryService.createRegularProduct(dto);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @GetMapping
+    public ResponseEntity<List<CategoryGetDto>> getAllCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
+    @PostMapping(path = "/create-full-product")
+    public ResponseEntity<CategoryGetDto> createFullProduct(@RequestBody @Valid CategoryProductPost dto) {
+        return ResponseEntity.ok(categoryService.createRegularProduct(dto));
     }
 
     @PostMapping

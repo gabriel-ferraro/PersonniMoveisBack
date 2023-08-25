@@ -9,6 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryGetDto {
 
+    private Long categoryId;
     private String name;
-
 }

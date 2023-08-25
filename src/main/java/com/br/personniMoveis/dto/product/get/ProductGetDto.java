@@ -1,7 +1,9 @@
-package com.br.personniMoveis.dto.product;
+package com.br.personniMoveis.dto.product.get;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,4 +16,8 @@ public class ProductGetDto {
     private Boolean editable;
     private String imgUrl;
     private String description;
+    private Set<DetailGetDto> detailPostList;
+    private Set<TagGetDto> tagPostList;
+    private Set<SectionGetDto> sectionPostList;
+    private Set<MaterialGetDto> materialPostList;
 }

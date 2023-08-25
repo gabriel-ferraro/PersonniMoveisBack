@@ -1,4 +1,4 @@
-package com.br.personniMoveis.dto.product;
+package com.br.personniMoveis.dto.product.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,7 @@ import java.util.Set;
 public class CategoryProductPost {
 
     @NonNull
-    private Long categoryId;
-    @NonNull
-    private String categoryName;
+    private String name;
     @NonNull
     private Boolean allow_creation;
     private Set<ProductPostDto> productList;

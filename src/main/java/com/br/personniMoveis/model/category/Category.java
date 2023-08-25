@@ -1,5 +1,6 @@
 package com.br.personniMoveis.model.category;
 
+import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +31,10 @@ public class Category {
     @Column(nullable = false)
     @Builder.Default
     private Boolean allow_creation = true; // Permitir criação do produto que se encaixa na categoria.
+
+    @OneToMany
+    @JoinColumn(name = "category_id")
+    private Set<Product> products = new HashSet<>();
 
     @OneToMany
     private final Set<SectionCmp> sectionCmp = new HashSet<>();

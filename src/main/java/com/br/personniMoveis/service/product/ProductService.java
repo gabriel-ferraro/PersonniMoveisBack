@@ -1,9 +1,9 @@
 package com.br.personniMoveis.service.product;
 
 import com.br.personniMoveis.dto.product.DetailDto;
-import com.br.personniMoveis.dto.product.DetailGetDto;
+import com.br.personniMoveis.dto.product.get.DetailGetDto;
 import com.br.personniMoveis.dto.product.ProductDto;
-import com.br.personniMoveis.dto.product.ProductGetDto;
+import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.AlreadyExistsException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
@@ -15,7 +15,6 @@ import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.repository.ProductRepository;
 import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.DetailService;
-import com.br.personniMoveis.utils.ValidationUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,14 +29,14 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final DetailService detailService;
     private final TagService tagService;
-    private final CategoryService categoryService;
+//    private final CategoryService categoryService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, DetailService detailService, TagService tagService, CategoryService categoryService) {
+    public ProductService(ProductRepository productRepository, DetailService detailService, TagService tagService) {
         this.productRepository = productRepository;
         this.detailService = detailService;
         this.tagService = tagService;
-        this.categoryService = categoryService;
+//        this.categoryService = categoryService;
     }
 
     public Product findProductOrThrowNotFoundException(Long id) {
@@ -89,18 +88,22 @@ public class ProductService {
         return ProductMapper.INSTANCE.productToProductGetDto(product);
     }
 
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
+
     public List<DetailGetDto> getAllDetailsFromProduct(Long productId) {
         Product product = findProductOrThrowNotFoundException(productId);
         return product.getDetails().stream().map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
     }
 
-    public void assignCategoryToProduct(Long productId, Long categoryId) {
-        // Recupera product e category.
-        Product product = this.findProductOrThrowNotFoundException(productId);
-        Category category = categoryService.findCategoryOrThrowNotFoundException(categoryId);
-        // Faz set da categoria no produto. O produto só deve conter uma categoria por vez.
-        product.setCategory(category);
-    }
+//    public void assignCategoryToProduct(Long productId, Long categoryId) {
+//        // Recupera product e category.
+//        Product product = this.findProductOrThrowNotFoundException(productId);
+//        Category category = categoryService.findCategoryOrThrowNotFoundException(categoryId);
+//        // Faz set da categoria no produto. O produto só deve conter uma categoria por vez.
+//        product.setCategory(category);
+//    }
 
     /**
      * Persiste detalhe e insere no produto.
