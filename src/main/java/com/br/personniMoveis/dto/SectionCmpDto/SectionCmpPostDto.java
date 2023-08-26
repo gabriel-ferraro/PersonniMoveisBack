@@ -24,6 +24,7 @@ public class SectionCmpPostDto {
 
     private String imgUrl;
 
+
     @NotNull
     private Long categoryId;
 
