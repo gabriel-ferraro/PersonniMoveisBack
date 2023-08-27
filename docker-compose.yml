@@ -12,9 +12,9 @@ services:
     networks: 
       - personniNetwork
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: personniDEV
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: PersonniMoveis
     ports:
       - "5432:5432"
 
@@ -29,9 +29,9 @@ services:
       - PORT=8081
       - DB_HOST=personniMoveisDB
       - DB_PORT=5432
-      - DB_NAME=personniDEV
-      - DB_USER=admin
-      - DB_PASSWORD=123456
+      - DB_NAME=PersonniMoveis
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
     ports:
       - "8081:8081"
   

@@ -1,9 +1,9 @@
 package com.br.personniMoveis.mapper.Category;
 
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.model.category.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

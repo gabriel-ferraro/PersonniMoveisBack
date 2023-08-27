@@ -1,11 +1,11 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
-import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
 import com.br.personniMoveis.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("category")
+@CrossOrigin(origins = "*")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -28,7 +29,7 @@ public class CategoryController {
 //        this.genericFilterService = genericFilterService;
     }
 
-
+    @Operation(summary = "Categorias", description = "Lista todas as categorias")
     @GetMapping
     public ResponseEntity<List<CategoryGetDto>> getAllCategoria() {
         List<CategoryGetDto> Category = categoryService.getAllCategory();

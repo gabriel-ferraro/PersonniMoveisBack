@@ -1,8 +1,6 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
-//import com.br.personniMoveis.service.GenericFilterService;
 import com.br.personniMoveis.service.ProductCmpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

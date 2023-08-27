@@ -1,7 +1,6 @@
 package com.br.personniMoveis.dto.OptionCmpDto;
 
 import com.br.personniMoveis.model.productCmp.ElementCmp;
-import com.br.personniMoveis.model.productCmp.SectionCmp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,5 +16,5 @@ public class OptionCmpGetDto {
 
     private String imgUrl;
 
-    private ElementCmp elementCmp;
+    private Long elementCmp;
 }

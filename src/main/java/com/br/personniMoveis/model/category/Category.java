@@ -1,8 +1,5 @@
 package com.br.personniMoveis.model.category;
 
-import com.br.personniMoveis.model.budget.Budget;
-import com.br.personniMoveis.model.productCmp.OptionCmp;
-import com.br.personniMoveis.model.productCmp.ProductCmp;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,9 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
