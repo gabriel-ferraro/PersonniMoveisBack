@@ -1,8 +1,7 @@
 package com.br.personniMoveis.controller;
 
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPostDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPutDto;
 import com.br.personniMoveis.service.ElementCmpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+
 @RestController
 @RequestMapping("ElementCmp")
 public class ElementCmpController {
@@ -37,16 +38,16 @@ public class ElementCmpController {
     }
 
     @PostMapping(path = "/{sectionCmpId}")
-    public ResponseEntity<String> createElementCmp(@RequestBody @Valid ElementCmpPostDto elementCmpPostDto, @PathVariable("sectionCmpId") Long sectionCmpId) {
-        elementCmpService.createElementCmp(elementCmpPostDto, sectionCmpId);
+    public ResponseEntity<String> createElementCmp(@RequestBody @Valid Set<ElementCmpDto> elementCmpDtos, @PathVariable("sectionCmpId") Set<Long> sectionCmpId) {
+        elementCmpService.createElementCmp(elementCmpDtos, sectionCmpId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{sectionCmpId}")
-    public ResponseEntity updateElementCmp(@RequestBody @Valid ElementCmpPutDto elementCmpPutDto, @PathVariable("sectionCmpId") Long sectionCmpId) {
-        elementCmpService.updateElementCmp(elementCmpPutDto, sectionCmpId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
+//    @PutMapping(path = "/{sectionCmpId}")
+//    public ResponseEntity updateElementCmp(@RequestBody @Valid ElementCmpPutDto elementCmpPutDto, @PathVariable("sectionCmpId") Long sectionCmpId) {
+//        elementCmpService.updateElementCmp(elementCmpPutDto, sectionCmpId);
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+//    }
 
     @DeleteMapping(path = "/{sectionCmpId}")
     public ResponseEntity deleteElementById(@PathVariable("sectionCmpId") Long sectionCmpId) {

@@ -1,12 +1,9 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPostDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPutDto;
+import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpGetDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPostDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPutDto;
-import com.br.personniMoveis.service.ElementCmpService;
 import com.br.personniMoveis.service.OptionCmpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("OptionCmp")
@@ -42,16 +40,16 @@ public class OptionCmpController {
     }
 
     @PostMapping(path = "/{elementCmpId}")
-    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid OptionCmpPostDto optionCmpPostDto, @PathVariable("elementCmpId") Long elementCmpId) {
-        optionCmpService.createOptionCmp(optionCmpPostDto, elementCmpId);
+    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid Set<OptionCmpDto> optionCmpDtos, @PathVariable("elementCmpId") Set<Long> elementCmpId) {
+        optionCmpService.createOptionCmp(optionCmpDtos, elementCmpId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{optionCmpId}")
-    public ResponseEntity updateElementCmp(@RequestBody @Valid OptionCmpPutDto optionCmpPutDto, @PathVariable("optionCmpId") Long optionCmpId) {
-        optionCmpService.updateOptionCmp(optionCmpPutDto, optionCmpId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
+//    @PutMapping(path = "/{optionCmpId}")
+//    public ResponseEntity updateElementCmp(@RequestBody @Valid OptionCmpPutDto optionCmpPutDto, @PathVariable("optionCmpId") Long optionCmpId) {
+//        optionCmpService.updateOptionCmp(optionCmpPutDto, optionCmpId);
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+//    }
 
     @DeleteMapping(path = "/{optionCmpId}")
     public ResponseEntity deleteElementById(@PathVariable("optionCmpId") Long optionCmpId) {

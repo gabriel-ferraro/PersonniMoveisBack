@@ -2,15 +2,13 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.MessageRequestDto;
 import com.br.personniMoveis.service.EmailService;
-import jakarta.mail.MessagingException;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controladora do usuário. Define métodos para autenticação, login, logout

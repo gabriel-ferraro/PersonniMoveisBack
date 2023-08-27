@@ -1,8 +1,9 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPostDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPutDto;
+import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ElementCmp.ElementCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
@@ -12,7 +13,9 @@ import com.br.personniMoveis.repository.SectionCmpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,12 +25,15 @@ public class ElementCmpService {
 
     private final SectionCmpRepository sectionCmpRepository;
 
+    private final OptionCmpService optionCmpService;
+
 
     @Autowired
-    public ElementCmpService(ElementCmpRepository elementCmpRepository, SectionCmpRepository sectionCmpRepository)
+    public ElementCmpService(ElementCmpRepository elementCmpRepository, SectionCmpRepository sectionCmpRepository,OptionCmpService optionCmpService)
     {
         this.elementCmpRepository = elementCmpRepository;
         this.sectionCmpRepository = sectionCmpRepository;
+        this.optionCmpService = optionCmpService;
 
     }
 
@@ -45,30 +51,49 @@ public class ElementCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createElementCmp(ElementCmpPostDto elementCmpPostDto, Long sectionCmpId) {
-        // Busca a categoria
-        SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
-        //seta a categoria na seção
-        elementCmpPostDto.setSectionCmpId(sectionCmp.getSectionCmpId());
+    public void createElementCmp(Set<ElementCmpDto> elementCmpDtos, Set<Long> sectionCmpIds) {
+        for (Long sectionCmpId : sectionCmpIds) {
+            // Busca a seção
+            SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId)
+                    .orElseThrow(() -> new BadRequestException("Section not found"));
+            // Configura a seção nos elementos
+            Set<ElementCmpDto> elementCmpDtosWithSection = elementCmpDtos.stream()
+                    .peek(dto -> dto.setSectionCmp(sectionCmp.getSectionCmpId()))
+                    .collect(Collectors.toSet());
+            // Converte e persiste os elementos
+            Set<ElementCmp> newElements = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtosWithSection);
+            // Persiste a nova instância no banco de dados
+            List<ElementCmp> newElementList = elementCmpRepository.saveAll(newElements);;
 
-        ElementCmp newElement = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpPostDto);
-
-        // Persiste a nova instância no banco de dados
-        elementCmpRepository.save(newElement);
+            //Busca todos os ids do elemento que foi criado
+            Set<Long> elementIds = new HashSet<>();
+            for (ElementCmp element : newElementList){
+                elementIds.add(element.getElementCmpId());
+            }
+            // Criando elementos relacionados, se necessário
+            for (ElementCmpDto elementCmpDto : elementCmpDtos) {
+                for (OptionCmpDto optionCmpDto : elementCmpDto.getOptionCmpDtos()) {
+                    if (!optionCmpDto.getName().isEmpty()) {
+                        optionCmpService.createOptionCmp(elementCmpDto.getOptionCmpDtos(), elementIds);
+                    }
+                }
+            }
+        }
     }
 
-    public void updateElementCmp(ElementCmpPutDto elementCmpPutDto, Long elementCmpId) {
-        // Faz alteracoes no produto.
-        // Busca a categoria
-        ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
-        SectionCmp Section = elementCmp.getSectionCmp();
-        elementCmpPutDto.setSectionCmpId(Section.getSectionCmpId().longValue());
 
-        ElementCmp ElementBeUpdated = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpPutDto);
-        ElementBeUpdated.setElementCmpId(elementCmpId);
-        // Persiste alteracoes.
-        elementCmpRepository.save(ElementBeUpdated);
-    }
+//    public void updateElementCmp(ElementCmpPutDto elementCmpPutDto, Long elementCmpId) {
+//        // Faz alteracoes no produto.
+//        // Busca a categoria
+//        ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
+//        SectionCmp Section = elementCmp.getSectionCmp();
+//        elementCmpPutDto.setSectionCmpId(Section.getSectionCmpId().longValue());
+//
+//        ElementCmp ElementBeUpdated = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpPutDto);
+//        ElementBeUpdated.setElementCmpId(elementCmpId);
+//        // Persiste alteracoes.
+//        elementCmpRepository.save(ElementBeUpdated);
+//    }
 
 
     public void deleteElementCmpById(Long elementCmpId) {

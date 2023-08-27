@@ -1,7 +1,6 @@
 package com.br.personniMoveis.repository;
 
 import com.br.personniMoveis.model.category.Category;
-import com.br.personniMoveis.model.productCmp.ProductCmp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
