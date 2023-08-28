@@ -7,11 +7,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class ElementCmpGetDto {
 
-    private Long elementCmpId;
+    private Long id;
 
     private String name;
 
     private String imgUrl;
 
-    private Long sectionCmp;
+    private Long sectionCmpId;
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class CategoryGetByIdDto {
 
-    private Long categoryId;
+    private Long id;
 
     private String name;
 

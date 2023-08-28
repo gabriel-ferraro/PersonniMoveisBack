@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class CategoryPostDto {
 
-    private Long categoryId;
+    private Long id;
 
     @NotNull
     private String name;

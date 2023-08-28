@@ -58,7 +58,7 @@ public class ElementCmpService {
                     .orElseThrow(() -> new BadRequestException("Section not found"));
             // Configura a seção nos elementos
             Set<ElementCmpDto> elementCmpDtosWithSection = elementCmpDtos.stream()
-                    .peek(dto -> dto.setSectionCmp(sectionCmp.getSectionCmpId()))
+                    .peek(dto -> dto.setSectionCmpId(sectionCmp.getId()))
                     .collect(Collectors.toSet());
             // Converte e persiste os elementos
             Set<ElementCmp> newElements = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtosWithSection);
@@ -68,7 +68,7 @@ public class ElementCmpService {
             //Busca todos os ids do elemento que foi criado
             Set<Long> elementIds = new HashSet<>();
             for (ElementCmp element : newElementList){
-                elementIds.add(element.getElementCmpId());
+                elementIds.add(element.getId());
             }
             // Criando elementos relacionados, se necessário
             for (ElementCmpDto elementCmpDto : elementCmpDtos) {

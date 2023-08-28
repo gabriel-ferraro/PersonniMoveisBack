@@ -66,11 +66,11 @@ public class CategoryService {
         Set<ElementCmp> elementCmps = new HashSet<>();
 
         for (SectionCmp sectionCmp : sectionCmps) {
-            Set<ElementCmp> sectionElementCmps = elementCmpRepository.findBySectionCmp(sectionCmp.getSectionCmpId());
+            Set<ElementCmp> sectionElementCmps = elementCmpRepository.findBySectionCmpId(sectionCmp.getId());
             elementCmps.addAll(sectionElementCmps);
 
             for (ElementCmp elementCmp : sectionElementCmps) {
-                Set<OptionCmp> optionCmps = optionCmpRepository.findByElementCmp(elementCmp.getElementCmpId());
+                Set<OptionCmp> optionCmps = optionCmpRepository.findByElementCmpId(elementCmp.getId());
                 elementCmp.setOptionCmps(optionCmps);
             }
 
@@ -100,7 +100,7 @@ public class CategoryService {
         //Vê se tem alguma seção cadastrada junto com a categoria
         categoryPostDto.getSectionCmpDtos().forEach(item -> {
             if (item.getName() != "") {
-                sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpDtos(), newCategory.getCategoryId());
+                sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpDtos(), newCategory.getId());
             }
         });
 
@@ -115,14 +115,14 @@ public class CategoryService {
         // Faz alteracoes no produto.
         Category CategoryBeUpdated = CategoryMapper.INSTANCE.toCategoryPut(categoryPutDto);
 
-        CategoryBeUpdated.setCategoryId(categoryId);
+        CategoryBeUpdated.setId(categoryId);
         // Persiste alteracoes.
         categoryRepository.save(CategoryBeUpdated);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
         categoryPutDto.getSectionCmpDtos().forEach(item -> {
-            if (item.getName() != "" && item.getSectionCmpId() > 0 ) {
-                sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpDtos(), item.getSectionCmpId());
+            if (item.getName() != "" && item.getId() > 0 ) {
+                sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpDtos(), item.getId());
             }else{
                 sectionCmpService.createSectionCmp(categoryPutDto.getSectionCmpDtos(), categoryId);
             }

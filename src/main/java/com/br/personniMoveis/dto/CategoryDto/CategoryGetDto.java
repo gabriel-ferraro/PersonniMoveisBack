@@ -6,7 +6,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class CategoryGetDto {
 
-    private Long categoryId;
+    private Long id;
 
     private String name;
 

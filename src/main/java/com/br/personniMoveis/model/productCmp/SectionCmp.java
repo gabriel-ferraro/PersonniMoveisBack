@@ -20,7 +20,7 @@ public class SectionCmp {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "section_cmp_id")
-    private Long sectionCmpId;
+    private Long id;
 
     @Column(nullable = false)
     @NotNull

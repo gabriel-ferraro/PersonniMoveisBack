@@ -16,13 +16,13 @@ public abstract class ElementCmpMapper {
 
     public static final ElementCmpMapper INSTANCE = Mappers.getMapper(ElementCmpMapper.class);
 
-    @Mapping(target = "elementCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract ElementCmp toElementCmp(ElementCmpPostDto elementCmpPostDto);
 
-    @Mapping(target = "elementCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract ElementCmp toElementCmp(ElementCmpPutDto elementCmpPutDto);
 
-    @Mapping(target = "elementCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Set<ElementCmp> toElementCmp(Set<ElementCmpDto> elementCmpDto);
 
     public abstract ElementCmpGetDto ElementCmpToElementCmpGetDto(ElementCmp elementCmp);

@@ -10,6 +10,6 @@ import java.util.Set;
 @Repository
 
 public interface OptionCmpRepository extends JpaRepository<OptionCmp, Long>, JpaSpecificationExecutor<OptionCmp> {
-    Set<OptionCmp> findByElementCmp(Long elementCmp);
+    Set<OptionCmp> findByElementCmpId(Long elementCmpId);
 
 }

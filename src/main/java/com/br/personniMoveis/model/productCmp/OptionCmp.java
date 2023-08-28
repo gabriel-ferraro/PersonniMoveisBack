@@ -18,7 +18,7 @@ public class OptionCmp {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "option_cmp_id")
-    private Long optionCmpId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -30,5 +30,5 @@ public class OptionCmp {
     private Double price;
 
     @NotNull
-    private Long elementCmp;
+    private Long elementCmpId;
 }
