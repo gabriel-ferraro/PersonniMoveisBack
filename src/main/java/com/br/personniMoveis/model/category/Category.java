@@ -19,6 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "category")
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "category_id")
@@ -34,7 +35,7 @@ public class Category {
 
     @OneToMany
     @JoinColumn(name = "category_id")
-    private Set<Product> products = new HashSet<>();
+    private final Set<Product> products = new HashSet<>();
 
     @OneToMany
     private final Set<SectionCmp> sectionCmp = new HashSet<>();

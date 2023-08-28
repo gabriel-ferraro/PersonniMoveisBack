@@ -2,14 +2,15 @@ package com.br.personniMoveis.dto.product.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.Set;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
-public class SectionPostDto {
+public class OptionDto {
 
+    @NonNull
     private String name;
     private String imgUrl;
-    private Set<OptionProductPostDto> optionPostDtoList;
+    @NonNull
+    private Double price;
 }

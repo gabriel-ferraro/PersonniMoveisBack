@@ -8,11 +8,10 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class CategoryProductPost {
+public class SectionDto {
 
     @NonNull
     private String name;
-    @NonNull
-    private Boolean allow_creation;
-    private Set<ProductPostDto> productList;
+    private String imgUrl;
+    private Set<OptionDto> optionPostDtoList;
 }

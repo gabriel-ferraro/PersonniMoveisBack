@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class ProductPostDto {
+public class ProductDto {
 
     @NonNull
     private String name;
@@ -20,8 +20,8 @@ public class ProductPostDto {
     private Boolean editable;
     private String imgUrl;
     private String description;
-    private Set<DetailPostDto> detailPostList;
-    private Set<TagPostDto> tagPostList;
-    private Set<SectionPostDto> sectionPostList;
-    private Set<MaterialPostDto> materialPostList;
+    private Set<DetailDto> detailPostList;
+    private Set<MaterialDto> materialPostList;
+    private Set<TagDto> tagPostList;
+    private Set<SectionDto> sectionPostList;
 }
