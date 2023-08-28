@@ -1,9 +1,6 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
+import com.br.personniMoveis.dto.CategoryDto.*;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.model.category.Category;
@@ -91,16 +88,16 @@ public class CategoryService {
 //    public Page<ProductDto> getAllProducts(Pageable pageable) {
 //        return productRepository.findAllProducts(pageable);
 //    }
-    public void createCategoryCmp(CategoryPostDto categoryPostDto) {
+    public void createCategoryCmp(CategoryDto categoryDto) {
         // cria nova categoria.
-        Category newCategory = CategoryMapper.INSTANCE.toCategoryPost(categoryPostDto);
+        Category newCategory = CategoryMapper.INSTANCE.toCategory(categoryDto);
         // persiste no BD.
         categoryRepository.save(newCategory);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
-        categoryPostDto.getSectionCmpDtos().forEach(item -> {
+        categoryDto.getSectionCmpsDtos().forEach(item -> {
             if (item.getName() != "") {
-                sectionCmpService.createSectionCmp(categoryPostDto.getSectionCmpDtos(), newCategory.getId());
+                sectionCmpService.createSectionCmp(categoryDto.getSectionCmpsDtos(), newCategory.getId());
             }
         });
 
@@ -108,23 +105,23 @@ public class CategoryService {
 
     }
 
-    public void updateCategory(CategoryPutDto categoryPutDto, Long categoryId) {
+    public void updateCategory(CategoryDto categoryDto, Long categoryId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found");
 
         // Faz alteracoes no produto.
-        Category CategoryBeUpdated = CategoryMapper.INSTANCE.toCategoryPut(categoryPutDto);
+        Category CategoryBeUpdated = CategoryMapper.INSTANCE.toCategory(categoryDto);
 
         CategoryBeUpdated.setId(categoryId);
         // Persiste alteracoes.
         categoryRepository.save(CategoryBeUpdated);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
-        categoryPutDto.getSectionCmpDtos().forEach(item -> {
+        categoryDto.getSectionCmpsDtos().forEach(item -> {
             if (item.getName() != "" && item.getId() > 0 ) {
-                sectionCmpService.updateSectionCmp(categoryPutDto.getSectionCmpDtos(), item.getId());
+                sectionCmpService.updateSectionCmp(categoryDto.getSectionCmpsDtos(), item.getId());
             }else{
-                sectionCmpService.createSectionCmp(categoryPutDto.getSectionCmpDtos(), categoryId);
+                sectionCmpService.createSectionCmp(categoryDto.getSectionCmpsDtos(), categoryId);
             }
         });
     }
