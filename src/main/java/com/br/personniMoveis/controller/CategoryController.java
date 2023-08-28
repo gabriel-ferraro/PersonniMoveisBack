@@ -1,9 +1,6 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
-import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
+import com.br.personniMoveis.dto.CategoryDto.*;
 import com.br.personniMoveis.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -69,14 +66,14 @@ public class CategoryController {
 //    }
 
     @PostMapping
-    public ResponseEntity<String> createCategory(@RequestBody @Valid CategoryPostDto categoryPostDto) {
-        categoryService.createCategoryCmp(categoryPostDto);
+    public ResponseEntity<String> createCategory(@RequestBody @Valid CategoryDto categoryDto) {
+        categoryService.createCategoryCmp(categoryDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{cateogoryId}")
-    public ResponseEntity updateProduct(@RequestBody @Valid CategoryPutDto categoryPutDto, @PathVariable("cateogoryId") Long cateogoryId) {
-        categoryService.updateCategory(categoryPutDto, cateogoryId);
+    public ResponseEntity updateProduct(@RequestBody @Valid CategoryDto categoryDto, @PathVariable("cateogoryId") Long cateogoryId) {
+        categoryService.updateCategory(categoryDto, cateogoryId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

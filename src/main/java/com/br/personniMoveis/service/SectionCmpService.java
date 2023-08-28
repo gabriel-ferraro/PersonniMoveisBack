@@ -72,8 +72,7 @@ public class SectionCmpService {
     }
 
     public void updateSectionCmp(Set<SectionCmpDto> sectionCmpDtos, Long sectionCmpId) {
-        // Faz alteracoes no produto.
-        // Busca a categoria
+        // Busca a seção
         SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
         // Setando categorias para cada seção
         sectionCmpDtos.forEach(item -> item.setCategoryId(sectionCmp.getCategoryId()));
