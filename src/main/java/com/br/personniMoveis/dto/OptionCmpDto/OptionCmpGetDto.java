@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class OptionCmpGetDto {
 
-    private Long optionCmpId;
+    private Long id;
 
     private String name;
 
@@ -16,5 +16,5 @@ public class OptionCmpGetDto {
 
     private String imgUrl;
 
-    private Long elementCmp;
+    private Long elementCmpId;
 }

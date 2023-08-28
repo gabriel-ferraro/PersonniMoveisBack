@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class SectionCmpPostDto {
 
-    private Long sectionCmpId;
+    private Long id;
 
     @NotNull
     private String name;

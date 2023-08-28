@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class SectionCmpDto {
 
-    private Long sectionCmpId;
+    private Long id;
 
     private String name;
 

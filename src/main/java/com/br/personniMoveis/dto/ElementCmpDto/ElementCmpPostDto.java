@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ElementCmpPostDto {
-    private Long elementCmpId;
+    private Long id;
 
     private String name;
 

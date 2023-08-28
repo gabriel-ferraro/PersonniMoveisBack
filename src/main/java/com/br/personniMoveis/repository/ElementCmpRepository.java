@@ -11,7 +11,7 @@ import java.util.Set;
 
 public interface ElementCmpRepository extends JpaRepository<ElementCmp, Long>, JpaSpecificationExecutor<ElementCmp> {
 
-    Set<ElementCmp> findBySectionCmp(Long sectionCmp);
+    Set<ElementCmp> findBySectionCmpId(Long sectionCmpId);
 
 
 }

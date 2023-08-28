@@ -21,7 +21,7 @@ public class ElementCmp {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "element_cmp_id")
-    private Long elementCmpId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -29,7 +29,7 @@ public class ElementCmp {
     private String type;
 
     @NotNull
-    private Long sectionCmp;
+    private Long sectionCmpId;
 
     @OneToMany
     private Set<OptionCmp> optionCmps;

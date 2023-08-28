@@ -11,13 +11,13 @@ import java.util.Set;
 @AllArgsConstructor
 public class ElementCmpDto {
 
-    private Long elementCmpId;
+    private Long id;
 
     private String name;
 
     private String imgUrl;
 
-    private Long sectionCmp;
+    private Long sectionCmpId;
 
     private Set<OptionCmpDto> optionCmpDtos;
 }

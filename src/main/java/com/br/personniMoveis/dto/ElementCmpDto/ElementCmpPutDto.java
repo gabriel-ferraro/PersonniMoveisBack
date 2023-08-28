@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ElementCmpPutDto {
 
-    private Long elementCmpId;
+    private Long id;
 
     private String name;
 

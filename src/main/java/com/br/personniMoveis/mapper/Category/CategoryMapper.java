@@ -16,10 +16,10 @@ public abstract class CategoryMapper {
 
     public abstract Category toCategory(CategoryPutDto categoryPutDto);
 
-    @Mapping(target = "categoryId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Category toCategoryPost(CategoryPostDto categoryPostDto);
 
-    @Mapping(target = "categoryId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Category toCategoryPut(CategoryPutDto categoryPutDto);
 
     public abstract CategoryGetDto CategotyToCategoryGetDto(Category category);

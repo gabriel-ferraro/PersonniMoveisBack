@@ -51,7 +51,7 @@ public class SectionCmpService {
         // Busca a categoria
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new BadRequestException("Category not found"));
         // Setando categorias para cada seção
-        sectionCmpDtos.forEach(item -> item.setCategoryId(category.getCategoryId()));
+        sectionCmpDtos.forEach(item -> item.setCategoryId(category.getId()));
         //Salvando seção
         Set<SectionCmp> newSection = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpDtos);
         // Persiste a nova instância no banco de dados
@@ -59,7 +59,7 @@ public class SectionCmpService {
 
         Set<Long> sectionsIds = new HashSet<>();
         for (SectionCmp section : newSectionList) {
-            sectionsIds.add(section.getSectionCmpId());
+            sectionsIds.add(section.getId());
         }
         // Criando elementos relacionados, se necessário
         for (SectionCmpDto sectionCmpDto : sectionCmpDtos) {

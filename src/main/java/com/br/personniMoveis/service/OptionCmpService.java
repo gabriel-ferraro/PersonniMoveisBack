@@ -57,7 +57,7 @@ public class OptionCmpService {
 
             // Configura a seção nos elementos
             Set<OptionCmpDto> optionCmpDtosWithElement = optionCmpDtos.stream()
-                    .peek(dto -> dto.setElementCmp(elementCmp.getElementCmpId()))
+                    .peek(dto -> dto.setElementCmpId(elementCmp.getId()))
                     .collect(Collectors.toSet());
             // Converte e persiste os elementos
             Set<OptionCmp> newOptions = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDtosWithElement);

@@ -16,13 +16,13 @@ public abstract class OptionCmpMapper {
 
     public static final OptionCmpMapper INSTANCE = Mappers.getMapper(OptionCmpMapper.class);
 
-    @Mapping(target = "optionCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract OptionCmp toOptionCmp(OptionCmpPostDto optionCmpPostDto);
 
-    @Mapping(target = "optionCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract OptionCmp toOptionCmp(OptionCmpPutDto optionCmpPutDto);
 
-    @Mapping(target = "optionCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Set<OptionCmp> toOptionCmp(Set<OptionCmpDto> optionCmp);
 
     public abstract OptionCmpGetDto OptionCmpToOptionCmpGetDto(OptionCmp optionCmp);

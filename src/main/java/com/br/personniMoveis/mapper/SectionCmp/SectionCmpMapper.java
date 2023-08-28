@@ -16,13 +16,13 @@ public abstract class SectionCmpMapper {
 
     public static final SectionCmpMapper INSTANCE = Mappers.getMapper(SectionCmpMapper.class);
 
-    @Mapping(target = "sectionCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Set<SectionCmp> toSectionCmpPost(Set<SectionCmpPostDto> sectionCmpPostDto);
 
-    @Mapping(target = "sectionCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Set<SectionCmp> toSectionCmpPut(Set<SectionCmpPutDto> sectionCmpPutDto);
 
-    @Mapping(target = "sectionCmpId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Set<SectionCmp> toSectionCmp(Set<SectionCmpDto> sectionCmpDtos);
 
     public abstract SectionCmpGetDto SectionToSectionGetDto(SectionCmp sectionCmp);
