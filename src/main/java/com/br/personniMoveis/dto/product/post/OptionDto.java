@@ -8,6 +8,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class OptionDto {
 
+    private Long optionId;
     @NonNull
     private String name;
     private String imgUrl;

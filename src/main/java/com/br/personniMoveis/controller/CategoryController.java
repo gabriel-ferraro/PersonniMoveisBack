@@ -56,7 +56,7 @@ public class CategoryController {
      * @return Uma categoria editada.
      */
     @PutMapping(path = "/create-full-product")
-    public ResponseEntity<Category> createFullProduct(@PathVariable(required = false) Long categoryId, @RequestBody @Valid CategoryDto dto) {
+    public ResponseEntity<Category> createFullProduct(@RequestParam(name = "categoryId", required = false) Long categoryId, @RequestBody @Valid CategoryDto dto) {
         return ResponseEntity.ok(categoryService.createOrUpdateRegularProduct(categoryId, dto));
     }
 
