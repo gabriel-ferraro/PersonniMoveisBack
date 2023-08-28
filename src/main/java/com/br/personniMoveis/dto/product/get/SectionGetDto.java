@@ -1,6 +1,5 @@
 package com.br.personniMoveis.dto.product.get;
 
-import com.br.personniMoveis.dto.product.post.OptionProductPostDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

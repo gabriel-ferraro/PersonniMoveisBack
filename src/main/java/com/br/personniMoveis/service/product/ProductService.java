@@ -1,19 +1,18 @@
 package com.br.personniMoveis.service.product;
 
-import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.get.DetailGetDto;
-import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
+import com.br.personniMoveis.dto.product.post.*;
 import com.br.personniMoveis.exception.AlreadyExistsException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
+import com.br.personniMoveis.mapper.MaterialMapper;
+import com.br.personniMoveis.mapper.OptionMapper;
+import com.br.personniMoveis.mapper.SectionCmp.SectionCmpMapper;
+import com.br.personniMoveis.mapper.TagMapper;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.mapper.product.ProductMapper;
-import com.br.personniMoveis.model.category.Category;
-import com.br.personniMoveis.model.product.Detail;
-import com.br.personniMoveis.model.product.Product;
-import com.br.personniMoveis.model.product.Tag;
+import com.br.personniMoveis.model.product.*;
 import com.br.personniMoveis.repository.ProductRepository;
-import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.DetailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +27,18 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final DetailService detailService;
+    private final MaterialService materialService;
     private final TagService tagService;
-//    private final CategoryService categoryService;
+    private final SectionService sectionService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, DetailService detailService, TagService tagService) {
+    public ProductService(ProductRepository productRepository, DetailService detailService, TagService tagService,
+                          MaterialService materialService, SectionService sectionService) {
         this.productRepository = productRepository;
         this.detailService = detailService;
         this.tagService = tagService;
-//        this.categoryService = categoryService;
+        this.materialService = materialService;
+        this.sectionService = sectionService;
     }
 
     public Product findProductOrThrowNotFoundException(Long id) {
@@ -44,14 +46,14 @@ public class ProductService {
                 () -> new ResourceNotFoundException("Produto não encontrado."));
     }
 
-    private Tag findTagInProductOrThrowNotFoundException(Product product, Long tagId) {
-        return product.getTags().stream().filter(tag -> tag.getTagId().equals(tagId)).findAny().orElseThrow(
-                () -> new ResourceNotFoundException("Tag não encontrada no produto."));
-    }
-
     private Detail findDetailInProductOrThrowNotfoundException(Product product, Long detailId) {
         return product.getDetails().stream().filter(detail -> detail.getDetailId().equals(detailId)).findAny().orElseThrow(
                 () -> new ResourceNotFoundException("Detalhe não encontrada no produto."));
+    }
+
+    private Tag findTagInProductOrThrowNotFoundException(Product product, Long tagId) {
+        return product.getTags().stream().filter(tag -> tag.getTagId().equals(tagId)).findAny().orElseThrow(
+                () -> new ResourceNotFoundException("Tag não encontrada no produto."));
     }
 
     /**
@@ -72,7 +74,7 @@ public class ProductService {
 
     public List<ProductGetDto> getAllProductsWithTagId(Long tagId) {
         tagService.findTagOrThrowNotFoundException(tagId);
-        return productRepository.findProductsTag(tagId);
+        return productRepository.findProductsInTag(tagId);
     }
 
     public List<Tag> getAllTagsFromProduct(Long productId) {
@@ -80,7 +82,11 @@ public class ProductService {
         return productRepository.findTagsFromProduct(productId);
     }
 
-    public ProductGetDto createProduct(ProductDto productDto) {
+    public Product createProduct(ProductDto productDto) {
+        return productRepository.save(ProductMapper.INSTANCE.productPostDtoToProduct(productDto));
+    }
+
+    public ProductGetDto createProduct(com.br.personniMoveis.dto.product.ProductDto productDto) {
         Product newProduct = ProductMapper.INSTANCE.toProduct(productDto);
         // persiste no BD.
         Product product = productRepository.save(newProduct);
@@ -88,45 +94,53 @@ public class ProductService {
         return ProductMapper.INSTANCE.productToProductGetDto(product);
     }
 
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
-    }
-
     public List<DetailGetDto> getAllDetailsFromProduct(Long productId) {
         Product product = findProductOrThrowNotFoundException(productId);
         return product.getDetails().stream().map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
     }
 
-//    public void assignCategoryToProduct(Long productId, Long categoryId) {
-//        // Recupera product e category.
-//        Product product = this.findProductOrThrowNotFoundException(productId);
-//        Category category = categoryService.findCategoryOrThrowNotFoundException(categoryId);
-//        // Faz set da categoria no produto. O produto só deve conter uma categoria por vez.
-//        product.setCategory(category);
-//    }
-
     /**
      * Persiste detalhe e insere no produto.
      *
-     * @param productId     id do produto.
+     * @param productId id do produto.
      * @param detailDto Detail que se deseja criar e associar ao produto.
      */
     @Transactional
     public Detail assignDetailToProduct(Long productId, DetailDto detailDto) {
         Product product = findProductOrThrowNotFoundException(productId);
         // Adquire model de detail.
-        Detail detail = DetailMapper.INSTANCE.toDetail(detailDto);
-        detail.setProduct(product);
+        Detail detail = DetailMapper.INSTANCE.detailDtoToDetail(detailDto);
         // Faz associação.
+        detail.setProduct(product);
         product.getDetails().add(detail);
         // Retorna detail criado e associado.
         return detail;
     }
 
+    public Detail createDetail(DetailDto detail) {
+        return detailService.createDetail(DetailMapper.INSTANCE.detailDtoToDetail(detail));
+    }
+
+    public Material createMaterial(MaterialDto materialDto) {
+        return materialService.createMaterial(MaterialMapper.INSTANCE.materialDtoToMaterial(materialDto));
+    }
+
+    public Tag createTag(TagDto tagDto) {
+        return tagService.createTag(TagMapper.INSTANCE.tagDtoToTag(tagDto));
+    }
+
+    public Section createSection(SectionDto sectionDto) {
+        return sectionService.createSection(SectionCmpMapper.INSTANCE.sectionDtoToSection(sectionDto));
+    }
+
+    public Option createOption(OptionDto option) {
+        return sectionService.createOption(OptionMapper.INSTANCE.optionDtoToOption(option));
+    }
+
     public void updateDetail(Long productId, Long detailId, DetailDto detailDto) {
         Product product = findProductOrThrowNotFoundException(productId);
         findDetailInProductOrThrowNotfoundException(product, detailId);
-        Detail newDetail = DetailMapper.INSTANCE.toDetail(detailDto);
+        Detail newDetail = DetailMapper.INSTANCE.detailDtoToDetail(detailDto);
         newDetail.setDetailId(detailId);
         detailService.updateDetail(newDetail);
     }
@@ -152,12 +166,12 @@ public class ProductService {
         if (product.getTags().contains(tag)) {
             throw new AlreadyExistsException("Produto já tem a tag.");
         }
-        // Faz associação entre tag e produto no BD, depois persiste.
+        // Faz associação entre tag e produto no BD.
         product.getTags().add(tag);
         tag.getProducts().add(product);
     }
 
-    public void updateProduct(ProductDto productDto, Long productId) {
+    public void updateProduct(com.br.personniMoveis.dto.product.ProductDto productDto, Long productId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         this.findProductOrThrowNotFoundException(productId);
         // Faz alteracoes no produto.

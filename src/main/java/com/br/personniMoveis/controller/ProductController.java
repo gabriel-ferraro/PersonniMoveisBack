@@ -1,6 +1,6 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.product.DetailDto;
+import com.br.personniMoveis.dto.product.post.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.mapper.product.ProductMapper;

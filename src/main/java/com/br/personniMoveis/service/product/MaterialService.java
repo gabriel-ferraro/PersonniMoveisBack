@@ -29,26 +29,7 @@ public class MaterialService {
         return materialRepository.findAll(pageable);
     }
 
-//    public List<Material> getAllMaterialsFromProductById(Long productId) {
-//        return materialRepository.findMaterialsByProductsProductId(productId);
-//    }
-
-    public void createMaterial(Material material) {
-        materialRepository.save(material);
+    public Material createMaterial(Material material) {
+        return materialRepository.save(material);
     }
-
-//    public void updateMaterial(Long materialId, String materialName) {
-//        Material updatedMaterial = findMaterialByIdOrThrowNotFoundException(materialId);
-//        updatedMaterial.setMaterialName(materialName);
-//        materialRepository.save(updatedMaterial);
-//    }
-
-//    @Transactional
-//    public void deleteMaterial(Long materialId) {
-//        Material material = findMaterialByIdOrThrowNotFoundException(materialId);
-//        // Deleta o material de todos os produtos que o tem.
-//        material.getProduct().forEach(p -> p.getMaterials().clear());
-//        // Deleta material
-//        materialRepository.deleteById(materialId);
-//    }
 }

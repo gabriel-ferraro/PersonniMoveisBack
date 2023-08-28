@@ -1,5 +1,6 @@
 package com.br.personniMoveis.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +31,8 @@ public class Option {
 
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "section_id")
     private Section section;
 }
