@@ -8,6 +8,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class DetailDto {
 
+    private Long detailId;
     @NonNull
     private String detailField;
     @NonNull

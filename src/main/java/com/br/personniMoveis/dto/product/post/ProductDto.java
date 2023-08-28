@@ -10,6 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ProductDto {
 
+    private Long productId;
     @NonNull
     private String name;
     @NonNull

@@ -8,6 +8,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class MaterialDto {
 
+    private Long materialId;
     @NonNull
     private String materialName;
     private String imgUrl;

@@ -10,6 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class SectionDto {
 
+    private Long sectionId;
     @NonNull
     private String name;
     private String imgUrl;

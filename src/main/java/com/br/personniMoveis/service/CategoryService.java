@@ -66,7 +66,7 @@ public class CategoryService {
             category = CategoryMapper.INSTANCE.categoryProductPostDtoToCategory(categoryDto);
         }
         // Chama o método para salvar ou editar os itens do dto na categoria do BD.
-        saveRegularProduct(category, categoryDto);
+        this.saveRegularProduct(category, categoryDto);
         // retorna a criação/alteração realizada.
         return categoryRepository.save(category);
     }

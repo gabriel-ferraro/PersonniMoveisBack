@@ -8,7 +8,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class TagDto {
 
-    Long tagId;
+    private Long tagId;
     @NonNull
     private String tagName;
 }
