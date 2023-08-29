@@ -3,7 +3,6 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
-import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ElementCmp.ElementCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
@@ -61,7 +60,7 @@ public class ElementCmpService {
                     .peek(dto -> dto.setSectionCmpId(sectionCmp.getId()))
                     .collect(Collectors.toSet());
             // Converte e persiste os elementos
-            Set<ElementCmp> newElements = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtosWithSection);
+            Set<ElementCmp> newElements = ElementCmpMapper.INSTANCE.toElementCmpList(elementCmpDtosWithSection);
             // Persiste a nova instância no banco de dados
             List<ElementCmp> newElementList = elementCmpRepository.saveAll(newElements);;
 
@@ -78,22 +77,21 @@ public class ElementCmpService {
                     }
                 }
             }
+
         }
     }
 
 
-//    public void updateElementCmp(ElementCmpPutDto elementCmpPutDto, Long elementCmpId) {
-//        // Faz alteracoes no produto.
-//        // Busca a categoria
-//        ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
-//        SectionCmp Section = elementCmp.getSectionCmp();
-//        elementCmpPutDto.setSectionCmpId(Section.getSectionCmpId().longValue());
-//
-//        ElementCmp ElementBeUpdated = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpPutDto);
-//        ElementBeUpdated.setElementCmpId(elementCmpId);
-//        // Persiste alteracoes.
-//        elementCmpRepository.save(ElementBeUpdated);
-//    }
+    public void updateElementCmp(ElementCmpDto elementCmpDtos, Long elementCmpId) {
+        // Faz alteracoes no produto.
+        // Busca a categoria
+        ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
+        //Setando seção para cada elemento
+        elementCmpDtos.setSectionCmpId(elementCmp.getSectionCmpId());
+        ElementCmp ElementBeUpdated = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtos);
+        // Persiste alteracoes.
+        elementCmpRepository.save(ElementBeUpdated);
+    }
 
 
     public void deleteElementCmpById(Long elementCmpId) {

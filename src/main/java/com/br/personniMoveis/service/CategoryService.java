@@ -1,6 +1,7 @@
 package com.br.personniMoveis.service;
 
 import com.br.personniMoveis.dto.CategoryDto.*;
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.model.category.Category;
@@ -23,13 +24,9 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-
     private final SectionCmpService sectionCmpService;
-
     private final SectionCmpRepository sectionCmpRepository;
-
     private final ElementCmpRepository elementCmpRepository;
-
     private final OptionCmpRepository optionCmpRepository;
 
     @Autowired
@@ -79,15 +76,6 @@ public class CategoryService {
         return categoryGetByIdDto;
     }
 
-    //    public Page<ProductDto> getAllProducts(Pageable pageable) {
-//        return productRepository.findAllProducts(pageable);
-//    }
-//    public Page<ProductDto> getAllProducts(Pageable pageable) {
-//        return productRepository.findAllProducts(pageable);
-//    }
-//    public Page<ProductDto> getAllProducts(Pageable pageable) {
-//        return productRepository.findAllProducts(pageable);
-//    }
     public void createCategoryCmp(CategoryDto categoryDto) {
         // cria nova categoria.
         Category newCategory = CategoryMapper.INSTANCE.toCategory(categoryDto);
@@ -100,9 +88,6 @@ public class CategoryService {
                 sectionCmpService.createSectionCmp(categoryDto.getSectionCmpsDtos(), newCategory.getId());
             }
         });
-
-
-
     }
 
     public void updateCategory(CategoryDto categoryDto, Long categoryId) {
@@ -117,13 +102,20 @@ public class CategoryService {
         categoryRepository.save(CategoryBeUpdated);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
-        categoryDto.getSectionCmpsDtos().forEach(item -> {
-            if (item.getName() != "" && item.getId() > 0 ) {
-                sectionCmpService.updateSectionCmp(categoryDto.getSectionCmpsDtos(), item.getId());
-            }else{
+        for (SectionCmpDto item : categoryDto.getSectionCmpsDtos()) {
+            if (item.getName() != "" && item.getId() > 0) {
+
+                SectionCmpDto sectionCmpDto = new SectionCmpDto();
+                sectionCmpDto.setId(item.getId());
+                sectionCmpDto.setName(item.getName());
+                sectionCmpDto.setImgUrl(item.getImgUrl());
+                sectionCmpDto.setElementCmpDtos(item.getElementCmpDtos());
+                sectionCmpService.updateSectionCmp(sectionCmpDto, item.getId());
+
+            } else {
                 sectionCmpService.createSectionCmp(categoryDto.getSectionCmpsDtos(), categoryId);
             }
-        });
+        }
     }
 
     public void deleteCategoryById(Long categoryId) {
@@ -132,4 +124,5 @@ public class CategoryService {
         // Deleta produto via id.
         categoryRepository.deleteById(categoryId);
     }
+
 }
