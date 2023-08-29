@@ -23,7 +23,10 @@ public abstract class SectionCmpMapper {
     public abstract Set<SectionCmp> toSectionCmpPut(Set<SectionCmpPutDto> sectionCmpPutDto);
 
     @Mapping(target = "id", ignore = true)
-    public abstract Set<SectionCmp> toSectionCmp(Set<SectionCmpDto> sectionCmpDtos);
+    public abstract Set<SectionCmp> toSectionCmpList(Set<SectionCmpDto> sectionCmpDtos);
+
+    @Mapping(target = "id", ignore = true)
+    public abstract SectionCmp toSectionCmp(SectionCmpDto sectionCmpDtos);
 
     public abstract SectionCmpGetDto SectionToSectionGetDto(SectionCmp sectionCmp);
 

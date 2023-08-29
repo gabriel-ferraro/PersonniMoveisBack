@@ -19,4 +19,8 @@ public class SectionCmpDto {
     private Long categoryId;
 
     private Set<ElementCmpDto> elementCmpDtos;
+
+    public SectionCmpDto() {
+
+    }
 }

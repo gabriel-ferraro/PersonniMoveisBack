@@ -20,4 +20,8 @@ public class ElementCmpDto {
     private Long sectionCmpId;
 
     private Set<OptionCmpDto> optionCmpDtos;
+
+    public ElementCmpDto() {
+
+    }
 }
