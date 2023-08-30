@@ -31,7 +31,5 @@ public class Category {
     @Builder.Default
     private Boolean allow_creation = true; // Permitir criação do produto que se encaixa na categoria.
 
-    @OneToMany
-    private final Set<SectionCmp> sectionCmp = new HashSet<>();
 
 }

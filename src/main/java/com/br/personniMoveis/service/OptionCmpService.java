@@ -1,12 +1,8 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpGetDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPostDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPutDto;
 import com.br.personniMoveis.exception.BadRequestException;
-import com.br.personniMoveis.mapper.ElementCmp.ElementCmpMapper;
 import com.br.personniMoveis.mapper.OptionCmp.OptionCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.OptionCmp;
@@ -60,23 +56,21 @@ public class OptionCmpService {
                     .peek(dto -> dto.setElementCmpId(elementCmp.getId()))
                     .collect(Collectors.toSet());
             // Converte e persiste os elementos
-            Set<OptionCmp> newOptions = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDtosWithElement);
+            Set<OptionCmp> newOptions = OptionCmpMapper.INSTANCE.toOptionCmpList(optionCmpDtosWithElement);
             newOptions.forEach(optionCmpRepository::save);
         }
     }
 
-//    public void updateOptionCmp(OptionCmpPutDto optionCmpPutDto, Long optionCmpId) {
-//        // Faz alteracoes no produto.
-//        // Busca a categoria
-//        OptionCmp optionCmp = optionCmpRepository.findById(optionCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
-//        ElementCmp elementCmp = optionCmp.getElementCmp();
-//        optionCmpPutDto.setElementCmpId(elementCmp.getElementCmpId().longValue());
-//
-//        OptionCmp  OptionBeUpdated = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpPutDto);
-//        OptionBeUpdated.setOptionCmpId(optionCmpId);
-//        // Persiste alteracoes.
-//        optionCmpRepository.save(OptionBeUpdated);
-//    }
+    public void updateOptionCmp(OptionCmpDto optionCmpDto, Long optionCmpId) {
+        // Busca a opção
+        OptionCmp optionCmp = optionCmpRepository.findById(optionCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
+        OptionCmp  OptionBeUpdated = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDto);
+        OptionBeUpdated.setId(optionCmpId);
+        OptionBeUpdated.setElementCmpId(optionCmp.getElementCmpId()); // Mantém o mesmo elemento
+
+        // Persiste alteracoes.
+        optionCmpRepository.save(OptionBeUpdated);
+    }
 
 
     public void deleteOptionCmpById(Long optionCmpId) {

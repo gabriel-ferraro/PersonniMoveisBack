@@ -2,8 +2,6 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpGetDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPostDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPutDto;
 import com.br.personniMoveis.service.OptionCmpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
