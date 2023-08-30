@@ -2,16 +2,17 @@ package com.br.personniMoveis.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
+
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class ProductGetDto {
+public class SectionDto {
 
-    private Long productId;
+    private Long sectionId;
+    @NonNull
     private String name;
-    private Double value;
-    private Long quantity;
-    private Boolean editable;
     private String imgUrl;
-    private String description;
+    private Set<OptionDto> optionPostDtoList;
 }

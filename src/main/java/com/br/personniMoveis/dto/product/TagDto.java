@@ -2,11 +2,13 @@ package com.br.personniMoveis.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
-public class DetailGetDto {
+public class TagDto {
 
-    private String detailField;
-    private String fieldContent;
+    private Long tagId;
+    @NonNull
+    private String tagName;
 }

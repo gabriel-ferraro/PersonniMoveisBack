@@ -26,8 +26,8 @@ public class TagService {
         return tagRepository.findAll(pageable);
     }
 
-    public void createTag(Tag tag) {
-        tagRepository.save(tag);
+    public Tag createTag(Tag tag) {
+        return tagRepository.save(tag);
     }
 
     public void updateTag(Long tagId, String tagName) {

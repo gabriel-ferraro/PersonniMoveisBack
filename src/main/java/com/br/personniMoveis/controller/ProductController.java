@@ -2,9 +2,10 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
-import com.br.personniMoveis.dto.product.ProductGetDto;
+import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.mapper.product.ProductMapper;
 import com.br.personniMoveis.model.product.Detail;
+import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.service.product.ProductService;
 import jakarta.validation.Valid;
@@ -40,19 +41,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductGetDto>> getAllProducts(Pageable pageable) {
-        return ResponseEntity.ok(productService.getAllProducts(pageable));
+    public ResponseEntity<List<Product>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
     }
-
-//    @GetMapping(path = "/search")
-//    public ResponseEntity<Page<ProductGetDto>> searchProducts(
-//            @RequestParam Map<String, Object> filters,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "20") int size
-//    ) {
-//        return ResponseEntity.ok(genericFilterService.findFilteredEntity(filters, page, size)
-//                .map(ProductMapper.INSTANCE::productToProductGetDto));
-//    }
 
     /**
      * Recebe o id de uma tag, retorna todos os produtos que possuem a tag.
@@ -107,7 +98,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductGetDto> createProduct(@RequestBody @Valid ProductDto productDto) {
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductDto productDto) {
         return ResponseEntity.ok(productService.createProduct(productDto));
     }
 

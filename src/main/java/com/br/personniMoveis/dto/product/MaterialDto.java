@@ -6,11 +6,12 @@ import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
-public class DetailDto {
+public class MaterialDto {
 
-    private Long detailId;
+    private Long materialId;
     @NonNull
-    private String detailField;
+    private String materialName;
+    private String imgUrl;
     @NonNull
-    private String fieldContent;
+    private Double price;
 }

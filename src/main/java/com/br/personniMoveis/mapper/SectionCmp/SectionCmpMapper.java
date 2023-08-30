@@ -1,8 +1,10 @@
 package com.br.personniMoveis.mapper.SectionCmp;
 
-import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPutDto;
+import com.br.personniMoveis.dto.product.SectionDto;
+import com.br.personniMoveis.model.product.Section;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,6 +19,9 @@ public abstract class SectionCmpMapper {
 
     @Mapping(target = "sectionCmpId", ignore = true)
     public abstract Set<SectionCmp> toSectionCmpPost(Set<SectionCmpPostDto> sectionCmpPostDto);
+
+    @Mapping(target = "sectionId", ignore = true)
+    public abstract Section sectionDtoToSection(SectionDto sectiondto);
 
     @Mapping(target = "sectionCmpId", ignore = true)
     public abstract Set<SectionCmp> toSectionCmpPut(Set<SectionCmpPutDto> sectionCmpPutDto);
