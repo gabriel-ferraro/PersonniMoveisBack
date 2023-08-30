@@ -2,15 +2,16 @@ package com.br.personniMoveis.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
-public class ProductPostDto {
+public class OptionDto {
 
+    private Long optionId;
+    @NonNull
     private String name;
-    private Double value;
-    private Long quantity;
-    private Boolean editable;
     private String imgUrl;
-    private String description;
+    @NonNull
+    private Double price;
 }

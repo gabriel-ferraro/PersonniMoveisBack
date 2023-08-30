@@ -1,12 +1,15 @@
 package com.br.personniMoveis.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Builder
@@ -24,9 +27,15 @@ public class Material {
     @Column(name = "material_name", nullable = false)
     private String materialName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(nullable = false)
+    private Double price;
+
+    @Column(name = "img_url")
+    private String imgUrl;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "materials")
+    private final Set<Product> products = new HashSet<>();
 
     @Override
     public int hashCode() {

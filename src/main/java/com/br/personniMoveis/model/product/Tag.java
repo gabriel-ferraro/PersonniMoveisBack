@@ -19,6 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "tag")
 public class Tag {
 
     @Id
@@ -26,7 +27,7 @@ public class Tag {
     @Column(name = "tag_id")
     private Long tagId;
 
-    @Column(name = "tag_name", nullable = false)
+    @Column(name = "tag_name")
     private String tagName;
 
     @JsonIgnore
