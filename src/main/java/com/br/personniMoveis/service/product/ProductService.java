@@ -1,23 +1,16 @@
 package com.br.personniMoveis.service.product;
 
-import com.br.personniMoveis.dto.product.get.DetailGetDto;
+import com.br.personniMoveis.dto.product.*;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
-import com.br.personniMoveis.dto.product.post.*;
 import com.br.personniMoveis.exception.AlreadyExistsException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
-import com.br.personniMoveis.mapper.MaterialMapper;
-import com.br.personniMoveis.mapper.OptionMapper;
 import com.br.personniMoveis.mapper.SectionCmp.SectionCmpMapper;
-import com.br.personniMoveis.mapper.TagMapper;
-import com.br.personniMoveis.mapper.product.DetailMapper;
-import com.br.personniMoveis.mapper.product.ProductMapper;
+import com.br.personniMoveis.mapper.product.*;
 import com.br.personniMoveis.model.product.*;
 import com.br.personniMoveis.repository.ProductRepository;
 import com.br.personniMoveis.service.DetailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,19 +50,11 @@ public class ProductService {
     }
 
     /**
-     * Retorna os produtos paginados.
-     *
-     * @param pageable
-     * @return
+     * Retorna todos produtos.
+     * @return Lista de todos produtos.
      */
-    public Page<ProductGetDto> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(
-                ProductMapper.INSTANCE::productToProductGetDto);
-    }
-
-    public List<ProductGetDto> getAllProducts() {
-        return productRepository.findAll().stream().map(
-                ProductMapper.INSTANCE::productToProductGetDto).toList();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     public List<ProductGetDto> getAllProductsWithTagId(Long tagId) {
@@ -83,18 +68,10 @@ public class ProductService {
     }
 
     public Product createProduct(ProductDto productDto) {
-        return productRepository.save(ProductMapper.INSTANCE.productPostDtoToProduct(productDto));
+        return productRepository.save(ProductMapper.INSTANCE.productDtoToProduct(productDto));
     }
 
-    public ProductGetDto createProduct(com.br.personniMoveis.dto.product.ProductDto productDto) {
-        Product newProduct = ProductMapper.INSTANCE.toProduct(productDto);
-        // persiste no BD.
-        Product product = productRepository.save(newProduct);
-        // retorna ProductGetDto.
-        return ProductMapper.INSTANCE.productToProductGetDto(product);
-    }
-
-    public List<DetailGetDto> getAllDetailsFromProduct(Long productId) {
+    public List<DetailDto> getAllDetailsFromProduct(Long productId) {
         Product product = findProductOrThrowNotFoundException(productId);
         return product.getDetails().stream().map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
     }
@@ -171,11 +148,11 @@ public class ProductService {
         tag.getProducts().add(product);
     }
 
-    public void updateProduct(com.br.personniMoveis.dto.product.ProductDto productDto, Long productId) {
+    public void updateProduct(ProductDto productDto, Long productId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         this.findProductOrThrowNotFoundException(productId);
         // Faz alteracoes no produto.
-        Product productToBeUpdated = ProductMapper.INSTANCE.toProduct(productDto);
+        Product productToBeUpdated = ProductMapper.INSTANCE.productDtoToProduct(productDto);
         productToBeUpdated.setProductId(productId);
         // Persiste alteracoes.
         productRepository.save(productToBeUpdated);

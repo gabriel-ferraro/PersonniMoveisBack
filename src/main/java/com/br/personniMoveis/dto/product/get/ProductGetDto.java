@@ -1,23 +1,20 @@
 package com.br.personniMoveis.dto.product.get;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.br.personniMoveis.dto.product.ProductDto;
 
-import java.util.Set;
+public class ProductGetDto extends ProductDto {
 
-@Data
-@AllArgsConstructor
-public class ProductGetDto {
-
-    private Long productId;
-    private String name;
-    private Double value;
-    private Long quantity;
-    private Boolean editable;
-    private String imgUrl;
-    private String description;
-    private Set<DetailGetDto> detailPostList;
-    private Set<TagGetDto> tagPostList;
-    private Set<SectionGetDto> sectionPostList;
-    private Set<MaterialGetDto> materialPostList;
+    /**
+     * Adquire somente os dados do produto, não adquirindo entidades relacionadas (passadas como no construtor como null).
+     * @param productId
+     * @param name
+     * @param value
+     * @param quantity
+     * @param editable
+     * @param imgUrl
+     * @param description
+     */
+    public ProductGetDto(Long productId, String name, Double value, Long quantity, Boolean editable, String imgUrl, String description) {
+        super(productId, name, value, quantity, editable, imgUrl, description, null, null, null ,null);
+    }
 }

@@ -1,7 +1,6 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.product.post.DetailDto;
-import com.br.personniMoveis.dto.product.get.DetailGetDto;
+import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.model.product.Detail;
@@ -24,7 +23,7 @@ public class DetailService {
                 () -> new ResourceNotFoundException("Detalhe do produto não existe"));
     }
 
-    public List<DetailGetDto> getAllDetails() {
+    public List<DetailDto> getAllDetails() {
         return detailRepository.findAll().stream()
                 .map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
     }
@@ -33,7 +32,7 @@ public class DetailService {
         return detailRepository.save(detail);
     }
 
-    public DetailGetDto createDetail(DetailDto detailDto) {
+    public DetailDto createDetail(DetailDto detailDto) {
         // Persistindo e retornando detail.
         Detail newDetail = detailRepository.save(DetailMapper.INSTANCE.detailDtoToDetail(detailDto));
         return DetailMapper.INSTANCE.detailToDetailGetDto(newDetail);
