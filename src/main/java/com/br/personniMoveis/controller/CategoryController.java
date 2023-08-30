@@ -1,6 +1,8 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.CategoryDto.*;
+import com.br.personniMoveis.dto.CategoryDto.CategoryDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

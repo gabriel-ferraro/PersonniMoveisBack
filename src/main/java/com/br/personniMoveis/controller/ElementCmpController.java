@@ -51,7 +51,7 @@ public class ElementCmpController {
 
     @DeleteMapping(path = "/{sectionCmpId}")
     public ResponseEntity deleteElementById(@PathVariable("sectionCmpId") Long sectionCmpId) {
-        elementCmpService.deleteElementCmpById(sectionCmpId);
+        elementCmpService.deleteElementById(sectionCmpId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

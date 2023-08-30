@@ -1,6 +1,8 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.CategoryDto.*;
+import com.br.personniMoveis.dto.CategoryDto.CategoryDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
@@ -51,6 +53,11 @@ public class CategoryService {
         return categoryDtos;
     }
 
+    public Category findCategoryById(Long id, String exceptionMessage){
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(exceptionMessage));
+        return  category;
+    }
 
     public CategoryGetByIdDto findCategoryByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
         Category category = categoryRepository.findById(id)
@@ -91,38 +98,38 @@ public class CategoryService {
     }
 
     public void updateCategory(CategoryDto categoryDto, Long categoryId) {
-        // Encontra produto existente para atualiza-lo ou joga exceção.
         findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found");
 
-        // Faz alteracoes no produto.
-        Category CategoryBeUpdated = CategoryMapper.INSTANCE.toCategory(categoryDto);
+        // Atualiza os dados da categoria
+        Category updatedCategory = CategoryMapper.INSTANCE.toCategory(categoryDto);
+        updatedCategory.setId(categoryId);
+        categoryRepository.save(updatedCategory);
 
-        CategoryBeUpdated.setId(categoryId);
-        // Persiste alteracoes.
-        categoryRepository.save(CategoryBeUpdated);
-
-        //Vê se tem alguma seção cadastrada junto com a categoria
-        for (SectionCmpDto item : categoryDto.getSectionCmpsDtos()) {
-            if (item.getName() != "" && item.getId() > 0) {
-
-                SectionCmpDto sectionCmpDto = new SectionCmpDto();
-                sectionCmpDto.setId(item.getId());
-                sectionCmpDto.setName(item.getName());
-                sectionCmpDto.setImgUrl(item.getImgUrl());
-                sectionCmpDto.setElementCmpDtos(item.getElementCmpDtos());
-                sectionCmpService.updateSectionCmp(sectionCmpDto, item.getId());
-
+        // Atualiza seções existentes ou cria novas seções
+        for (SectionCmpDto sectionDto : categoryDto.getSectionCmpsDtos()) {
+            if (sectionDto.getId() != null && sectionDto.getId() > 0) {
+                sectionCmpService.updateSectionCmp(sectionDto, sectionDto.getId());
             } else {
                 sectionCmpService.createSectionCmp(categoryDto.getSectionCmpsDtos(), categoryId);
             }
         }
     }
 
+
+
     public void deleteCategoryById(Long categoryId) {
-        // Econtra produto ou joga exceção.
-        findCategoryByIdOrThrowBadRequestException(categoryId, "Category not found");
-        // Deleta produto via id.
-        categoryRepository.deleteById(categoryId);
+        Category categoryToDelete = findCategoryById(categoryId, "Category not found");
+
+        // Verifica se há seções relacionadas à categoria
+        Set<SectionCmp> sectionsWithCategory = sectionCmpRepository.findByCategoryId(categoryId);
+        if (!sectionsWithCategory.isEmpty()) {
+            throw new BadRequestException("Cannot delete category. It has associated sections.");
+        }
+
+        // Deleta a categoria
+        categoryRepository.delete(categoryToDelete);
     }
+
+
 
 }

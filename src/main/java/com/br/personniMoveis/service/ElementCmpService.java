@@ -6,8 +6,10 @@ import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.ElementCmp.ElementCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
+import com.br.personniMoveis.model.productCmp.OptionCmp;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
 import com.br.personniMoveis.repository.ElementCmpRepository;
+import com.br.personniMoveis.repository.OptionCmpRepository;
 import com.br.personniMoveis.repository.SectionCmpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,14 +28,16 @@ public class ElementCmpService {
 
     private final OptionCmpService optionCmpService;
 
+    private final OptionCmpRepository optionCmpRepository;
+
 
     @Autowired
-    public ElementCmpService(ElementCmpRepository elementCmpRepository, SectionCmpRepository sectionCmpRepository,OptionCmpService optionCmpService)
+    public ElementCmpService(ElementCmpRepository elementCmpRepository, SectionCmpRepository sectionCmpRepository,OptionCmpService optionCmpService, OptionCmpRepository optionCmpRepository)
     {
         this.elementCmpRepository = elementCmpRepository;
         this.sectionCmpRepository = sectionCmpRepository;
         this.optionCmpService = optionCmpService;
-
+        this.optionCmpRepository = optionCmpRepository;
     }
 
     public List<ElementCmpGetDto> getAllSections() {
@@ -83,21 +87,49 @@ public class ElementCmpService {
 
 
     public void updateElementCmp(ElementCmpDto elementCmpDtos, Long elementCmpId) {
-        // Faz alteracoes no produto.
         // Busca a categoria
         ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
-        //Setando seção para cada elemento
-        elementCmpDtos.setSectionCmpId(elementCmp.getSectionCmpId());
+        // Atualiza os dados da seção
         ElementCmp ElementBeUpdated = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtos);
+        ElementBeUpdated.setSectionCmpId(elementCmp.getSectionCmpId());//Mantem a mesma seção
+        ElementBeUpdated.setId(elementCmpId);
         // Persiste alteracoes.
         elementCmpRepository.save(ElementBeUpdated);
+
+        for (OptionCmpDto optionCmpDto : elementCmpDtos.getOptionCmpDtos()) {
+            if (optionCmpDto.getId() != null && optionCmpDto.getId() > 0) {
+                optionCmpService.updateOptionCmp(optionCmpDto, optionCmpDto.getId());
+            } else {
+                createNewElementCmp(optionCmpDto, elementCmpId);
+            }
+        }
     }
 
+    //PARA CRIAÇÃO DA OPÇÃO CASO TENHA OPÇÕES NO ELEMENTO
+    private void createNewElementCmp(OptionCmpDto optionCmpDto, Long elementCmpId) {
+        OptionCmpDto newOptionDto = new OptionCmpDto();
+        newOptionDto.setName(optionCmpDto.getName());
+        newOptionDto.setPrice(optionCmpDto.getPrice());
+        newOptionDto.setImgUrl(optionCmpDto.getImgUrl());
 
-    public void deleteElementCmpById(Long elementCmpId) {
-        // Econtra produto ou joga exceção.
-        findElementByIdOrThrowBadRequestException(elementCmpId, "Element not found");
-        // Deleta produto via id.
-        elementCmpRepository.deleteById(elementCmpId);
+        Set<OptionCmpDto> newOptionSet = new HashSet<>();
+        Set<Long> elementIds = new HashSet<>();
+        elementIds.add(elementCmpId);
+        newOptionSet.add(newOptionDto);
+
+        optionCmpService.createOptionCmp(newOptionSet, elementIds);
+    }
+
+    public void deleteElementById(Long elementId) {
+        ElementCmp elementToDelete = elementCmpRepository.findById(elementId)
+                .orElseThrow(() -> new BadRequestException("Element not found"));
+
+        // Verifica se há opções relacionadas
+        Set<OptionCmp> optionWithElement = optionCmpRepository.findByElementCmpId(elementId);
+        if (!optionWithElement.isEmpty()) {
+            throw new BadRequestException("Cannot delete element. It has associated options.");
+        }
+        // Deleta o elemento
+        elementCmpRepository.delete(elementToDelete);
     }
 }

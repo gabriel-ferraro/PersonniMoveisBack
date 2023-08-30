@@ -2,8 +2,6 @@ package com.br.personniMoveis.mapper.ElementCmp;
 
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPostDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPutDto;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,12 +13,6 @@ import java.util.Set;
 public abstract class ElementCmpMapper {
 
     public static final ElementCmpMapper INSTANCE = Mappers.getMapper(ElementCmpMapper.class);
-
-    @Mapping(target = "id", ignore = true)
-    public abstract ElementCmp toElementCmpList(ElementCmpPostDto elementCmpPostDto);
-
-    @Mapping(target = "id", ignore = true)
-    public abstract ElementCmp toElementCmpList(ElementCmpPutDto elementCmpPutDto);
 
     @Mapping(target = "id", ignore = true)
     public abstract Set<ElementCmp> toElementCmpList(Set<ElementCmpDto> elementCmpDto);

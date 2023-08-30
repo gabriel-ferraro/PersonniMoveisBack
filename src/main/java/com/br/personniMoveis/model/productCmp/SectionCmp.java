@@ -35,13 +35,4 @@ public class SectionCmp {
     @OneToMany
     private Set<ElementCmp> elementCmps;
 
-
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "sectionCmps")
-//    private final Set<ProductCmp> productCmps = new HashSet<>();
-//
-//    @ManyToMany
-//    @JoinTable(name = "section_element_cmp", joinColumns = @JoinColumn(name = "section_cmp_id"), inverseJoinColumns = @JoinColumn(name = "element_cmp_id"))
-//    private final Set<ElementCmp> elementCmps = new HashSet<>();
-
 }

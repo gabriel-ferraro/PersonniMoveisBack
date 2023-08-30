@@ -1,7 +1,6 @@
 package com.br.personniMoveis.dto.ElementCmpDto;
 
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPostDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
