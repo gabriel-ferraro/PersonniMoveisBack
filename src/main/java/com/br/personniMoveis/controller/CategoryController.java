@@ -3,12 +3,11 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
+import com.br.personniMoveis.dto.product.CategoryDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
-import com.br.personniMoveis.dto.product.post.CategoryDto;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.service.CategoryService;
-import com.br.personniMoveis.service.product.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,14 +21,10 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final ProductService productService;
-
-//    private final GenericFilterService<ProductCmp> genericFilterService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService, ProductService productService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.productService = productService;
     }
 
     @GetMapping(path = "/{categoryId}")
@@ -39,7 +34,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<com.br.personniMoveis.dto.product.get.CategoryDto>> getAllCategories() {
+    public ResponseEntity<List<Category>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
@@ -56,7 +51,9 @@ public class CategoryController {
      * @return Uma categoria editada.
      */
     @PutMapping(path = "/create-full-product")
-    public ResponseEntity<Category> createFullProduct(@RequestParam(name = "categoryId", required = false) Long categoryId, @RequestBody @Valid CategoryDto dto) {
+    public ResponseEntity<Category> createFullProduct(
+            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @RequestBody @Valid CategoryDto dto) {
         return ResponseEntity.ok(categoryService.createOrUpdateRegularProduct(categoryId, dto));
     }
 

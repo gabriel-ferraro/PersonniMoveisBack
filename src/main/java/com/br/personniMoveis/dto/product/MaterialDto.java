@@ -1,4 +1,4 @@
-package com.br.personniMoveis.dto.product.post;
+package com.br.personniMoveis.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

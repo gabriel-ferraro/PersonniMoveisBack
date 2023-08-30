@@ -3,11 +3,12 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPostDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryPutDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
-import com.br.personniMoveis.dto.product.post.CategoryDto;
-import com.br.personniMoveis.dto.product.post.ProductDto;
-import com.br.personniMoveis.dto.product.post.SectionDto;
+import com.br.personniMoveis.dto.product.CategoryDto;
+import com.br.personniMoveis.dto.product.ProductDto;
+import com.br.personniMoveis.dto.product.SectionDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
+import com.br.personniMoveis.mapper.product.ProductMapper;
 import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.model.product.*;
 import com.br.personniMoveis.repository.CategoryRepository;
@@ -40,12 +41,12 @@ public class CategoryService {
                 () -> new BadRequestException("categoria não encontrada"));
     }
 
-    public List<com.br.personniMoveis.dto.product.get.CategoryDto> getAllCategories() {
-        return categoryRepository.findAll().stream().map(
-                CategoryMapper.INSTANCE::categoryToCategoryList).toList();
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
     public List<ProductGetDto> getAllProductsInCategory(Long categoryId) {
+        findCategoryOrThrowNotFoundException(categoryId);
         return categoryRepository.getAllProductsInCategory(categoryId);
     }
 
@@ -74,13 +75,13 @@ public class CategoryService {
     /**
      * Faz operações para associar o produto regular criado/atualizado com uma única requisição ao endpoint.
      *
-     * @param cpp Dto com info para criação do produto regular inteiro. Dados nulos são validados.
+     * @param cDto Dto com info para criação do produto regular inteiro. Dados nulos são validados.
      */
     @Transactional
-    public void saveRegularProduct(Category category, CategoryDto cpp) {
+    public void saveRegularProduct(Category category, CategoryDto cDto) {
         List<Product> newProdList = new ArrayList<>();
         // Faz a associação dos dados para cada produto da categoria.
-        cpp.getProductList().forEach(p -> {
+        cDto.getProductList().forEach(p -> {
             Product newProduct = productService.createProduct(p);
             newProdList.add(newProduct);
             // Adquire o payload válido dos valores vindos do JSON e salva/edita no BD.

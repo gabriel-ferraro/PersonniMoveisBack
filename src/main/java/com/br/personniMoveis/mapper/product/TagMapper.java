@@ -1,9 +1,8 @@
-package com.br.personniMoveis.mapper;
+package com.br.personniMoveis.mapper.product;
 
-import com.br.personniMoveis.dto.product.post.TagDto;
+import com.br.personniMoveis.dto.product.TagDto;
 import com.br.personniMoveis.model.product.Tag;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
