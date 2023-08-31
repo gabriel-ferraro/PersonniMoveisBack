@@ -1,22 +1,17 @@
 package com.br.personniMoveis.dto.product.get;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.br.personniMoveis.dto.product.ProductDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Dto contendo somente os dados base do produto (sem relacionamentos).
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ProductGetDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ProductGetDto extends ProductDto {
 
-    private Long productId;
-    private String name;
-    private Double value;
-    private Long quantity;
-    private String editable;
-    private String imgUrl;
-    private String description;
+    public ProductGetDto(Long productId, String name, Double value, Long quantity,
+                         Boolean editable, String imgUrl, String description) {
+        super(productId, name, value, quantity, editable, imgUrl, description,
+                null, null, null, null);
+    }
 }
