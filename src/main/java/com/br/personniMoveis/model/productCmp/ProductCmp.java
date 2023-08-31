@@ -1,7 +1,5 @@
 package com.br.personniMoveis.model.productCmp;
 
-import com.br.personniMoveis.model.category.Category;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

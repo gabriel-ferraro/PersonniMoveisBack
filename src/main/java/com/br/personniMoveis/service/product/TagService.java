@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TagService {
 
@@ -22,8 +24,8 @@ public class TagService {
         return tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag não encontrada."));
     }
 
-    public Page<Tag> getAllTags(Pageable pageable) {
-        return tagRepository.findAll(pageable);
+    public List<Tag> getAllTags() {
+        return tagRepository.findAll();
     }
 
     public Tag createTag(Tag tag) {

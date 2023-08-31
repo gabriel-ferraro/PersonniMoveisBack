@@ -1,15 +1,12 @@
 package com.br.personniMoveis.model.productCmp;
 
-import com.br.personniMoveis.model.category.Category;
-import com.br.personniMoveis.model.product.Section;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -23,18 +20,17 @@ public class ElementCmp {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "element_cmp_id")
-    private Long elementCmpId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
 
     private String type;
 
-    @ManyToOne
-    @JoinColumn(name = "section_cmp_id")
-    private SectionCmp sectionCmp;
+    @NotNull
+    private Long sectionCmpId;
 
     @OneToMany
-    private final Set<OptionCmp> optionCmps = new HashSet<>();
+    private Set<OptionCmp> optionCmps;
 
 }

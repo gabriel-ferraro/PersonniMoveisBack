@@ -5,7 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 @Repository
+
 public interface ElementCmpRepository extends JpaRepository<ElementCmp, Long>, JpaSpecificationExecutor<ElementCmp> {
+
+    Set<ElementCmp> findBySectionCmpId(Long sectionCmpId);
+
 
 }

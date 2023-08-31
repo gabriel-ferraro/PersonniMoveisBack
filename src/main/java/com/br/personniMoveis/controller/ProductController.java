@@ -26,12 +26,10 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-//    private final GenericFilterService<Product> genericFilterService;
 
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
-//        this.genericFilterService = genericFilterService;
     }
 
     @GetMapping(path = "/{productId}")
@@ -43,17 +41,6 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
-    }
-
-    /**
-     * Recebe o id de uma tag, retorna todos os produtos que possuem a tag.
-     *
-     * @param tagId Id de uma tag.
-     * @return todos os produtos que possuem a tag do id indicado.
-     */
-    @GetMapping("with-tag/{tagId}")
-    public ResponseEntity<List<ProductGetDto>> getProductsWithTagById(@PathVariable(value = "tagId") Long tagId) {
-        return ResponseEntity.ok(productService.getAllProductsWithTagId(tagId));
     }
 
     @PostMapping("assign-tag/{productId}/{tagId}")
@@ -90,6 +77,17 @@ public class ProductController {
     public ResponseEntity<HttpStatus> updateDetail(Long productId, Long detailId, DetailDto detailDto) {
         productService.updateDetail(productId, detailId, detailDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Recebe o id de uma tag, retorna todos os produtos que possuem a tag.
+     *
+     * @param tagId Id de uma tag.
+     * @return todos os produtos que possuem a tag do id indicado.
+     */
+    @GetMapping("with-tag/{tagId}")
+    public ResponseEntity<List<ProductGetDto>> getProductsWithTagById(@PathVariable(value = "tagId") Long tagId) {
+        return ResponseEntity.ok(productService.getAllProductsWithTagId(tagId));
     }
 
     @GetMapping("/{productId}/tags")

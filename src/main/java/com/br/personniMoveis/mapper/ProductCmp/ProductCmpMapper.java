@@ -11,7 +11,6 @@ import org.mapstruct.factory.Mappers;
 public abstract class ProductCmpMapper {
     public static final ProductCmpMapper INSTANCE = Mappers.getMapper(ProductCmpMapper.class);
 
-    @Mapping(target = "productCmpId", ignore = true)
     public abstract ProductCmp toProductCmp(ProductCmpDto productCmpDtoCmp);
 
     public abstract ProductCmpGetDto ProductCmpToProductCmpGetDto(ProductCmp productCmp);

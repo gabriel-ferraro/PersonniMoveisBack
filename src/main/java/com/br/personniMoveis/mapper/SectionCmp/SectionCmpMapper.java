@@ -1,8 +1,7 @@
 package com.br.personniMoveis.mapper.SectionCmp;
 
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
-import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPostDto;
-import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpPutDto;
 import com.br.personniMoveis.dto.product.SectionDto;
 import com.br.personniMoveis.model.product.Section;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
@@ -17,15 +16,12 @@ public abstract class SectionCmpMapper {
 
     public static final SectionCmpMapper INSTANCE = Mappers.getMapper(SectionCmpMapper.class);
 
-    @Mapping(target = "sectionCmpId", ignore = true)
-    public abstract Set<SectionCmp> toSectionCmpPost(Set<SectionCmpPostDto> sectionCmpPostDto);
+    public abstract Set<SectionCmp> toSectionCmpList(Set<SectionCmpDto> sectionCmpDtos);
 
-    @Mapping(target = "sectionId", ignore = true)
-    public abstract Section sectionDtoToSection(SectionDto sectiondto);
-
-    @Mapping(target = "sectionCmpId", ignore = true)
-    public abstract Set<SectionCmp> toSectionCmpPut(Set<SectionCmpPutDto> sectionCmpPutDto);
+    public abstract SectionCmp toSectionCmp(SectionCmpDto sectionCmpDtos);
 
     public abstract SectionCmpGetDto SectionToSectionGetDto(SectionCmp sectionCmp);
+
+    public abstract Section sectionDtoToSection(SectionDto sectionDto);
 
 }
