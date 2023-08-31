@@ -15,6 +15,7 @@ public abstract class StorePropertiesMapper {
 
     public static final StorePropertiesMapper INSTANCE = Mappers.getMapper(StorePropertiesMapper.class);
 
-    @Mapping(target = "storeId", ignore = true)
     public abstract StoreProperties storePropertiesDtoToStoreProperties(StorePropertiesDto StorePropertiesDto);
+
+    public abstract StorePropertiesDto StorePropertiesToStorePropertiesDto(StoreProperties storeProperties);
 }

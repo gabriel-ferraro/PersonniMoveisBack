@@ -1,14 +1,13 @@
 package com.br.personniMoveis.dto.OptionCmpDto;
 
-import com.br.personniMoveis.model.productCmp.ElementCmp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class OptionCmpPutDto {
+public class OptionCmpDto {
 
-    private Long optionCmpId;
+    private Long id;
 
     private String name;
 
@@ -17,4 +16,8 @@ public class OptionCmpPutDto {
     private String imgUrl;
 
     private Long elementCmpId;
+
+    public OptionCmpDto() {
+
+    }
 }

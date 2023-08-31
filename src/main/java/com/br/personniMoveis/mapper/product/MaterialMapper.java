@@ -14,6 +14,5 @@ public abstract class MaterialMapper {
 
     public static final MaterialMapper INSTANCE = Mappers.getMapper(MaterialMapper.class);
 
-    @Mapping(target = "materialId", ignore = true)
     public abstract Material materialDtoToMaterial(MaterialDto materialDto);
 }

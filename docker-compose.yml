@@ -6,7 +6,7 @@ networks:
 
 services:
   personniMoveisDB:
-    image: postgres:latest
+    image: postgres
     container_name: personniMoveisDB
     restart: always
     networks: 

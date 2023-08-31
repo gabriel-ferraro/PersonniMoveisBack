@@ -1,24 +1,18 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPostDto;
-import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpPutDto;
+import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpGetDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPostDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpPutDto;
 import com.br.personniMoveis.exception.BadRequestException;
-import com.br.personniMoveis.mapper.ElementCmp.ElementCmpMapper;
 import com.br.personniMoveis.mapper.OptionCmp.OptionCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.OptionCmp;
-import com.br.personniMoveis.model.productCmp.SectionCmp;
 import com.br.personniMoveis.repository.ElementCmpRepository;
 import com.br.personniMoveis.repository.OptionCmpRepository;
-import com.br.personniMoveis.repository.SectionCmpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,27 +46,28 @@ public class OptionCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createOptionCmp(OptionCmpPostDto optionCmpPostDto, Long elementCmpId) {
-        // Busca a categoria
-        ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
-        //seta a categoria na seção
-        optionCmpPostDto.setElementCmpId(elementCmp.getElementCmpId());
+    public void createOptionCmp(Set<OptionCmpDto> optionCmpDtos, Set<Long> elementCmpIds) {
+        for(Long elementCmpId : elementCmpIds){
+            // Busca a categoria
+            ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
 
-        OptionCmp newOption = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpPostDto);
-
-        // Persiste a nova instância no banco de dados
-        optionCmpRepository.save(newOption);
+            // Configura a seção nos elementos
+            Set<OptionCmpDto> optionCmpDtosWithElement = optionCmpDtos.stream()
+                    .peek(dto -> dto.setElementCmpId(elementCmp.getId()))
+                    .collect(Collectors.toSet());
+            // Converte e persiste os elementos
+            Set<OptionCmp> newOptions = OptionCmpMapper.INSTANCE.toOptionCmpList(optionCmpDtosWithElement);
+            newOptions.forEach(optionCmpRepository::save);
+        }
     }
 
-    public void updateOptionCmp(OptionCmpPutDto optionCmpPutDto, Long optionCmpId) {
-        // Faz alteracoes no produto.
-        // Busca a categoria
+    public void updateOptionCmp(OptionCmpDto optionCmpDto, Long optionCmpId) {
+        // Busca a opção
         OptionCmp optionCmp = optionCmpRepository.findById(optionCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
-        ElementCmp elementCmp = optionCmp.getElementCmp();
-        optionCmpPutDto.setElementCmpId(elementCmp.getElementCmpId().longValue());
+        OptionCmp  OptionBeUpdated = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDto);
+        OptionBeUpdated.setId(optionCmpId);
+        OptionBeUpdated.setElementCmpId(optionCmp.getElementCmpId()); // Mantém o mesmo elemento
 
-        OptionCmp  OptionBeUpdated = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpPutDto);
-        OptionBeUpdated.setOptionCmpId(optionCmpId);
         // Persiste alteracoes.
         optionCmpRepository.save(OptionBeUpdated);
     }

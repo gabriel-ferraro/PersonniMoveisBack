@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("tags")
 public class TagController {
@@ -27,8 +29,8 @@ public class TagController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Tag>> getAllTags(Pageable pageable) {
-        return ResponseEntity.ok(tagService.getAllTags(pageable));
+    public ResponseEntity<List<Tag>> getAllTags() {
+        return ResponseEntity.ok(tagService.getAllTags());
     }
 
     @PostMapping

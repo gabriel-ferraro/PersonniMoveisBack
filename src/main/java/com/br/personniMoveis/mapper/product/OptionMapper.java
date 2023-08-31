@@ -14,6 +14,5 @@ public abstract class OptionMapper {
 
     public static final OptionMapper INSTANCE = Mappers.getMapper(OptionMapper.class);
 
-    @Mapping(target = "optionId", ignore = true)
     public abstract Option optionDtoToOption(OptionDto option);
 }

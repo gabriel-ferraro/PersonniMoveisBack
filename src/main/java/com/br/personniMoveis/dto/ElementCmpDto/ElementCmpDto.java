@@ -1,11 +1,14 @@
 package com.br.personniMoveis.dto.ElementCmpDto;
 
+import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
-public class ElementCmpGetDto {
+public class ElementCmpDto {
 
     private Long id;
 
@@ -14,4 +17,10 @@ public class ElementCmpGetDto {
     private String imgUrl;
 
     private Long sectionCmpId;
+
+    private Set<OptionCmpDto> optionCmpDtos;
+
+    public ElementCmpDto() {
+
+    }
 }
