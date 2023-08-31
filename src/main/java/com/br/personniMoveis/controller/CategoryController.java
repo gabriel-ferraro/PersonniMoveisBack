@@ -1,7 +1,7 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.product.CategoryDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.model.category.Category;

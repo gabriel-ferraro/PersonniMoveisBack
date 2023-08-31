@@ -2,7 +2,6 @@ package com.br.personniMoveis.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.util.Set;
 
@@ -11,13 +10,9 @@ import java.util.Set;
 public class ProductDto {
 
     private Long productId;
-    @NonNull
     private String name;
-    @NonNull
     private Double value;
-    @NonNull
     private Long quantity;
-    @NonNull
     private Boolean editable;
     private String imgUrl;
     private String description;

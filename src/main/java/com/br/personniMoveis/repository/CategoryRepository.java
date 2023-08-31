@@ -2,6 +2,7 @@ package com.br.personniMoveis.repository;
 
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
