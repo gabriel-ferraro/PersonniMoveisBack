@@ -19,7 +19,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
             SELECT new com.br.personniMoveis.dto.product.get.ProductGetDto(p.productId, p.name, p.value, p.quantity, p.editable, p.imgUrl, p.description)
             FROM Product p
             LEFT JOIN p.category c
-            WHERE c.categoryId = :categoryId
+            WHERE c.id = :id
             """)
-    List<ProductGetDto> getAllProductsInCategory(@Param("categoryId") Long categoryId);
+    List<ProductGetDto> getAllProductsInCategory(@Param("id") Long categoryId);
 }

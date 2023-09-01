@@ -23,7 +23,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "category_id")
-    private Long categoryId;
+    private Long id;
 
     @Column(nullable = false)
     @NotNull

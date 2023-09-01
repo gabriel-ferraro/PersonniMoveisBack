@@ -69,12 +69,12 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "deleta produto de uma categoria", description = "recebe o id de uma categoria e de um produto, faz a exclusao do produto nessa categoria")
-    @DeleteMapping(path = "/{categoryId}")
-    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("categoryId") Long categoryId) {
-        categoryService.deleteCategoryById(categoryId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @Operation(summary = "deleta produto de uma categoria", description = "recebe o id de uma categoria e de um produto, faz a exclusao do produto nessa categoria")
+//    @DeleteMapping(path = "/{categoryId}")
+//    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("categoryId") Long categoryId) {
+////        categoryService.deleteCategoryById(categoryId);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
     @Operation(summary = "Busca todas as Categorias", description = "Lista todas as categorias mas sem relacionamento")
     @GetMapping
@@ -108,9 +108,9 @@ public class CategoryController {
     }
 
     @Operation(summary = "Deleta Categoria", description = "Deleta categoria se não tiver nenhum relacionametno")
-    @DeleteMapping(path = "/{cateogoryId}")
-    public ResponseEntity deleteProductCmpById(@PathVariable("cateogoryId") Long cateogoryId) {
-        categoryService.deleteCategoryById(cateogoryId);
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity deleteProductCmpById(@PathVariable("id") Long id) {
+        categoryService.deleteCategoryById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
