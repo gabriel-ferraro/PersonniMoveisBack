@@ -59,21 +59,20 @@ public class SectionCmpService {
         Set<SectionCmp> newSection = SectionCmpMapper.INSTANCE.toSectionCmpList(sectionCmpDtos);
         // Persiste a nova instância no banco de dados
         List<SectionCmp> newSectionList = sectionCmpRepository.saveAll(newSection);
-        ;
 
         Set<Long> sectionsIds = new HashSet<>();
-        if (!newSectionList.isEmpty()) {
-            for (SectionCmp section : newSectionList) {
-                sectionsIds.add(section.getId());
-            }
+        for (SectionCmp section : newSectionList) {
+            sectionsIds.add(section.getId());
         }
 
         // Criando elementos relacionados, se necessário
         if (!sectionCmpDtos.isEmpty()) {
             for (SectionCmpDto sectionCmpDto : sectionCmpDtos) {
-                for (ElementCmpDto elementCmpDto : sectionCmpDto.getElementCmpDtos()) {
-                    if (!elementCmpDto.getName().isEmpty()) {
-                        elementCmpService.createElementCmp(sectionCmpDto.getElementCmpDtos(), sectionsIds);
+                if (sectionCmpDto.getElementCmpDtos() != null) {
+                    for (ElementCmpDto elementCmpDto : sectionCmpDto.getElementCmpDtos()) {
+                        if (!elementCmpDto.getName().isEmpty()) {
+                            elementCmpService.createElementCmp(sectionCmpDto.getElementCmpDtos(), sectionsIds);
+                        }
                     }
                 }
             }
@@ -91,11 +90,13 @@ public class SectionCmpService {
         sectionCmpRepository.save(updatedSection);
 
         if (!sectionCmpDto.getElementCmpDtos().isEmpty()) {
-            for (ElementCmpDto elementDto : sectionCmpDto.getElementCmpDtos()) {
-                if (elementDto.getId() != null && elementDto.getId() > 0) {
-                    elementCmpService.updateElementCmp(elementDto, elementDto.getId());
-                } else {
-                    createNewElementCmp(elementDto, sectionCmpId);
+            if (sectionCmpDto.getElementCmpDtos() != null) {
+                for (ElementCmpDto elementDto : sectionCmpDto.getElementCmpDtos()) {
+                    if (elementDto.getId() != null && elementDto.getId() > 0) {
+                        elementCmpService.updateElementCmp(elementDto, elementDto.getId());
+                    } else {
+                        createNewElementCmp(elementDto, sectionCmpId);
+                    }
                 }
             }
         }
