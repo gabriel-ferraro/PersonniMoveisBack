@@ -1,6 +1,6 @@
 package com.br.personniMoveis.dto.CategoryDto;
 
-import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
+import com.br.personniMoveis.model.productCmp.SectionCmp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class CategoryCmpDto {
+public class CategoryGetByIdDto {
 
     private Long id;
 
@@ -18,5 +18,5 @@ public class CategoryCmpDto {
     @Builder.Default
     private Boolean allow_creation = true; // Permitir criação do produto que se encaixa na categoria.
 
-    private Set<SectionCmpDto> sectionCmpDtos;
+    private Set<SectionCmp> sectionCmps;
 }

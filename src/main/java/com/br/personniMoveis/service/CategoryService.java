@@ -1,6 +1,7 @@
 package com.br.personniMoveis.service;
 
 import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.product.CategoryDto;
@@ -53,7 +54,7 @@ public class CategoryService {
         this.productService = productService;
     }
 
-    public CategoryGetDto findCategoryCmpByIdOrThrowBadRequestException(Long id) {
+    public CategoryGetByIdDto findCategoryCmpByIdOrThrowBadRequestException(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Categoria não encontrada."));
 
@@ -72,9 +73,9 @@ public class CategoryService {
             sectionCmp.setElementCmps(sectionElementCmps);
         }
 
-        CategoryGetDto categoryGetDto = CategoryMapper.INSTANCE.CategotyToCategoryGetDto(category);
-        categoryGetDto.setSectionCmps(sectionCmps);
-        return categoryGetDto;
+        CategoryGetByIdDto categoryGetByIdDto = CategoryMapper.INSTANCE.CategotyToCategoryGetByIdDto(category);
+        categoryGetByIdDto.setSectionCmps(sectionCmps);
+        return categoryGetByIdDto;
     }
 
     public void createCategoryCmp(CategoryCmpDto categoryCmpDto) {

@@ -1,6 +1,7 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.product.CategoryDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
@@ -27,16 +28,11 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+
     @Operation(summary = "Categoria", description = "Adquire a categoria CMP do id informado")
     @GetMapping(path = "/{categoryId}")
-    public ResponseEntity<CategoryGetDto> getCategoryCmpById(@PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity<CategoryGetByIdDto> getCategoryCmpById(@PathVariable("categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
-    }
-
-    @Operation(summary = "Categorias", description = "Lista todas as categorias")
-    @GetMapping
-    public ResponseEntity<List<CategoryGetDto>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @Operation(summary = "Adquire produtos na categoria (CMP ou não)", description = "Lista todos os produtos da categoria de id informado")
@@ -59,7 +55,6 @@ public class CategoryController {
             @RequestBody @Valid CategoryDto dto) {
         return ResponseEntity.ok(categoryService.createOrUpdateRegularProduct(categoryId, dto));
     }
-
     @Operation(summary = "Cria categoria CMP", description = "recebe payload da categoria CMP e CRIA itens")
     @PostMapping(path = "/create-full-cmp")
     public ResponseEntity<HttpStatus> createCategoryCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto) {
@@ -79,5 +74,43 @@ public class CategoryController {
     public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("categoryId") Long categoryId) {
         categoryService.deleteCategoryById(categoryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "Busca todas as Categorias", description = "Lista todas as categorias mas sem relacionamento")
+    @GetMapping
+    public ResponseEntity<List<CategoryGetDto>> getAllCategoria() {
+        List<CategoryGetDto> Category = categoryService.getAllCategories();
+        if (Category.isEmpty()) {
+            return ResponseEntity.ok(Category); // Retorna uma lista vazia
+        }
+        return ResponseEntity.ok(Category);
+    }
+
+    @Operation(summary = "Busca categoria por Id com relacionamentos", description = "Lista todas as categorias mas com relacionamento")
+    @GetMapping(path = "/{categoryId}")
+    public ResponseEntity<CategoryGetByIdDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
+        return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
+    }
+
+
+    @Operation(summary = "Cria Categoria", description = "Cria categoria com seções, elementos e opções")
+    @PostMapping
+    public ResponseEntity<String> createCategory(@RequestBody @Valid CategoryCmpDto categoryDto) {
+        categoryService.createCategoryCmp(categoryDto);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Atualiza Categoria", description = "Atualiza categoria com seções, elementos e opções")
+    @PutMapping(path = "/{cateogoryId}")
+    public ResponseEntity updateProductCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto, @PathVariable("cateogoryId") Long cateogoryId) {
+        categoryService.updateCategoryCmp(categoryCmpDto, cateogoryId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "Deleta Categoria", description = "Deleta categoria se não tiver nenhum relacionametno")
+    @DeleteMapping(path = "/{cateogoryId}")
+    public ResponseEntity deleteProductCmpById(@PathVariable("cateogoryId") Long cateogoryId) {
+        categoryService.deleteCategoryById(cateogoryId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
