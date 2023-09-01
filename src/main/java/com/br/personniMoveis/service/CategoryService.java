@@ -88,7 +88,7 @@ public class CategoryService {
         if(categoryCmpDto.getSectionCmpDtos() != null) {
             categoryCmpDto.getSectionCmpDtos().forEach(item -> {
                 if (item.getName() != "") {
-                    sectionCmpService.createSectionCmp(categoryCmpDto.getSectionCmpDtos(), newCategory.getCategoryId());
+                    sectionCmpService.createSectionCmp(categoryCmpDto.getSectionCmpDtos(), newCategory.getId());
                 }
             });
         }
@@ -99,7 +99,7 @@ public class CategoryService {
 
         // Atualiza os dados da categoria
         Category updatedCategory = CategoryMapper.INSTANCE.categoryCmpDtoToCategory(categoryCmpDto);
-        updatedCategory.setCategoryId(categoryId);
+        updatedCategory.setId(categoryId);
         categoryRepository.save(updatedCategory);
 
         // Atualiza seções existentes ou cria novas seções
@@ -114,11 +114,11 @@ public class CategoryService {
         }
     }
 
-    public void deleteCategoryById(Long categoryId) {
-        Category categoryToDelete = findCategoryOrThrowNotFoundException(categoryId);
+    public void deleteCategoryById(Long id) {
+        Category categoryToDelete = findCategoryOrThrowNotFoundException(id);
 
         // Verifica se há seções relacionadas à categoria
-        Set<SectionCmp> sectionsWithCategory = sectionCmpRepository.findByCategoryId(categoryId);
+        Set<SectionCmp> sectionsWithCategory = sectionCmpRepository.findByCategoryId(id);
         if (!sectionsWithCategory.isEmpty()) {
             throw new BadRequestException("Não é possível deletar categoria, existem seções associadas.");
         }

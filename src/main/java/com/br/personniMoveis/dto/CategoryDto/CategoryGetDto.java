@@ -11,9 +11,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class CategoryGetDto {
 
-    private Long categoryId;
+    private Long id;
     private String name;
-    private Set<SectionCmp> sectionCmps;
     @Builder.Default
     private Boolean allow_creation = true; // Permitir criação do produto que se encaixa na categoria.
 }
