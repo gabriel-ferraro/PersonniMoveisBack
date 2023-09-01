@@ -85,7 +85,7 @@ public class CategoryService {
         categoryRepository.save(newCategory);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
-        if(!categoryCmpDto.getSectionCmpDtos().isEmpty()) {
+        if(categoryCmpDto.getSectionCmpDtos() != null) {
             categoryCmpDto.getSectionCmpDtos().forEach(item -> {
                 if (item.getName() != "") {
                     sectionCmpService.createSectionCmp(categoryCmpDto.getSectionCmpDtos(), newCategory.getCategoryId());

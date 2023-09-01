@@ -30,7 +30,7 @@ public class CategoryController {
 
 
     @Operation(summary = "Categoria", description = "Adquire a categoria CMP do id informado")
-    @GetMapping(path = "/{categoryId}")
+    @GetMapping(path = "/category-cmp/{categoryId}")
     public ResponseEntity<CategoryGetByIdDto> getCategoryCmpById(@PathVariable("categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
     }
@@ -63,9 +63,9 @@ public class CategoryController {
     }
 
     @Operation(summary = "Atualiza categoria CMP", description = "recebe payload da categoria CMP e ATUALIZA itens")
-    @PutMapping(path = "/{cateogoryId}")
-    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid CategoryCmpDto categorycmpDto, @PathVariable("cateogoryId") Long cateogoryId) {
-        categoryService.updateCategoryCmp(categorycmpDto, cateogoryId);
+    @PutMapping(path = "/product/{id}")
+    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid CategoryCmpDto categorycmpDto, @PathVariable("id") Long id) {
+        categoryService.updateCategoryCmp(categorycmpDto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -87,7 +87,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "Busca categoria por Id com relacionamentos", description = "Lista todas as categorias mas com relacionamento")
-    @GetMapping(path = "/{categoryId}")
+    @GetMapping(path = "/category-product/{categoryId}")
     public ResponseEntity<CategoryGetByIdDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
     }
@@ -101,9 +101,9 @@ public class CategoryController {
     }
 
     @Operation(summary = "Atualiza Categoria", description = "Atualiza categoria com seções, elementos e opções")
-    @PutMapping(path = "/{cateogoryId}")
-    public ResponseEntity updateProductCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto, @PathVariable("cateogoryId") Long cateogoryId) {
-        categoryService.updateCategoryCmp(categoryCmpDto, cateogoryId);
+    @PutMapping(path = "/cmp/{id}")
+    public ResponseEntity updateProductCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto, @PathVariable("id") Long id) {
+        categoryService.updateCategoryCmp(categoryCmpDto, id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
