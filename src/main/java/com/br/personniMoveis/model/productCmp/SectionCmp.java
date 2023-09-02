@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -33,6 +34,7 @@ public class SectionCmp {
     private Long categoryId;
 
     @OneToMany
-    private Set<ElementCmp> elementCmps;
+    private Set<ElementCmp> elementCmps = new HashSet<>();;
+
 
 }

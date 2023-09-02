@@ -1,16 +1,19 @@
 package com.br.personniMoveis.dto.ProductCmp;
 
 
+import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
+import com.br.personniMoveis.dto.SectionCmpDto.SectionProductCmpDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 public class ProductCmpDto {
 
-    private Long productCmpId;
+    private Long id;
 
     private Double value;
 
@@ -20,6 +23,6 @@ public class ProductCmpDto {
 
     private String description;
 
-    private List<ProductCmpSectionDto> productCmpSectionDtos;
+    private Set<SectionProductCmpDto> sectionProductCmpDtos;
 
 }

@@ -1,6 +1,7 @@
 package com.br.personniMoveis.mapper.ProductCmp;
 
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetByIdDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
 import com.br.personniMoveis.model.productCmp.ProductCmp;
 import org.mapstruct.Mapper;
@@ -14,4 +15,6 @@ public abstract class ProductCmpMapper {
     public abstract ProductCmp toProductCmp(ProductCmpDto productCmpDtoCmp);
 
     public abstract ProductCmpGetDto ProductCmpToProductCmpGetDto(ProductCmp productCmp);
+
+    public abstract ProductCmpGetByIdDto ProductCmpToProductCmpGetByIdDto(ProductCmp productCmp);
 }

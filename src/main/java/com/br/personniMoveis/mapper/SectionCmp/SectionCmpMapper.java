@@ -16,6 +16,7 @@ public abstract class SectionCmpMapper {
 
     public static final SectionCmpMapper INSTANCE = Mappers.getMapper(SectionCmpMapper.class);
 
+    @Mapping(target = "id", ignore = true)
     public abstract Set<SectionCmp> toSectionCmpList(Set<SectionCmpDto> sectionCmpDtos);
 
     public abstract SectionCmp toSectionCmp(SectionCmpDto sectionCmpDtos);
