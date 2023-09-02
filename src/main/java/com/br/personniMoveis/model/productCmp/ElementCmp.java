@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -31,6 +32,6 @@ public class ElementCmp {
     private Long sectionCmpId;
 
     @OneToMany
-    private Set<OptionCmp> optionCmps;
+    private Set<OptionCmp> optionCmps = new HashSet<>();
 
 }

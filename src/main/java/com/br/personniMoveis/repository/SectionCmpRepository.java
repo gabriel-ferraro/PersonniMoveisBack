@@ -12,4 +12,5 @@ import java.util.Set;
 public interface SectionCmpRepository extends JpaRepository<SectionCmp, Long>, JpaSpecificationExecutor<SectionCmp> {
 
     Set<SectionCmp> findByCategoryId(Long categoryId);
+
 }

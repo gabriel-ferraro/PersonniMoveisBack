@@ -1,7 +1,11 @@
 package com.br.personniMoveis.controller;
 
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetByIdDto;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
 import com.br.personniMoveis.service.ProductCmpService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,30 +27,11 @@ public class ProductCmpController {
     }
 
 
-
-//    @GetMapping
-//    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
-//        return ResponseEntity.ok(productService.getAllProducts());
-//    }
-
-//    @GetMapping
-//    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
-//        return ResponseEntity.ok(productService.getAllProducts(pageable));
-//    }
-
-//    @GetMapping(path = "search")
-//    public ResponseEntity<Page<Product>> searchProducts(Map<String, Object> ) {
-//        return ResponseEntity.ok(productService.getAllProducts(pageable));
-//    }
-
-//    @GetMapping(path = "search")
-//    public ResponseEntity<Page<ProductCmp>> searchProducts(
-//            @RequestParam Map<String, Object> filters,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "20") int size
-//    ) {
-//        return ResponseEntity.ok(genericFilterService.findFilteredEntity(filters, page, size));
-//    }
+    @Operation(summary = "Busca produtos CMP por Id com relacionamentos", description = "Lista todas as Produtos CMP mas com relacionamento")
+    @GetMapping(path = "/{product_cmp_id}")
+    public ResponseEntity<ProductCmpGetByIdDto> ProductCmpGetById (@PathVariable("product_cmp_id") Long id) {
+        return ResponseEntity.ok(productCmpService.findProdutctCmpByIdOrThrowBadRequestException(id));
+    }
 
     @PostMapping
     public ResponseEntity<HttpStatus> createProduct(@RequestBody @Valid ProductCmpDto productCmpDto) {

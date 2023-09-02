@@ -23,7 +23,7 @@ public class ProductCmp {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_cmp_id")
-    private Long productCmpId;
+    private Long id;
 
     @Column(nullable = false)
     private Double valueTotal;
@@ -36,8 +36,8 @@ public class ProductCmp {
 
     private String description;
 
-    @ManyToMany
-    @JoinTable(name = "section_product_cmp", joinColumns = @JoinColumn(name = "product_cmp_id"), inverseJoinColumns = @JoinColumn(name = "section_cmp_id"))
-    private final Set<SectionCmp> sectionCmps = new HashSet<>();
+    @OneToMany
+    private Set<SectionCmp> sectionCmps = new HashSet<>();
+
 
 }
