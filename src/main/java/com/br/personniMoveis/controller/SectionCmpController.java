@@ -1,7 +1,7 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
-import com.br.personniMoveis.service.SectionCmpService;
+import com.br.personniMoveis.service.productCmp.SectionCmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
