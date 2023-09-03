@@ -1,0 +1,36 @@
+version: '3'
+
+networks:
+  personniNetwork:
+    driver: bridge
+
+services:
+  personniMoveisDB:
+    image: postgres
+    container_name: personniMoveisDB
+    restart: always
+    networks: 
+      - personniNetwork
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: personniDEV
+    ports:
+      - "5432:5432"
+
+  spring_api:
+    build: "."
+    container_name: spring_api
+    depends_on: 
+      - personniMoveisDB
+    networks:
+      - personniNetwork
+    environment:
+      - PORT=8081
+      - DB_HOST=personniMoveisDB
+      - DB_PORT=5432
+      - DB_NAME=personniDEV
+      - DB_USER=admin
+      - DB_PASSWORD=123456
+    ports:
+      - "8081:8081"
