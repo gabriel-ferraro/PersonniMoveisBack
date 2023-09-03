@@ -1,4 +1,4 @@
-package com.br.personniMoveis.service;
+package com.br.personniMoveis.service.productCmp;
 
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
