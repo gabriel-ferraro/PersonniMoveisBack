@@ -5,7 +5,6 @@ import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetByIdDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
 import com.br.personniMoveis.model.productCmp.ProductCmp;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")

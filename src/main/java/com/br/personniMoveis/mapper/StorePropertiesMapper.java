@@ -3,7 +3,6 @@ package com.br.personniMoveis.mapper;
 import com.br.personniMoveis.dto.StorePropertiesDto;
 import com.br.personniMoveis.model.store.StoreProperties;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
