@@ -88,7 +88,7 @@ public class CategoryService {
         if(categoryCmpDto.getSectionCmpDtos() != null) {
             categoryCmpDto.getSectionCmpDtos().forEach(item -> {
                 if (item.getName() != "") {
-                    sectionCmpService.createSectionCmp(categoryCmpDto.getSectionCmpDtos(), newCategory.getId());
+                    sectionCmpService.createSectionCmp(item, newCategory.getId());
                 }
             });
         }
@@ -108,7 +108,7 @@ public class CategoryService {
                 if (sectionDto.getSectionId() != null && sectionDto.getSectionId() > 0) {
                     sectionCmpService.updateSectionCmp(sectionDto, sectionDto.getSectionId());
                 } else {
-                    sectionCmpService.createSectionCmp(categoryCmpDto.getSectionCmpDtos(), categoryId);
+                    sectionCmpService.createSectionCmp(sectionDto, categoryId);
                 }
             }
         }

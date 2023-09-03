@@ -38,7 +38,7 @@ public class ElementCmpController {
     }
 
     @PostMapping(path = "/{sectionCmpId}")
-    public ResponseEntity<String> createElementCmp(@RequestBody @Valid Set<ElementCmpDto> elementCmpDtos, @PathVariable("sectionCmpId") Set<Long> sectionCmpId) {
+    public ResponseEntity<String> createElementCmp(@RequestBody @Valid ElementCmpDto elementCmpDtos, @PathVariable("sectionCmpId") Long sectionCmpId) {
         elementCmpService.createElementCmp(elementCmpDtos, sectionCmpId);
         return new ResponseEntity(HttpStatus.CREATED);
     }

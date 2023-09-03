@@ -50,33 +50,24 @@ public class SectionCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createSectionCmp(Set<SectionCmpDto> sectionCmpDtos, Long categoryId) {
+    public void createSectionCmp(SectionCmpDto sectionCmpDtos, Long categoryId) {
         // Busca a categoria
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new BadRequestException("Category not found"));
         // Setando categorias para cada seção
-        sectionCmpDtos.forEach(item -> item.setCategoryId(category.getId()));
+        sectionCmpDtos.setCategoryId(categoryId);
         //Salvando seção
-        Set<SectionCmp> newSection = SectionCmpMapper.INSTANCE.toSectionCmpList(sectionCmpDtos);
+        SectionCmp newSection = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpDtos);
         // Persiste a nova instância no banco de dados
-        List<SectionCmp> newSectionList = sectionCmpRepository.saveAll(newSection);
-
-        Set<Long> sectionsIds = new HashSet<>();
-        for (SectionCmp section : newSectionList) {
-            sectionsIds.add(section.getId());
-        }
+        sectionCmpRepository.save(newSection);
 
         // Criando elementos relacionados, se necessário
-        if (!sectionCmpDtos.isEmpty()) {
-            for (SectionCmpDto sectionCmpDto : sectionCmpDtos) {
-                if (sectionCmpDto.getElementCmpDtos() != null) {
-                    for (ElementCmpDto elementCmpDto : sectionCmpDto.getElementCmpDtos()) {
-                        if (!elementCmpDto.getName().isEmpty()) {
-                            elementCmpService.createElementCmp(sectionCmpDto.getElementCmpDtos(), sectionsIds);
-                        }
+                if (sectionCmpDtos.getElementCmpDtos() != null) {
+                    for (ElementCmpDto elementCmpDto : sectionCmpDtos.getElementCmpDtos()) {
+                            if (!elementCmpDto.getName().isEmpty()) {
+                                elementCmpService.createElementCmp(elementCmpDto, newSection.getId());
+                            }
                     }
                 }
-            }
-        }
     }
 
     public void updateSectionCmp(SectionCmpDto sectionCmpDto, Long sectionCmpId) {
@@ -108,13 +99,7 @@ public class SectionCmpService {
         newElementDto.setName(elementDto.getName());
         newElementDto.setImgUrl(elementDto.getImgUrl());
         newElementDto.setOptionCmpDtos(elementDto.getOptionCmpDtos());
-
-        Set<ElementCmpDto> newElementSet = new HashSet<>();
-        Set<Long> sectionIds = new HashSet<>();
-        sectionIds.add(sectionCmpId);
-        newElementSet.add(newElementDto);
-
-        elementCmpService.createElementCmp(newElementSet, sectionIds);
+        elementCmpService.createElementCmp(newElementDto, sectionCmpId);
     }
 
 

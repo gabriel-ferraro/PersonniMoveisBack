@@ -54,35 +54,23 @@ public class ElementCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createElementCmp(Set<ElementCmpDto> elementCmpDtos, Set<Long> sectionCmpIds) {
-        for (Long sectionCmpId : sectionCmpIds) {
+    public void createElementCmp(ElementCmpDto elementCmpDtos, Long sectionCmpId) {
             // Busca a seção
             SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId)
                     .orElseThrow(() -> new BadRequestException("Section not found"));
-            // Configura a seção nos elementos
-            Set<ElementCmpDto> elementCmpDtosWithSection = elementCmpDtos.stream()
-                    .peek(dto -> dto.setSectionCmpId(sectionCmp.getId()))
-                    .collect(Collectors.toSet());
             // Converte e persiste os elementos
-            Set<ElementCmp> newElements = ElementCmpMapper.INSTANCE.toElementCmpList(elementCmpDtosWithSection);
+            ElementCmp newElement = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtos);
+            // Configura a seção nos elementos
+            newElement.setSectionCmpId(sectionCmpId);
             // Persiste a nova instância no banco de dados
-            List<ElementCmp> newElementList = elementCmpRepository.saveAll(newElements);;
+            elementCmpRepository.save(newElement);;
 
-            //Busca todos os ids do elemento que foi criado
-            Set<Long> elementIds = new HashSet<>();
-            for (ElementCmp element : newElementList){
-                elementIds.add(element.getId());
-            }
             // Criando elementos relacionados, se necessário
-            for (ElementCmpDto elementCmpDto : elementCmpDtos) {
-                for (OptionCmpDto optionCmpDto : elementCmpDto.getOptionCmpDtos()) {
+                for (OptionCmpDto optionCmpDto : elementCmpDtos.getOptionCmpDtos()) {
                     if (!optionCmpDto.getName().isEmpty()) {
-                        optionCmpService.createOptionCmp(elementCmpDto.getOptionCmpDtos(), elementIds);
+                        optionCmpService.createOptionCmp(optionCmpDto, newElement.getId());
                     }
                 }
-            }
-
-        }
     }
 
 
@@ -112,12 +100,8 @@ public class ElementCmpService {
         newOptionDto.setPrice(optionCmpDto.getPrice());
         newOptionDto.setImgUrl(optionCmpDto.getImgUrl());
 
-        Set<OptionCmpDto> newOptionSet = new HashSet<>();
-        Set<Long> elementIds = new HashSet<>();
-        elementIds.add(elementCmpId);
-        newOptionSet.add(newOptionDto);
 
-        optionCmpService.createOptionCmp(newOptionSet, elementIds);
+        optionCmpService.createOptionCmp(optionCmpDto, elementCmpId);
     }
 
     public void deleteElementById(Long elementId) {

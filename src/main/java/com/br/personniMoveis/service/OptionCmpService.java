@@ -46,19 +46,14 @@ public class OptionCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createOptionCmp(Set<OptionCmpDto> optionCmpDtos, Set<Long> elementCmpIds) {
-        for(Long elementCmpId : elementCmpIds){
+    public void createOptionCmp(OptionCmpDto optionCmpDtos, Long elementCmpId) {
             // Busca a categoria
             ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
-
-            // Configura a seção nos elementos
-            Set<OptionCmpDto> optionCmpDtosWithElement = optionCmpDtos.stream()
-                    .peek(dto -> dto.setElementCmpId(elementCmp.getId()))
-                    .collect(Collectors.toSet());
             // Converte e persiste os elementos
-            Set<OptionCmp> newOptions = OptionCmpMapper.INSTANCE.toOptionCmpList(optionCmpDtosWithElement);
-            newOptions.forEach(optionCmpRepository::save);
-        }
+            OptionCmp newOption = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDtos);
+            // Configura a seção nos elementos
+            newOption.setElementCmpId(elementCmpId);
+            optionCmpRepository.save(newOption);
     }
 
     public void updateOptionCmp(OptionCmpDto optionCmpDto, Long optionCmpId) {
