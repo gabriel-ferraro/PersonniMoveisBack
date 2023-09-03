@@ -13,5 +13,7 @@ public class ElementCmpGetDto {
 
     private String imgUrl;
 
+    private String type;
+
     private Long sectionCmpId;
 }

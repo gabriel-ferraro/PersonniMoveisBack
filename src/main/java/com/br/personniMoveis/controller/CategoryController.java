@@ -87,7 +87,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "Busca categoria por Id com relacionamentos", description = "Lista todas as categorias mas com relacionamento")
-    @GetMapping(path = "/category-product/{categoryId}")
+    @GetMapping(path = "/{categoryId}")
     public ResponseEntity<CategoryGetByIdDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
     }
@@ -101,7 +101,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "Atualiza Categoria", description = "Atualiza categoria com seções, elementos e opções")
-    @PutMapping(path = "/cmp/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity updateProductCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto, @PathVariable("id") Long id) {
         categoryService.updateCategoryCmp(categoryCmpDto, id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

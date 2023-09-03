@@ -18,6 +18,8 @@ public class ElementProductCmpDto {
 
     private String imgUrl;
 
+    private String type;
+
     private Long sectionCmpId;
 
     private OptionProductCmpDto optionProductCmpDto;
