@@ -108,7 +108,9 @@ public class CategoryService {
                 if (sectionDto.getSectionId() != null && sectionDto.getSectionId() > 0) {
                     sectionCmpService.updateSectionCmp(sectionDto, sectionDto.getSectionId());
                 } else {
-                    sectionCmpService.createSectionCmp(sectionDto, categoryId);
+                    if (sectionDto.getName() != "" && sectionDto.getSectionId() == 0) {
+                        sectionCmpService.createSectionCmp(sectionDto, categoryId);
+                    }
                 }
             }
         }

@@ -16,6 +16,8 @@ public class ElementCmpDto {
 
     private String imgUrl;
 
+    private String type;
+
     private Long sectionCmpId;
 
     private Set<OptionCmpDto> optionCmpDtos;

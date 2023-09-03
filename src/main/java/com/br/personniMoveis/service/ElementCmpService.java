@@ -99,8 +99,6 @@ public class ElementCmpService {
         newOptionDto.setName(optionCmpDto.getName());
         newOptionDto.setPrice(optionCmpDto.getPrice());
         newOptionDto.setImgUrl(optionCmpDto.getImgUrl());
-
-
         optionCmpService.createOptionCmp(optionCmpDto, elementCmpId);
     }
 
