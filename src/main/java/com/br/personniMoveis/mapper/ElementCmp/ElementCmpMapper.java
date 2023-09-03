@@ -16,6 +16,7 @@ public abstract class ElementCmpMapper {
 
     public abstract Set<ElementCmp> toElementCmpList(Set<ElementCmpDto> elementCmpDto);
 
+    @Mapping(target = "id", ignore = true)
     public abstract ElementCmp toElementCmp(ElementCmpDto elementCmpDto);
 
     public abstract ElementCmpGetDto ElementCmpToElementCmpGetDto(ElementCmp elementCmp);

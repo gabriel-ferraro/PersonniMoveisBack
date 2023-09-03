@@ -38,7 +38,7 @@ public class OptionCmpController {
     }
 
     @PostMapping(path = "/{elementCmpId}")
-    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid Set<OptionCmpDto> optionCmpDtos, @PathVariable("elementCmpId") Set<Long> elementCmpId) {
+    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid OptionCmpDto optionCmpDtos, @PathVariable("elementCmpId") Long elementCmpId) {
         optionCmpService.createOptionCmp(optionCmpDtos, elementCmpId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
