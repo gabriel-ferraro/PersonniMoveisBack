@@ -1,14 +1,11 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementProductCmpDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionProductCmpDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetByIdDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionProductCmpDto;
 import com.br.personniMoveis.exception.BadRequestException;
-import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.mapper.ProductCmp.ProductCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.OptionCmp;
@@ -23,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 @Service

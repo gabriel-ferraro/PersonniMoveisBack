@@ -1,9 +1,7 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetByIdDto;
-import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
 import com.br.personniMoveis.service.ProductCmpService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

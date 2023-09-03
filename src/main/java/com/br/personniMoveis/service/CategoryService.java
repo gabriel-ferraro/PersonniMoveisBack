@@ -96,7 +96,6 @@ public class CategoryService {
 
     public void updateCategoryCmp(CategoryCmpDto categoryCmpDto, Long categoryId) {
         findCategoryOrThrowNotFoundException(categoryId);
-
         // Atualiza os dados da categoria
         Category updatedCategory = CategoryMapper.INSTANCE.categoryCmpDtoToCategory(categoryCmpDto);
         updatedCategory.setId(categoryId);
@@ -118,13 +117,11 @@ public class CategoryService {
 
     public void deleteCategoryById(Long id) {
         Category categoryToDelete = findCategoryOrThrowNotFoundException(id);
-
         // Verifica se há seções relacionadas à categoria
         Set<SectionCmp> sectionsWithCategory = sectionCmpRepository.findByCategoryId(id);
         if (!sectionsWithCategory.isEmpty()) {
             throw new BadRequestException("Não é possível deletar categoria, existem seções associadas.");
         }
-
         // Deleta a categoria
         categoryRepository.delete(categoryToDelete);
     }

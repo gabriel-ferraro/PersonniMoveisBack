@@ -1,11 +1,8 @@
 package com.br.personniMoveis.dto.CategoryDto;
 
-import com.br.personniMoveis.model.productCmp.SectionCmp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
