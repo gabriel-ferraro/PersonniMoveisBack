@@ -1,6 +1,7 @@
 package com.br.personniMoveis.dto.ElementCmpDto;
 
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -20,6 +21,7 @@ public class ElementCmpDto {
 
     private Long sectionCmpId;
 
+    @JsonProperty("optionCmps")
     private Set<OptionCmpDto> optionCmpDtos;
 
     public ElementCmpDto() {
