@@ -9,25 +9,35 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+//    private final UserRepository userRepository;
+//
+//    @Autowired
+//    public UserService(UserRepository userRepository) {
+//        this.userRepository = userRepository;
+//    }
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     public UserEntity createAccount(UserCreateAccountDto userCreateAccountDto) {
 //        UserEntity newAccount = userRepository.save(UserEntityMapper.INSTANCE
 //                .userCreateAccountDtoToUserEntity(userCreateAccountDto));
-        UserEntity newAccount = UserEntityMapper.INSTANCE
-                .userCreateAccountDtoToUserEntity(userCreateAccountDto);
-        return userRepository.save(newAccount);
+        var cryptPassword = passwordEncoder.encode(userCreateAccountDto.getPassword());
+//        UserEntity newAccount = UserEntityMapper.INSTANCE
+//                .userCreateAccountDtoToUserEntity(userCreateAccountDto);
+        var user = new UserEntity(userCreateAccountDto.getName(), userCreateAccountDto.getEmail(),
+        cryptPassword, userCreateAccountDto.getCpf(), userCreateAccountDto.getPhoneNumber());
+        return userRepository.save(user);
     }
 
     public List<UserEntity> getAllUsers() {

@@ -5,8 +5,10 @@ import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,9 @@ public class UserController {
 
     private final UserService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UserController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
@@ -34,6 +39,7 @@ public class UserController {
 
     @PostMapping(path = "/create-account")
     public ResponseEntity<HttpStatus> createUserAccount(@RequestBody @Valid UserCreateAccountDto createAccountDto) {
+//        var password = passwordEncoder.encode(createAccountDto.getPassword());
         userService.createAccount(createAccountDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

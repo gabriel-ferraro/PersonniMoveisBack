@@ -13,6 +13,6 @@ public abstract class UserEntityMapper {
 
     public static final UserEntityMapper INSTANCE = Mappers.getMapper(UserEntityMapper.class);
 
-    public abstract UserEntity userCreateAccountDtoToUserEntity(UserCreateAccountDto createAccountDto);
+    public abstract UserEntity userCreateAccountDtoToUserEntity(UserCreateAccountDto userCreateAccountDto);
 
 }

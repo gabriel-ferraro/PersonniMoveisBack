@@ -71,6 +71,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())// Desabilitando CORS
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Mudando para Stateless
                 .authorizeHttpRequests(req -> {
+                    req.requestMatchers(HttpMethod.POST, "/users/create-account").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/v3/api-docs","/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.requestMatchers(AUTH_WHITELIST).permitAll(); // Permitindo todos os links da lista
