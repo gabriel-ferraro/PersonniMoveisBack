@@ -4,9 +4,11 @@ import com.br.personniMoveis.constant.UserEntityRoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +46,14 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    public UserEntity(String name, String email, String password, String cpf, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.cpf = cpf;
+        this.phoneNumber = phoneNumber;
+    }
 
 //    @Column(name = "user_entity_role")
 //    @Enumerated(EnumType.ORDINAL)
