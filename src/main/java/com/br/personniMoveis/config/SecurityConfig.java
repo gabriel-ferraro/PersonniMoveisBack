@@ -45,6 +45,22 @@ public class SecurityConfig {
 //        return httpSecurity.build();
 //    }
 
+    // Teste para liberar acesso ao Swagger
+    private static final String[] AUTH_WHITELIST = {
+            // for Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-ui.html",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/webjars/**",
+
+            // for Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
     @Autowired
     private SecurityFilter securityFilter;
 
@@ -56,6 +72,9 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Mudando para Stateless
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/v3/api-docs","/swagger-ui.html", "/swagger-ui/**").permitAll();
+                    req.requestMatchers(AUTH_WHITELIST).permitAll(); // Permitindo todos os links da lista
+//                    req.requestMatchers(HttpMethod.DELETE, "/user").hasRole(ADMIN);
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
