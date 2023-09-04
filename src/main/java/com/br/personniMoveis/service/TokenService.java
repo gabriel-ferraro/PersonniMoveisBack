@@ -3,6 +3,7 @@ package com.br.personniMoveis.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.br.personniMoveis.model.user.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.Date;
 public class TokenService {
 
 
-    @Value("{api.security.token.secret}")
+    @Value("{api.security.token.secret}") // Passando o valor da senha em properties para a variavel
     private String secret;
 
     public String generateToken(UserEntity user) {
@@ -29,6 +30,19 @@ public class TokenService {
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error at generating JWT Token", exception);
+        }
+    }
+
+    public String getSubject(String tokenJWT) {
+        try {
+            var algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("PersonniMoveis API")
+                    .build().verify(tokenJWT)
+                    .getSubject();
+
+        } catch (JWTVerificationException exception){
+            throw new RuntimeException("Invalid or Expired JWT Token!");
         }
     }
 
