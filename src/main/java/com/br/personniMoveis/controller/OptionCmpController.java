@@ -3,6 +3,7 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpGetDto;
 import com.br.personniMoveis.service.OptionCmpService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("OptionCmp")
+@SecurityRequirement(name = "bearer-key")
 public class OptionCmpController {
 
     private final OptionCmpService optionCmpService;
