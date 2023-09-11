@@ -18,10 +18,14 @@ public class SwaggerConfig {
                         .description("API Project Documentation of Personni Moveis")
                         .version("v0.1")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-                .components(new Components().addSecuritySchemes("bearer-key", new SecurityScheme()
-                        .type(SecurityScheme.Type.HTTP)
-                        .scheme("bearer")
-                        .bearerFormat("JWT")));
+                .components(new Components()
+                        .addSecuritySchemes("bearer-key",
+                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
     }
 
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+
+    }
 }

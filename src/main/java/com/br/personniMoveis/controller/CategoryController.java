@@ -8,6 +8,7 @@ import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("category")
 @CrossOrigin(origins = "*")
+@SecurityRequirement(name = "bearer-key")
 public class CategoryController {
 
     private final CategoryService categoryService;
