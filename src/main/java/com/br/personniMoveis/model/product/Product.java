@@ -51,32 +51,32 @@ public class Product {
      */
     @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id")
-    private final Set<Detail> details = new HashSet<>();
+    private Set<Detail> details;
 
     /**
      * Um móvel pode ter somente um material (material é o que compõe a maior parte do produto, como madeira de algum tipo, metal, etc).
      */
     @ManyToMany
     @JoinTable(name = "product_material", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "material_id"))
-    private final Set<Material> materials = new HashSet<>();
+    private Set<Material> materials;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id")
-    private final Set<Section> sections = new HashSet<>();
+    private Set<Section> sections;
 
     /**
      * As tags podem estar em produtos diferentes, não pertencem a um produto específico, exemplos de tags: escritório, cozinha, sala de estar, etc.
      */
     @ManyToMany
     @JoinTable(name = "product_tag", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private final Set<Tag> tags = new HashSet<>();
+    private Set<Tag> tags;
 
     /**
      * Produto pode ser de SOMENTE UMA categoria, ou de nehuma, como: caderias, armários, mesas, etc...
      */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "id")
     private Category category;
 
     @Override

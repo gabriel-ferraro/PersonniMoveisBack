@@ -41,20 +41,29 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllProductsInCategory(categoryId));
     }
 
-    /**
-     * Retorna uma categoria editada ou criada. Faz o processo de persist�ncia de toda a categoria e objetos que ela cont�m.
-     *
-     * @param categoryId Id da categoria. Deve ser enviado para fazer a edi��o, n�o enviado para fazer a cria��o.
-     * @param dto        Dto com os dados necess�rios para fazer a cria��o das entidades em somente uma requisi��o.
-     * @return Uma categoria editada.
-     */
+//    /**
+//     * Retorna uma categoria editada ou criada. Faz o processo de persist�ncia de toda a categoria e objetos que ela cont�m.
+//     *
+//     * @param categoryId Id da categoria. Deve ser enviado para fazer a edi��o, n�o enviado para fazer a cria��o.
+//     * @param dto        Dto com os dados necess�rios para fazer a cria��o das entidades em somente uma requisi��o.
+//     * @return Uma categoria editada.
+//     */
+//    @Operation(summary = "Cria/edita categoria do produto convencional", description = "Endpoint que recebe todo payload para criação ou edição do produto convencional e seus subitens")
+//    @PutMapping(path = "/create-full-product")
+//    public ResponseEntity<Category> createFullProduct(
+//            @RequestParam(name = "categoryId", required = false) Long categoryId,
+//            @RequestBody @Valid CategoryDto dto) {
+//        return ResponseEntity.ok(categoryService.createOrUpdateRegularProduct(categoryId, dto));
+//    }
+
     @Operation(summary = "Cria/edita categoria do produto convencional", description = "Endpoint que recebe todo payload para criação ou edição do produto convencional e seus subitens")
-    @PutMapping(path = "/create-full-product")
+    @PutMapping(path = "/create-full-product/test")
     public ResponseEntity<Category> createFullProduct(
             @RequestParam(name = "categoryId", required = false) Long categoryId,
-            @RequestBody @Valid CategoryDto dto) {
-        return ResponseEntity.ok(categoryService.createOrUpdateRegularProduct(categoryId, dto));
+            @RequestBody @Valid Category category) {
+        return ResponseEntity.ok(categoryService.saveRegularProduct(categoryId, category));
     }
+
     @Operation(summary = "Cria categoria CMP", description = "recebe payload da categoria CMP e CRIA itens")
     @PostMapping(path = "/create-full-cmp")
     public ResponseEntity<HttpStatus> createCategoryCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto) {

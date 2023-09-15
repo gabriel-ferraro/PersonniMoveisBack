@@ -31,9 +31,8 @@ public class ProductController {
     }
 
     @GetMapping(path = "/{productId}")
-    public ResponseEntity<ProductGetDto> getProduct(@PathVariable("productId") Long productId) {
-        return ResponseEntity.ok(ProductMapper.INSTANCE.productToProductGetDto(
-                productService.findProductOrThrowNotFoundException(productId)));
+    public ResponseEntity<Product> getProduct(@PathVariable("productId") Long productId) {
+        return ResponseEntity.ok(productService.findProductOrThrowNotFoundException(productId));
     }
 
     @GetMapping
