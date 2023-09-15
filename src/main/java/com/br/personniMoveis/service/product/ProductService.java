@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductService {
@@ -65,6 +66,31 @@ public class ProductService {
     public List<Tag> getAllTagsFromProduct(Long productId) {
         this.findProductOrThrowNotFoundException(productId);
         return productRepository.findTagsFromProduct(productId);
+    }
+
+    @Transactional
+    public void createProductMaterials(Set<Product> products) {
+        products.forEach(product -> product.getMaterials().forEach(materialService::createMaterial));
+    }
+
+    @Transactional
+    public void createProductTags(Set<Product> products) {
+        products.forEach(product -> product.getTags().forEach(tagService::createTag));
+    }
+
+    @Transactional
+    public void createProductMaterial(Set<Material> materials) {
+        materials.forEach(materialService::createMaterial);
+    }
+
+    @Transactional
+    public void createProductTag(Set<Tag> tags) {
+        tags.forEach(tagService::createTag);
+    }
+
+    @Transactional
+    public void createProduct(Product product) {
+        productRepository.save(product);
     }
 
     public Product createProduct(ProductDto productDto) {

@@ -2,6 +2,7 @@ package com.br.personniMoveis.model.category;
 
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -18,11 +18,12 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "category")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "category_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(nullable = false)
@@ -35,9 +36,9 @@ public class Category {
 
     @OneToMany
     @JoinColumn(name = "category_id")
-    private final Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 
     @OneToMany
-    private final Set<SectionCmp> sectionCmp = new HashSet<>();
+    private Set<SectionCmp> sectionCmp;
 
 }

@@ -8,9 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Mapemaneto ORM da entidade "usuário" do sistema. Implementa interface
@@ -51,7 +49,11 @@ public class UserEntity implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "clientAddress")
     @Setter(AccessLevel.NONE)
-    private final ArrayList<ClientAddress> addresses = new ArrayList<>();
+    private final List<ClientAddress> addresses = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "id")
+    private final Set<Order> orders = new HashSet<>();
 
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "clientOrder")

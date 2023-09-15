@@ -1,5 +1,6 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserEntity getUserById(Long id) {
+    public UserEntity findUserOrThrowNotFoundException(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST, "User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não existe!"));
     }
 }

@@ -16,8 +16,8 @@ public class ProductDto {
     private Boolean editable;
     private String imgUrl;
     private String description;
-    private Set<DetailDto> detailPostList;
-    private Set<MaterialDto> materialPostList;
-    private Set<TagDto> tagPostList;
-    private Set<SectionDto> sectionPostList;
+    private Set<DetailDto> detailList;
+    private Set<MaterialDto> materialList;
+    private Set<TagDto> tagList;
+    private Set<SectionDto> sectionList;
 }
