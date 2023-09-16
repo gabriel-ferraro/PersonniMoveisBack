@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,6 +81,7 @@ public class CategoryController {
 
     @Operation(summary = "Busca todas as Categorias", description = "Lista todas as categorias mas sem relacionamento")
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CategoryGetDto>> getAllCategoria() {
         List<CategoryGetDto> Category = categoryService.getAllCategories();
         if (Category.isEmpty()) {

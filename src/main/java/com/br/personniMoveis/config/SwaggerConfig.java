@@ -22,10 +22,4 @@ public class SwaggerConfig {
                         .addSecuritySchemes("bearer-key",
                                 new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
     }
-
-
-    @Bean
-    public OpenAPI customOpenAPI() {
-
-    }
 }
