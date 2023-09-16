@@ -28,7 +28,6 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-
     @Operation(summary = "Categoria", description = "Adquire a categoria CMP do id informado")
     @GetMapping(path = "/category-cmp/{categoryId}")
     public ResponseEntity<CategoryGetByIdDto> getCategoryCmpById(@PathVariable("categoryId") Long categoryId) {
@@ -41,57 +40,10 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllProductsInCategory(categoryId));
     }
 
-//    /**
-//     * Retorna uma categoria editada ou criada. Faz o processo de persist�ncia de toda a categoria e objetos que ela cont�m.
-//     *
-//     * @param categoryId Id da categoria. Deve ser enviado para fazer a edi��o, n�o enviado para fazer a cria��o.
-//     * @param dto        Dto com os dados necess�rios para fazer a cria��o das entidades em somente uma requisi��o.
-//     * @return Uma categoria editada.
-//     */
-//    @Operation(summary = "Cria/edita categoria do produto convencional", description = "Endpoint que recebe todo payload para criação ou edição do produto convencional e seus subitens")
-//    @PutMapping(path = "/create-full-product")
-//    public ResponseEntity<Category> createFullProduct(
-//            @RequestParam(name = "categoryId", required = false) Long categoryId,
-//            @RequestBody @Valid CategoryDto dto) {
-//        return ResponseEntity.ok(categoryService.createOrUpdateRegularProduct(categoryId, dto));
-//    }
-
-    @Operation(summary = "Cria/edita categoria do produto convencional", description = "Endpoint que recebe todo payload para criação ou edição do produto convencional e seus subitens")
-    @PutMapping(path = "/create-full-product/test")
-    public ResponseEntity<Category> createFullProduct(
-            @RequestParam(name = "categoryId", required = false) Long categoryId,
-            @RequestBody @Valid Category category) {
-        return ResponseEntity.ok(categoryService.saveRegularProduct(categoryId, category));
-    }
-
-    @Operation(summary = "Cria categoria CMP", description = "recebe payload da categoria CMP e CRIA itens")
-    @PostMapping(path = "/create-full-cmp")
-    public ResponseEntity<HttpStatus> createCategoryCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto) {
-        categoryService.createCategoryCmp(categoryCmpDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @Operation(summary = "Atualiza categoria CMP", description = "recebe payload da categoria CMP e ATUALIZA itens")
-    @PutMapping(path = "/product/{id}")
-    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid CategoryCmpDto categorycmpDto, @PathVariable("id") Long id) {
-        categoryService.updateCategoryCmp(categorycmpDto, id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-//    @Operation(summary = "deleta produto de uma categoria", description = "recebe o id de uma categoria e de um produto, faz a exclusao do produto nessa categoria")
-//    @DeleteMapping(path = "/{categoryId}")
-//    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("categoryId") Long categoryId) {
-////        categoryService.deleteCategoryById(categoryId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-
     @Operation(summary = "Busca todas as Categorias", description = "Lista todas as categorias mas sem relacionamento")
     @GetMapping
     public ResponseEntity<List<CategoryGetDto>> getAllCategoria() {
         List<CategoryGetDto> Category = categoryService.getAllCategories();
-        if (Category.isEmpty()) {
-            return ResponseEntity.ok(Category); // Retorna uma lista vazia
-        }
         return ResponseEntity.ok(Category);
     }
 
@@ -101,25 +53,24 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
     }
 
-
     @Operation(summary = "Cria Categoria", description = "Cria categoria com seções, elementos e opções")
     @PostMapping
-    public ResponseEntity<String> createCategory(@RequestBody @Valid CategoryCmpDto categoryDto) {
+    public ResponseEntity<HttpStatus> createCategory(@RequestBody @Valid CategoryCmpDto categoryDto) {
         categoryService.createCategoryCmp(categoryDto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Atualiza Categoria", description = "Atualiza categoria com seções, elementos e opções")
     @PutMapping(path = "/{id}")
-    public ResponseEntity updateProductCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto, @PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> updateProductCmp(@RequestBody @Valid CategoryCmpDto categoryCmpDto, @PathVariable("id") Long id) {
         categoryService.updateCategoryCmp(categoryCmpDto, id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Deleta Categoria", description = "Deleta categoria se não tiver nenhum relacionametno")
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity deleteProductCmpById(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> deleteProductCmpById(@PathVariable("id") Long id) {
         categoryService.deleteCategoryById(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

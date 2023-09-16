@@ -4,35 +4,34 @@ import com.br.personniMoveis.dto.product.*;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.AlreadyExistsException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
-import com.br.personniMoveis.mapper.SectionCmp.SectionCmpMapper;
 import com.br.personniMoveis.mapper.product.*;
 import com.br.personniMoveis.model.product.*;
 import com.br.personniMoveis.repository.ProductRepository;
+import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.DetailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
     private final DetailService detailService;
     private final MaterialService materialService;
     private final TagService tagService;
-    private final SectionService sectionService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, DetailService detailService, TagService tagService,
-                          MaterialService materialService, SectionService sectionService) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService,
+                          DetailService detailService, TagService tagService, MaterialService materialService) {
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
         this.detailService = detailService;
         this.tagService = tagService;
         this.materialService = materialService;
-        this.sectionService = sectionService;
     }
 
     public Product findProductOrThrowNotFoundException(Long id) {
@@ -40,7 +39,7 @@ public class ProductService {
                 () -> new ResourceNotFoundException("Produto não encontrado."));
     }
 
-    private Detail findDetailInProductOrThrowNotfoundException(Product product, Long detailId) {
+    private Detail findDetailInProductOrThrowNotFoundException(Product product, Long detailId) {
         return product.getDetails().stream().filter(detail -> detail.getDetailId().equals(detailId)).findAny().orElseThrow(
                 () -> new ResourceNotFoundException("Detalhe não encontrada no produto."));
     }
@@ -52,6 +51,7 @@ public class ProductService {
 
     /**
      * Retorna todos produtos.
+     *
      * @return Lista de todos produtos.
      */
     public List<Product> getAllProducts() {
@@ -68,33 +68,33 @@ public class ProductService {
         return productRepository.findTagsFromProduct(productId);
     }
 
-    @Transactional
-    public void createProductMaterials(Set<Product> products) {
-        products.forEach(product -> product.getMaterials().forEach(materialService::createMaterial));
-    }
-
-    @Transactional
-    public void createProductTags(Set<Product> products) {
-        products.forEach(product -> product.getTags().forEach(tagService::createTag));
-    }
-
-    @Transactional
-    public void createProductMaterial(Set<Material> materials) {
-        materials.forEach(materialService::createMaterial);
-    }
-
-    @Transactional
-    public void createProductTag(Set<Tag> tags) {
-        tags.forEach(tagService::createTag);
-    }
-
-    @Transactional
-    public void createProduct(Product product) {
-        productRepository.save(product);
-    }
-
     public Product createProduct(ProductDto productDto) {
         return productRepository.save(ProductMapper.INSTANCE.productDtoToProduct(productDto));
+    }
+
+    /**
+     * Cria produto convencional completo (recebe payload para criação do produto e todos subitens).
+     *
+     * @param product    requisição para criação do produto.
+     * @param categoryId da opcional da categoria do produto (produto pode não estar em uma categoria).
+     * @return O produto persistido no banco.
+     */
+    @Transactional
+    public Product saveRegularProduct(Product product, Long categoryId) {
+        // Checa se produto recebido tem materiais.
+        if (product.getMaterials() != null && !product.getMaterials().isEmpty()) {
+            product.getMaterials().forEach(materialService::createMaterial);
+        }
+        // Checa se produto tem tags.
+        if (product.getTags() != null && !product.getTags().isEmpty()) {
+            product.getTags().forEach(tagService::createTag);
+        }
+        // Faz set da categoria caso tenha sido informada.
+        if (categoryId != null) {
+            product.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
+        }
+        // Persiste produto.
+        return productRepository.save(product);
     }
 
     public List<DetailDto> getAllDetailsFromProduct(Long productId) {
@@ -120,29 +120,9 @@ public class ProductService {
         return detail;
     }
 
-    public Detail createDetail(DetailDto detail) {
-        return detailService.createDetail(DetailMapper.INSTANCE.detailDtoToDetail(detail));
-    }
-
-    public Material createMaterial(MaterialDto materialDto) {
-        return materialService.createMaterial(MaterialMapper.INSTANCE.materialDtoToMaterial(materialDto));
-    }
-
-    public Tag createTag(TagDto tagDto) {
-        return tagService.createTag(TagMapper.INSTANCE.tagDtoToTag(tagDto));
-    }
-
-    public Section createSection(SectionDto sectionDto) {
-        return sectionService.createSection(SectionCmpMapper.INSTANCE.sectionDtoToSection(sectionDto));
-    }
-
-    public Option createOption(OptionDto option) {
-        return sectionService.createOption(OptionMapper.INSTANCE.optionDtoToOption(option));
-    }
-
     public void updateDetail(Long productId, Long detailId, DetailDto detailDto) {
         Product product = findProductOrThrowNotFoundException(productId);
-        findDetailInProductOrThrowNotfoundException(product, detailId);
+        findDetailInProductOrThrowNotFoundException(product, detailId);
         Detail newDetail = DetailMapper.INSTANCE.detailDtoToDetail(detailDto);
         newDetail.setDetailId(detailId);
         detailService.updateDetail(newDetail);
@@ -151,7 +131,7 @@ public class ProductService {
     @Transactional
     public void removeDetailInProduct(Long productId, Long detailId) {
         Product product = findProductOrThrowNotFoundException(productId);
-        Detail detail = findDetailInProductOrThrowNotfoundException(product, detailId);
+        Detail detail = findDetailInProductOrThrowNotFoundException(product, detailId);
         product.getDetails().remove(detail);
     }
 
