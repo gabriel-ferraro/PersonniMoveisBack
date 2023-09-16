@@ -1,5 +1,6 @@
 package com.br.personniMoveis.model.user;
 
+import com.br.personniMoveis.constant.Profiles;
 import com.br.personniMoveis.constant.UserEntityRoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -10,10 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Mapemaneto ORM da entidade "usuário" do sistema. Implementa interface
@@ -47,12 +45,15 @@ public class UserEntity implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    public UserEntity(String name, String email, String password, String cpf, String phoneNumber) {
+    private Profiles profile;
+
+    public UserEntity(String name, String email, String password, String cpf, String phoneNumber, Profiles profile) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.cpf = cpf;
         this.phoneNumber = phoneNumber;
+        this.profile = profile;
     }
 
 //    @Column(name = "user_entity_role")
@@ -66,7 +67,10 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+//        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.profile == Profiles.ADMIN) { return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));}
+        else if (this.profile == Profiles.COLLABORATOR) { return List.of(new SimpleGrantedAuthority("ROLE_COLLABORATOR"), new SimpleGrantedAuthority("ROLE_USER"));}
+        else { return List.of(new SimpleGrantedAuthority("ROLE_USER"));}
     }
 
     @Override

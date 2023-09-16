@@ -36,7 +36,7 @@ public class UserService {
 //        UserEntity newAccount = UserEntityMapper.INSTANCE
 //                .userCreateAccountDtoToUserEntity(userCreateAccountDto);
         var user = new UserEntity(userCreateAccountDto.getName(), userCreateAccountDto.getEmail(),
-        cryptPassword, userCreateAccountDto.getCpf(), userCreateAccountDto.getPhoneNumber());
+        cryptPassword, userCreateAccountDto.getCpf(), userCreateAccountDto.getPhoneNumber(), userCreateAccountDto.getProfile());
         return userRepository.save(user);
     }
 
