@@ -32,9 +32,8 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createTag(@RequestBody Tag tag) {
-        tagService.createTag(tag);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Tag> createTag(@RequestBody Tag tag) {
+        return ResponseEntity.ok(tagService.createTag(tag));
     }
 
     @PutMapping("/{tagId}")
