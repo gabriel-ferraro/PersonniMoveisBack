@@ -28,7 +28,7 @@ public abstract class CategoryMapper {
     @Mapping(target = "id", ignore = true)
     public abstract Category categoryCmpDtoToCategory(CategoryCmpDto categorycmpDto);
 
-    public abstract CategoryGetDto CategotyToCategoryGetDto(Category category);
+    public abstract CategoryGetDto CategoryToCategoryGetDto(Category category);
 
     public abstract CategoryGetByIdDto CategotyToCategoryGetByIdDto(Category category);
 }

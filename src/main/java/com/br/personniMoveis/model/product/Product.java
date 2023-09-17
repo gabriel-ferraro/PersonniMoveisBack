@@ -1,5 +1,6 @@
 package com.br.personniMoveis.model.product;
 
+import com.br.personniMoveis.model.ProductImg;
 import com.br.personniMoveis.model.category.Category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -39,8 +40,15 @@ public class Product {
     @Column(nullable = false)
     private Boolean editable;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "main_img_url")
+    private String mainImageUrl;
+
+    /**
+     * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
+     */
+    @OneToMany
+    @JoinColumn(name = "product_id")
+    private Set<ProductImg> secondaryImages = new HashSet<>();
 
     private String description;
 
@@ -63,7 +71,7 @@ public class Product {
     private Set<Section> sections;
 
     /**
-     * As tags podem estar em produtos diferentes, não pertencem a um produto específico, exemplos de tags: escritório, cozinha, sala de estar, etc.
+     * As tags podem estar em produtos diferene tes, não pertencem a um produto específico, exemplos de tags: escritório, cozinha, sala de estar, etc.
      */
     @ManyToMany
     @JoinTable(name = "product_tag", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
