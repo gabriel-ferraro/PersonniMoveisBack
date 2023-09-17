@@ -8,6 +8,7 @@ import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("products")
+@SecurityRequirement(name = "bearer-key")
 public class ProductController {
 
     private final ProductService productService;

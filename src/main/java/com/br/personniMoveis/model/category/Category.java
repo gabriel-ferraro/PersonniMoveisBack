@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -35,10 +36,14 @@ public class Category {
     private Boolean allow_creation = true; // Permitir criação do produto que se encaixa na categoria.
 
     @OneToMany
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "id")
     private Set<Product> products;
 
     @OneToMany
     private Set<SectionCmp> sectionCmp;
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

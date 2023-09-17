@@ -3,15 +3,15 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
-import com.br.personniMoveis.dto.product.CategoryDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
-import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("category")
 @CrossOrigin(origins = "*")
+@SecurityRequirement(name = "bearer-key")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -42,6 +43,7 @@ public class CategoryController {
 
     @Operation(summary = "Busca todas as Categorias", description = "Lista todas as categorias mas sem relacionamento")
     @GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CategoryGetDto>> getAllCategoria() {
         List<CategoryGetDto> Category = categoryService.getAllCategories();
         return ResponseEntity.ok(Category);
