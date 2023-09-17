@@ -12,6 +12,6 @@ public class ProductGetDto extends ProductDto {
     public ProductGetDto(Long productId, String name, Double value, Long quantity,
                          Boolean editable, String imgUrl, String description) {
         super(productId, name, value, quantity, editable, imgUrl, description,
-                null, null, null, null);
+                null, null, null, null, null);
     }
 }
