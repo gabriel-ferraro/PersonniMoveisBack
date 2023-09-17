@@ -3,6 +3,7 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.service.product.TagService;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("tags")
+@SecurityRequirement(name = "bearer-key")
 public class TagController {
 
     private final TagService tagService;

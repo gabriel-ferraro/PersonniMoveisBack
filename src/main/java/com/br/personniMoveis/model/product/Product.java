@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,8 +37,7 @@ public class Product {
     private Long quantity;
 
     @Column(nullable = false)
-    @Builder.Default
-    private Boolean editable = false; // Produto não é editável por padrão.
+    private Boolean editable;
 
     @Column(name = "img_url")
     private String imgUrl;

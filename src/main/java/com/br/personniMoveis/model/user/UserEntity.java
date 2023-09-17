@@ -1,6 +1,6 @@
 package com.br.personniMoveis.model.user;
 
-import com.br.personniMoveis.constant.UserEntityRoleType;
+import com.br.personniMoveis.constant.Profiles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Mapemaneto ORM da entidade "usuário" do sistema. Implementa interface
@@ -42,18 +44,65 @@ public class UserEntity implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "user_entity_role")
-    @Enumerated(EnumType.ORDINAL)
-    private UserEntityRoleType userEntityRole;
+    private Profiles profile;
+
+    public UserEntity(String name, String email, String password, String cpf, String phoneNumber, Profiles profile) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.cpf = cpf;
+        this.phoneNumber = phoneNumber;
+        this.profile = profile;
+    }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "clientAddress")
-    @Setter(AccessLevel.NONE)
+    @OneToMany
+    @JoinColumn(name = "address_id")
     private final List<ClientAddress> addresses = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "id")
-    private final Set<Order> orders = new HashSet<>();
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.profile == Profiles.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        else if (this.profile == Profiles.COLLABORATOR) {
+            return List.of(new SimpleGrantedAuthority("ROLE_COLLABORATOR"), new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "clientOrder")
@@ -69,28 +118,6 @@ public class UserEntity implements UserDetails {
 //    @Setter(AccessLevel.NONE)
 //    private final HashSet<Product> productWaitingList = new HashSet<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Cada usuário deve ter somente um papel (role) -> ADMIN, USER ou COLLABORATOR, 
-        // como indicado no enum UserEntityRoleType, por isso retorna uma lista contendo o papel único do usuário.
-        return Collections.singletonList(new SimpleGrantedAuthority(userEntityRole.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return this.name;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        // Default.
-        return true;
-    }
 
     /**
      * Implementação para validar se credenciais (token JWT) não expirou.
@@ -102,15 +129,5 @@ public class UserEntity implements UserDetails {
      *
      * @return Verdadeiro ou falso para credenciais expiradas.
      */
-    @Override
-    public boolean isCredentialsNonExpired() {
-        // a fazer
-        return true;
-    }
 
-    @Override
-    public boolean isEnabled() {
-        // Default.
-        return true;
-    }
 }
