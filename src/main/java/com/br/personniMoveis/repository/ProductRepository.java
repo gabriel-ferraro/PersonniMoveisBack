@@ -12,9 +12,8 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
-
     @Query("SELECT new com.br.personniMoveis.dto.product.get.ProductGetDto(" +
-            "p.productId, p.name, p.value, p.quantity, p.editable, p.mainImageUrl, p.description) " +
+            "p.productId, p.name, p.value, p.quantity, p.editable, p.mainImgUrl, p.description) " +
             "FROM Product p " +
             "JOIN p.tags t " +
             "WHERE t.tagId = :tagId")

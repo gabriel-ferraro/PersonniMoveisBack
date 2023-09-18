@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -41,7 +42,9 @@ public class Product {
     private Boolean editable;
 
     @Column(name = "main_img_url")
-    private String mainImageUrl;
+    private String mainImgUrl;
+
+    private String description;
 
     /**
      * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
@@ -49,8 +52,6 @@ public class Product {
     @OneToMany
     @JoinColumn(name = "product_id")
     private Set<ProductImg> secondaryImages = new HashSet<>();
-
-    private String description;
 
     /**
      * Details são campos descritivos do produto, exemplo: peso do produto - A cadeira X é leve e tem só x kg.

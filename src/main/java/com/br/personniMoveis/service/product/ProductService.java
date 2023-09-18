@@ -83,7 +83,7 @@ public class ProductService {
     public Product saveRegularProduct(Product product, Long categoryId) {
         // Checa se produto recebido tem materiais.
         if (product.getMaterials() != null && !product.getMaterials().isEmpty()) {
-            product.getMaterials().forEach(materialService::createMaterial);
+            product.getMaterials().forEach(materialService::saveMaterial);
         }
         // Checa se produto tem tags.
         if (product.getTags() != null && !product.getTags().isEmpty()) {
