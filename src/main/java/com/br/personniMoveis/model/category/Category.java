@@ -32,8 +32,7 @@ public class Category {
     private String name;
 
     @Column(nullable = false)
-    @Builder.Default
-    private Boolean allow_creation = true; // Permitir criação do produto que se encaixa na categoria.
+    private Boolean allow_creation; // Permitir criação do produto que se encaixa na categoria.
 
     @OneToMany
     @JoinColumn(name = "id")
