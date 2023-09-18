@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ProductGetDto extends ProductDto {
 
     public ProductGetDto(Long productId, String name, Double value, Long quantity,
-                         Boolean editable, String imgUrl, String description) {
-        super(productId, name, value, quantity, editable, imgUrl, description,
+                         Boolean editable, String mainImgUrl, String description) {
+        super(productId, name, value, quantity, editable, mainImgUrl, description,
                 null, null, null, null, null);
     }
 }

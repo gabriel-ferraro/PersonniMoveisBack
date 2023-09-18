@@ -123,7 +123,7 @@ public class CategoryService {
     }
 
     public List<CategoryGetDto> getAllCategories() {
-        return categoryRepository.findAll().stream().map(CategoryMapper.INSTANCE::CategotyToCategoryGetDto).toList();
+        return categoryRepository.findAll().stream().map(CategoryMapper.INSTANCE::CategoryToCategoryGetDto).toList();
     }
 
     public List<ProductGetDto> getAllProductsInCategory(Long categoryId) {

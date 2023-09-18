@@ -15,7 +15,7 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSpecificationExecutor<Category> {
 
     @Query(value = """
-            SELECT new com.br.personniMoveis.dto.product.get.ProductGetDto(p.productId, p.name, p.value, p.quantity, p.editable, p.imgUrl, p.description)
+            SELECT new com.br.personniMoveis.dto.product.get.ProductGetDto(p.productId, p.name, p.value, p.quantity, p.editable, p.mainImgUrl, p.description)
             FROM Product p
             LEFT JOIN p.category c
             WHERE c.id = :id

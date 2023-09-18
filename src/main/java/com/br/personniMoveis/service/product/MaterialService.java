@@ -26,7 +26,19 @@ public class MaterialService {
         return materialRepository.findAll();
     }
 
-    public Material createMaterial(Material material) {
+    public Material saveMaterial(Material material) {
         return materialRepository.save(material);
+    }
+
+    public Material updateMaterial(Long materialId, Material material) {
+        Material updatedMaterial = findMaterialByIdOrThrowNotFoundException(materialId);
+        updatedMaterial.setMaterialId(materialId);
+        updatedMaterial = this.saveMaterial(material);
+        return updatedMaterial;
+    }
+
+    public void deleteMaterial(Long materialId) {
+        findMaterialByIdOrThrowNotFoundException(materialId);
+        materialRepository.deleteById(materialId);
     }
 }
