@@ -3,6 +3,7 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.dto.OrderRequest;
 import com.br.personniMoveis.model.user.Order;
 import com.br.personniMoveis.service.OrderService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("orders")
+@SecurityRequirement(name = "bearer-key")
 public class OrderController {
     private final OrderService orderService;
 

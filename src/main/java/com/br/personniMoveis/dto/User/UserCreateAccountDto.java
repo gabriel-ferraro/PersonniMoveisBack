@@ -4,6 +4,8 @@ import com.br.personniMoveis.constant.Profiles;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +21,19 @@ public class UserCreateAccountDto {
 
     private String phoneNumber;
 
-    private Profiles profile;
+
+//    private Profiles profile;
+//
+//    public UserCreateAccountDto() {
+//        this.profile = Profiles.USER;
+//    }
+
+//    public void setProfile(Profiles profile) {
+//        if (profile == null || profile.toString().trim().isEmpty()) {
+//            this.profile = null;
+//        } else {
+//            this.profile = profile;
+//        }
+//    }
 
 }

@@ -1,12 +1,16 @@
 package com.br.personniMoveis.model.user;
 
 import com.br.personniMoveis.constant.Profiles;
+import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
+import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,27 +48,55 @@ public class UserEntity implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = true)
     private Profiles profile;
 
-    public UserEntity(String name, String email, String password, String cpf, String phoneNumber, Profiles profile) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.cpf = cpf;
-        this.phoneNumber = phoneNumber;
-        this.profile = profile;
-    }
+//    public UserEntity(String name, String email, String password, String cpf, String phoneNumber, Profiles profile) {
+//        this.name = name;
+//        this.email = email;
+//        this.password = password;
+//        this.cpf = cpf;
+//        this.phoneNumber = phoneNumber;
+//        this.profile = profile;
+//    }
 
     @JsonIgnore
     @OneToMany
     @JoinColumn(name = "address_id")
     private final List<ClientAddress> addresses = new ArrayList<>();
 
+    public UserEntity(UserCreateAccountDto data) {
+        this.name = data.getName();
+        this.email = data.getEmail();
+        this.password = data.getPassword();
+        this.cpf = data.getCpf();
+        this.phoneNumber = data.getPhoneNumber();
+        this.profile = Profiles.USER;
+    }
+
+    public UserEntity(UserAdminCreateAccountDto data) {
+        this.name = data.getName();
+        this.email = data.getEmail();
+        this.password = data.getPassword();
+        this.cpf = data.getCpf();
+        this.phoneNumber = data.getPhoneNumber();
+        this.profile = data.getProfile();
+    }
+
+//    public UserEntity(UserCreateAccountDto data, String cryptPassword) {
+//        this.name = data.getName();
+//        this.email = data.getEmail();
+//        this.password = cryptPassword;
+//        this.cpf = data.getCpf();
+//        this.phoneNumber = data.getPhoneNumber();
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         if(this.profile == Profiles.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_COLLABORATOR"), new SimpleGrantedAuthority("ROLE_USER"));
         }
         else if (this.profile == Profiles.COLLABORATOR) {
             return List.of(new SimpleGrantedAuthority("ROLE_COLLABORATOR"), new SimpleGrantedAuthority("ROLE_USER"));
