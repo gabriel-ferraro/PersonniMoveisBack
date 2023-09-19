@@ -1,18 +1,22 @@
 package com.br.personniMoveis.controller;
 
+import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.MessageRequestDto;
+import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
+import com.br.personniMoveis.dto.User.UserGetDto;
 import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controladora do usuário. Define métodos para autenticação, login, logout
@@ -41,6 +45,22 @@ public class UserController {
     public ResponseEntity<HttpStatus> createUserAccount(@RequestBody @Valid UserCreateAccountDto createAccountDto) {
 //        var password = passwordEncoder.encode(createAccountDto.getPassword());
         userService.createAccount(createAccountDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserGetDto>> getAllUsers() {
+        List<UserGetDto> Users = userService.getAllUsers();
+        return ResponseEntity.ok(Users);
+    }
+
+    @PostMapping(path = "/admin-create-account")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> adminCreateAccount(@RequestBody @Valid UserAdminCreateAccountDto userAdminCreateAccountDto) {
+        userService.adminCreateAccount(userAdminCreateAccountDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

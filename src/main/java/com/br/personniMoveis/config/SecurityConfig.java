@@ -74,9 +74,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/users/create-account").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+//                    req.requestMatchers(HttpMethod.GET, "/users").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/v3/api-docs","/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.requestMatchers(AUTH_WHITELIST).permitAll(); // Permitindo todos os links da lista
                     req.requestMatchers(HttpMethod.GET, "/category").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.POST, "/users/admin-create-account").hasRole("ADMIN");
                     // Permissões admin.
 //                    for (HttpMethod httpMethod : HttpMethod.values()) {
 //                        req.requestMatchers(httpMethod, "/user").hasRole("ADMIN");
