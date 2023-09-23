@@ -4,6 +4,7 @@ import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetByIdDto;
 import com.br.personniMoveis.service.productCmp.ProductCmpService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("products_cmp")
+@SecurityRequirement(name = "bearer-key")
 public class ProductCmpController {
 
     private final ProductCmpService productCmpService;

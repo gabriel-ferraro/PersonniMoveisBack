@@ -18,7 +18,8 @@ public class ClientAddress {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @Column(name = "address_id")
+    private Long addressId;
 
     @Column(name = "adress_nickname", nullable = false)
     private String addressNickname;
