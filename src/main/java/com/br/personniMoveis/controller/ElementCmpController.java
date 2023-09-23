@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("ElementCmp")
+@CrossOrigin(origins = "*")
 @SecurityRequirement(name = "bearer-key")
 public class ElementCmpController {
 
