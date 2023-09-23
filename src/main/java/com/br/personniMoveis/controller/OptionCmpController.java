@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("OptionCmp")
+@CrossOrigin(origins = "*")
 @SecurityRequirement(name = "bearer-key")
 public class OptionCmpController {
 

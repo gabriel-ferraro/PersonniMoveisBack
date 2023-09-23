@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("SectionCmp")
+@CrossOrigin(origins = "*")
 @SecurityRequirement(name = "bearer-key")
 public class SectionCmpController {
 
