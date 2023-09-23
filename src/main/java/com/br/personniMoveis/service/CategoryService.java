@@ -105,10 +105,10 @@ public class CategoryService {
         // Atualiza seções existentes ou cria novas seções
         if(!categoryCmpDto.getSectionCmpDtos().isEmpty()) {
             for (SectionCmpDto sectionDto : categoryCmpDto.getSectionCmpDtos()) {
-                if (sectionDto.getSectionId() != null && sectionDto.getSectionId() > 0) {
-                    sectionCmpService.updateSectionCmp(sectionDto, sectionDto.getSectionId());
+                if (sectionDto.getId() != null && sectionDto.getId() > 0) {
+                    sectionCmpService.updateSectionCmp(sectionDto, sectionDto.getId());
                 } else {
-                    if (sectionDto.getName() != "" && sectionDto.getSectionId() == 0) {
+                    if (sectionDto.getName() != "" && sectionDto.getId() == 0) {
                         sectionCmpService.createSectionCmp(sectionDto, categoryId);
                     }
                 }

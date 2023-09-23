@@ -65,11 +65,13 @@ public class ElementCmpService {
             elementCmpRepository.save(newElement);;
 
             // Criando elementos relacionados, se necessário
+            if (elementCmpDtos.getOptionCmpDtos() != null) {
                 for (OptionCmpDto optionCmpDto : elementCmpDtos.getOptionCmpDtos()) {
                     if (!optionCmpDto.getName().isEmpty()) {
                         optionCmpService.createOptionCmp(optionCmpDto, newElement.getId());
                     }
                 }
+            }
     }
 
 
@@ -83,11 +85,15 @@ public class ElementCmpService {
         // Persiste alteracoes.
         elementCmpRepository.save(ElementBeUpdated);
 
-        for (OptionCmpDto optionCmpDto : elementCmpDtos.getOptionCmpDtos()) {
-            if (optionCmpDto.getId() != null && optionCmpDto.getId() > 0) {
-                optionCmpService.updateOptionCmp(optionCmpDto, optionCmpDto.getId());
-            } else {
-                createNewElementCmp(optionCmpDto, elementCmpId);
+        if (!elementCmpDtos.getOptionCmpDtos().isEmpty()) {
+            if (elementCmpDtos.getOptionCmpDtos() != null) {
+                for (OptionCmpDto optionCmpDto : elementCmpDtos.getOptionCmpDtos()) {
+                    if (optionCmpDto.getId() != null && optionCmpDto.getId() > 0) {
+                        optionCmpService.updateOptionCmp(optionCmpDto, optionCmpDto.getId());
+                    } else {
+                        createNewElementCmp(optionCmpDto, elementCmpId);
+                    }
+                }
             }
         }
     }
