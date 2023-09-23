@@ -21,4 +21,8 @@ public class SectionCmpDto {
 
     @JsonProperty("elementCmps")
     private Set<ElementCmpDto> elementCmpDtos;
+
+    public SectionCmpDto() {
+
+    }
 }

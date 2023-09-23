@@ -3,6 +3,7 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
+import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.BadRequestException;
@@ -104,11 +105,20 @@ public class CategoryService {
                     sectionCmpService.updateSectionCmp(sectionDto, sectionDto.getId());
                 } else {
                     if (sectionDto.getName() != "" && sectionDto.getId() == 0) {
-                        sectionCmpService.createSectionCmp(sectionDto, categoryId);
+                        createNewSectionCmp(sectionDto, categoryId);
                     }
                 }
             }
         }
+    }
+
+    //PARA CRIAÇÃO DA SEÇÃO CASO TENHA ELEMENTOS NA SEÇÃO
+    private void createNewSectionCmp(SectionCmpDto sectionCmpDto, Long categoryId) {
+        SectionCmpDto newSectionCmp = new SectionCmpDto();
+        newSectionCmp.setName(sectionCmpDto.getName());
+        newSectionCmp.setImgUrl(sectionCmpDto.getImgUrl());
+        newSectionCmp.setElementCmpDtos(sectionCmpDto.getElementCmpDtos());
+        sectionCmpService.createSectionCmp(newSectionCmp, categoryId);
     }
 
     public void deleteCategoryById(Long id) {
