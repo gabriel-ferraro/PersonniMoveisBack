@@ -35,7 +35,7 @@ public class Material {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "materials")
-    private final Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 
     @Override
     public int hashCode() {

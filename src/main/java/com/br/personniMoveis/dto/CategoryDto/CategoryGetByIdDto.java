@@ -15,8 +15,7 @@ public class CategoryGetByIdDto {
 
     private String name;
 
-    @Builder.Default
-    private Boolean allow_creation = true; // Permitir criaÃ§Ã£o do produto que se encaixa na categoria.
+    private Boolean allow_creation; // Permitir criação do produto que se encaixa na categoria.
 
     private Set<SectionCmp> sectionCmps;
 }

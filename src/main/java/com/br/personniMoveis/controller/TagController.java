@@ -3,6 +3,7 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.service.product.TagService;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("tags")
+@SecurityRequirement(name = "bearer-key")
 public class TagController {
 
     private final TagService tagService;
@@ -32,9 +34,8 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createTag(@RequestBody Tag tag) {
-        tagService.createTag(tag);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Tag> createTag(@RequestBody Tag tag) {
+        return ResponseEntity.ok(tagService.createTag(tag));
     }
 
     @PutMapping("/{tagId}")

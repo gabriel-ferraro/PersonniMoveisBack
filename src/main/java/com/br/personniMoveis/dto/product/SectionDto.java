@@ -12,5 +12,5 @@ public class SectionDto {
     private Long sectionId;
     private String name;
     private String imgUrl;
-    private Set<OptionDto> optionPostDtoList;
+    private Set<OptionDto> optionList;
 }

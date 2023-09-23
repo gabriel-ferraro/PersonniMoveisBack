@@ -40,7 +40,7 @@ public class Section {
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "section_id")
-    private final Set<Option> options = new HashSet<>();
+    private Set<Option> options;
 
     @Override
     public int hashCode() {

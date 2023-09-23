@@ -3,11 +3,12 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
-import com.br.personniMoveis.mapper.product.ProductMapper;
 import com.br.personniMoveis.model.product.Detail;
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.service.product.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("products")
+@SecurityRequirement(name = "bearer-key")
 public class ProductController {
 
     private final ProductService productService;
@@ -31,9 +33,8 @@ public class ProductController {
     }
 
     @GetMapping(path = "/{productId}")
-    public ResponseEntity<ProductGetDto> getProduct(@PathVariable("productId") Long productId) {
-        return ResponseEntity.ok(ProductMapper.INSTANCE.productToProductGetDto(
-                productService.findProductOrThrowNotFoundException(productId)));
+    public ResponseEntity<Product> getProduct(@PathVariable("productId") Long productId) {
+        return ResponseEntity.ok(productService.findProductOrThrowNotFoundException(productId));
     }
 
     @GetMapping
@@ -50,7 +51,7 @@ public class ProductController {
     /**
      * Cria e associa detail à um produto. Ao criar um detail, deve se associar à um produto existente.
      *
-     * @param productId     id do produto
+     * @param productId id do produto
      * @param detailDto dto para criação do detail.
      * @return Detail persistido e associado ao produto indicado.
      */
@@ -93,9 +94,31 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllTagsFromProduct(productId));
     }
 
+    /**
+     * Cria um único produto convencional sem a inclusão de categoria.
+     *
+     * @param productDto dto com dados do produto.
+     * @return Produto simples sem dados adicionais persistido.
+     */
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductDto productDto) {
         return ResponseEntity.ok(productService.createProduct(productDto));
+    }
+
+    /**
+     * Cria um produto opcional completo (recebe payload com todos subitens) e retorna o produto persistido.
+     *
+     * @param categoryId Id da categoria (opcional, produto pode ser criado sem categoria).
+     * @param product    (objeto do produto com seus subitens.
+     * @return Retorna o produto persistido completo.
+     */
+    @Operation(summary = "Cria/edita produto convencional", description = "Endpoint que recebe todo payload para " +
+            "criação ou edição do produto convencional como req param e seus subitens. Recebe um id opcional para setar a categoria do produto.")
+    @PostMapping(path = "/save-full-product")
+    public ResponseEntity<Product> createFullProduct(
+            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @RequestBody @Valid Product product) {
+        return ResponseEntity.ok(productService.saveRegularProduct(product, categoryId));
     }
 
     @PutMapping(path = "/{productId}")
