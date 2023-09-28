@@ -1,6 +1,7 @@
 package com.br.personniMoveis.service;
 
 import com.br.personniMoveis.dto.OrderRequest;
+import com.br.personniMoveis.exception.InsufficientStockException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.user.Order;
@@ -58,7 +59,8 @@ public class OrderService {
     /**
      * Cria pedido de um cliente identificando itens selecionados e quantidades. Determina subtotal de cada item e
      * persiste os itens do pedido e o pedido completo (relação de orderItems contido em order).
-     * @param userId id do usuário que esta realizando a compra.
+     *
+     * @param userId       id do usuário que esta realizando a compra.
      * @param orderRequest Dto com id do cliente e IDs dos produtos selecionados para compra.
      * @return O pedido do cliente persistido.
      */
@@ -76,6 +78,14 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             orderItem.getProducts().add(newProduct);
             orderItem.setQuantity(orderProduct.getQuantity());
+            // Identifica se a quantidade de produtos em estoque é suficiente para a compra.
+            if (newProduct.getQuantity() < orderProduct.getQuantity()) {
+                throw new InsufficientStockException("Quantidade insuficiente de produtos em estoque para realizar a operação: \nProduto: "
+                        + newProduct.getName() + " Qtde em estoque: " + newProduct.getQuantity()
+                        + " Qtde requisitada na compra: " + orderProduct.getQuantity());
+            }
+            // Subtrai quantidade de produtos adquiridos pelo cliente do estoque.
+            newProduct.setQuantity(newProduct.getQuantity() - orderProduct.getQuantity());
             // Define o subtotal da compra do "item" (valor do produto * qtde).
             double subtotal = newProduct.getValue() * orderProduct.getQuantity();
             orderItem.setSubtotal(subtotal);

@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -45,6 +46,22 @@ public class Product {
     private String mainImgUrl;
 
     private String description;
+
+    @Column(name = "dt_created")
+    private LocalDateTime dtCreated;
+
+    @Column(name = "dt_updated")
+    private LocalDateTime dtUpdated;
+
+    @Column
+    private Boolean available;
+
+    /**
+     * Usado somente como referência para uso no front. Não é utilizado para controle da relação entre produto e categoria
+     * no back.
+     */
+    @Column(name = "category_id")
+    private Long categoryId;
 
     /**
      * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
