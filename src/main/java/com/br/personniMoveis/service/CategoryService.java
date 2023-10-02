@@ -3,10 +3,10 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.BadRequestException;
+import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
@@ -48,12 +48,11 @@ public class CategoryService {
 
     public Category findCategoryOrThrowNotFoundException(Long id) {
         return categoryRepository.findById(id).orElseThrow(
-                () -> new BadRequestException("Categoria não encontrada"));
+                () -> new ResourceNotFoundException("Categoria não encontrada"));
     }
 
     public CategoryGetByIdDto findCategoryCmpByIdOrThrowBadRequestException(Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Categoria não encontrada."));
+        Category category = findCategoryOrThrowNotFoundException(id);
 
         Set<SectionCmp> sectionCmps = sectionCmpRepository.findByCategoryId(id);
         Set<ElementCmp> elementCmps = new HashSet<>();
