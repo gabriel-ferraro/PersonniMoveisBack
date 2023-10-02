@@ -71,7 +71,7 @@ public class ProductService {
     }
 
     public List<Product> getMostRecentProducts(Integer amountOfProducts) {
-        // Se valor passado é nulo ou menor que 1, atribui padrão = 4.
+        // Se parâmetro passado é nulo ou menor que 1, atribui padrão: 4.
         if (amountOfProducts == null || amountOfProducts < 1) {
             amountOfProducts = 4;
         }

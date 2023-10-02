@@ -1,22 +1,17 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.constant.Profiles;
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
-import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.mapper.User.UserEntityMapper;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.UserRepository;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -28,6 +23,11 @@ public class UserService {
     public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+    }
+
+    public UserEntity findUserOrThrowNotFoundException(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
     }
 
     public UserEntity createAccount(UserCreateAccountDto data) {
@@ -49,7 +49,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
     public UserEntity adminCreateAccount(UserAdminCreateAccountDto userAdminCreateAccountDto) {
         String encryptedPassword = passwordEncoder.encode(userAdminCreateAccountDto.getPassword());
         var adminUser = new UserEntity(userAdminCreateAccountDto);
@@ -61,12 +60,7 @@ public class UserService {
         return userRepository.findAll().stream().map(UserEntityMapper.INSTANCE::UserEntityToUserGetDto).toList();
     }
 
-//    public List<UserEntity> getAllUsers() {
-//        return userRepository.findAll();
-//    }
-
-    public UserEntity findUserOrThrowNotFoundException(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+    public List<UserEntity> getClientsWaitingForProduct(Long productId) {
+        return userRepository.getClientsWaitingForProduct(productId);
     }
 }
