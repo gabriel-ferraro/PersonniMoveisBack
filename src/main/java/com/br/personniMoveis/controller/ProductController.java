@@ -24,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("products")
 @CrossOrigin(origins = "*")
-@SecurityRequirement(name = "bearer-key")
 public class ProductController {
 
     private final ProductService productService;
