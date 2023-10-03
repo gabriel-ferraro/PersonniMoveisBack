@@ -36,8 +36,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Tag> findTagsFromProduct(Long productId);
 
     /**
-     * Retorna os produtos mais recentemente inseridos. Se o endpoint n√£o receber um valor de
-     * quantidade, o default √© retornar 4 produtos.
+     * Retorna os produtos mais recentemente inseridos. Se o endpoint n„o receber um valor de
+     * quantidade, o default È retornar 4 produtos.
      *
      * @param amountOfProducts Quantidade de produtos recentemente insetidos que se deseja adquirir.
      * @return Os produtos mais recentemente inseridos.
