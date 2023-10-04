@@ -1,7 +1,6 @@
 package com.br.personniMoveis.dto.CategoryDto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 @Data

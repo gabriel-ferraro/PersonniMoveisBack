@@ -1,18 +1,10 @@
 package com.br.personniMoveis.mapper.product;
 
-import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
-import com.br.personniMoveis.model.product.Detail;
 import com.br.personniMoveis.model.product.Product;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Mapeamento para dtos de Product.

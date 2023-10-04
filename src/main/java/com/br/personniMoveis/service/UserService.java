@@ -1,22 +1,17 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.constant.Profiles;
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
-import com.br.personniMoveis.mapper.Category.CategoryMapper;
 import com.br.personniMoveis.mapper.User.UserEntityMapper;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.UserRepository;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {

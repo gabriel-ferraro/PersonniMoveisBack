@@ -3,7 +3,6 @@ package com.br.personniMoveis.controller;
 import com.br.personniMoveis.model.product.Material;
 import com.br.personniMoveis.service.product.MaterialService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
