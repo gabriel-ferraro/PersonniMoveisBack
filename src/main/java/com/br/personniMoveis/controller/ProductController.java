@@ -10,6 +10,7 @@ import com.br.personniMoveis.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.hibernate.Remove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("products")
-@SecurityRequirement(name = "bearer-key")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;
@@ -37,6 +38,15 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProductOrThrowNotFoundException(productId));
     }
 
+    @Operation(summary = "Retorna lista de produtos mais recentes.", description = "Adquire os produtos mais recentemente" +
+            " inclusos na loja. Se parâmetro opcional de qtde não for passado, retorna os últimos 4 produtos.")
+    @GetMapping(path = "/most-recent")
+    public ResponseEntity<List<Product>> getMostRecentProducts(@RequestParam(
+            name = "amountOfProducts", required = false, defaultValue = "4") Integer amountOfProducts) {
+        return ResponseEntity.ok(productService.getMostRecentProducts(amountOfProducts));
+    }
+
+    @Operation(summary = "Retorna lista de todos os produtos.")
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
@@ -84,11 +94,13 @@ public class ProductController {
      * @param tagId Id de uma tag.
      * @return todos os produtos que possuem a tag do id indicado.
      */
+    @Operation(summary = "Retorna produtos com a tag informada.", description = "Retorna produtos que possuem a tag de id informado.")
     @GetMapping("with-tag/{tagId}")
     public ResponseEntity<List<ProductGetDto>> getProductsWithTagById(@PathVariable(value = "tagId") Long tagId) {
         return ResponseEntity.ok(productService.getAllProductsWithTagId(tagId));
     }
 
+    @Operation(summary = "Retorna todas as tags que o produto possui.", description = "Retorna produtos que possuem a tag de id informado.")
     @GetMapping("/{productId}/tags")
     public ResponseEntity<List<Tag>> getAllTagsInProductById(@PathVariable("productId") Long productId) {
         return ResponseEntity.ok(productService.getAllTagsFromProduct(productId));
@@ -133,12 +145,14 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "Deleta tag informada do produto.", description = "Deleta tag de id informado do produto de id informado.")
     @DeleteMapping(path = "delete-tag/{productId}/{tagId}")
     public ResponseEntity<HttpStatus> removeTagInProduct(@PathVariable("productId") Long productId, @PathVariable("tagId") Long tagId) {
         productService.removeTagInProduct(productId, tagId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "Remove todas tags do produto.", description = "Remove todas tags do produto de id informado.")
     @DeleteMapping(path = "/{productId}/delete-all-tags")
     public ResponseEntity<HttpStatus> removeAllTagsInProduct(@PathVariable("productId") Long productId) {
         productService.removeAllTagsInProduct(productId);

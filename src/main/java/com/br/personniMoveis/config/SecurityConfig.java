@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,25 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 //@EnableMethodSecurity
 public class SecurityConfig {
-
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("*")); // Configurar os domínios permitidos (ou "*", que permite todos)
-//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
-//        configuration.setAllowCredentials(true);
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.csrf(csrf -> csrf.disable()); // Desabilitando CSRF
-//        httpSecurity.cors(cors -> cors.disable()); // Desabilitando CORS
-//        return httpSecurity.build();
-//    }
 
     // Teste para liberar acesso ao Swagger
     private static final String[] AUTH_WHITELIST = {
@@ -59,11 +41,16 @@ public class SecurityConfig {
     @Autowired
     private SecurityFilter securityFilter;
 
+    @Autowired
+    private CorsConfigurationSource corsConfigurationSource;
+
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable()) // Desabilitando Cross Site Request Forgering
-                .cors(cors -> cors.disable())// Desabilitando CORS
+                .cors(Customizer.withDefaults())
+//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+//                .cors(cors -> cors.disable()) // Desabilitando CORS
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Mudando para Stateless
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/users/create-account").permitAll();
@@ -71,7 +58,8 @@ public class SecurityConfig {
 //                    req.requestMatchers(HttpMethod.GET, "/users").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/v3/api-docs","/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.requestMatchers(AUTH_WHITELIST).permitAll(); // Permitindo todos os links da lista
-                    req.requestMatchers(HttpMethod.GET, "/category").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.GET, "/category").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/products").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/users/admin-create-account").hasRole("ADMIN");
                     // Permissões admin.
@@ -82,6 +70,20 @@ public class SecurityConfig {
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 
     @Bean

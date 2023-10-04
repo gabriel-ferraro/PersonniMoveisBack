@@ -1,5 +1,6 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.model.product.Product;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,13 +132,12 @@ public class EmailService {
      * @param product    Detalhes do produto a serem exibidos ao cliente.
      * @param clientName Nome do cliente.
      * @param productUrl URL do produto que retornou ao estoque.
-     * @throws jakarta.mail.MessagingException Exceção no envio da mensagem.
      */
-    public void productArrivedMessage(String to, String storeName, Object product, String clientName, String productUrl) throws MessagingException {
+    public void productArrivedMessage(String to, String storeName, Product product, String clientName, String productUrl) {
         // Constrói strings de conteúdo do e-mail.
         String subject = "Produto que você aguardava acabou de chagar na ".concat(storeName);
         String mainContent = generateDiv(
-                "Olá ".concat(clientName).concat(", um produto da sua lista de espera acabou de retornar para nossa loja!"),
+                "Olá ".concat(clientName).concat(", o produto ".concat(product.getName()).concat(" da sua lista de espera acabou de retornar para nossa loja!")),
                 Optional.empty(),
                 Optional.empty(),
                 "Ver na loja",

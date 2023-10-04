@@ -12,6 +12,13 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+
+    /**
+     * Retorna todos os produtos que possuem a tag com o Id informado.
+     *
+     * @param tagId O id da tag que se deseja adquirir os produtos.
+     * @return Todos os produtos que possuem a tag com o Id informado.
+     */
     @Query("SELECT new com.br.personniMoveis.dto.product.get.ProductGetDto(" +
             "p.productId, p.name, p.value, p.quantity, p.editable, p.mainImgUrl, p.description) " +
             "FROM Product p " +
@@ -19,6 +26,22 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
             "WHERE t.tagId = :tagId")
     List<ProductGetDto> findProductsInTag(Long tagId);
 
+    /**
+     * Retorna todas as tags no produto indicado por id.
+     *
+     * @param productId Id do produto que se deseja adquirir as tags.
+     * @return Todas as tags no produto indicado por id.
+     */
     @Query("SELECT t FROM Tag t LEFT JOIN t.products p WHERE p.productId = :productId")
     List<Tag> findTagsFromProduct(Long productId);
+
+    /**
+     * Retorna os produtos mais recentemente inseridos. Se o endpoint não receber um valor de
+     * quantidade, o default é retornar 4 produtos.
+     *
+     * @param amountOfProducts Quantidade de produtos recentemente insetidos que se deseja adquirir.
+     * @return Os produtos mais recentemente inseridos.
+     */
+    @Query("SELECT p FROM Product p ORDER BY p.dtCreated DESC LIMIT :amountOfProducts")
+    List<Product> getMostRecentProducts(Integer amountOfProducts);
 }
