@@ -1,6 +1,5 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.MessageRequestDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;

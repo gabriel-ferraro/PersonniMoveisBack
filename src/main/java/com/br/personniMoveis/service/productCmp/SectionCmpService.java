@@ -11,7 +11,6 @@ import com.br.personniMoveis.model.productCmp.SectionCmp;
 import com.br.personniMoveis.repository.CategoryRepository;
 import com.br.personniMoveis.repository.ElementCmpRepository;
 import com.br.personniMoveis.repository.SectionCmpRepository;
-import com.br.personniMoveis.service.productCmp.ElementCmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

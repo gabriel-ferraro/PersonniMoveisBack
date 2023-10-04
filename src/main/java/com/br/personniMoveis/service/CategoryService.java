@@ -3,7 +3,6 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
-import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.BadRequestException;
