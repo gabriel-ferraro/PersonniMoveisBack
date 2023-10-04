@@ -2,6 +2,7 @@ package com.br.personniMoveis.model.product;
 
 import com.br.personniMoveis.model.ProductImg;
 import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,9 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * Mapeamento ORM para produto.
@@ -46,6 +46,22 @@ public class Product {
 
     private String description;
 
+    @Column(name = "dt_created")
+    private LocalDateTime dtCreated;
+
+    @Column(name = "dt_updated")
+    private LocalDateTime dtUpdated;
+
+    @Column
+    private Boolean available;
+
+    /**
+     * Usado somente como referência para uso no front. Não é utilizado para controle da relação entre produto e categoria
+     * no back.
+     */
+    @Column(name = "category_id")
+    private Long categoryId;
+
     /**
      * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
      */
@@ -72,7 +88,7 @@ public class Product {
     private Set<Section> sections;
 
     /**
-     * As tags podem estar em produtos diferene tes, não pertencem a um produto específico, exemplos de tags: escritório, cozinha, sala de estar, etc.
+     * As tags podem estar em produtos diferentes, não pertencem a um produto específico, exemplos de tags: escritório, cozinha, sala de estar, etc.
      */
     @ManyToMany
     @JoinTable(name = "product_tag", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
@@ -85,6 +101,14 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Category category;
+
+    /**
+     * Mantém controle da lista de espera do usuário (produtos que notificam usuário via e-mail
+     * ao retornar à disponibilidade).
+     */
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "productWaitingList")
+    private final List<UserEntity> users = new ArrayList<>();
 
     @Override
     public int hashCode() {

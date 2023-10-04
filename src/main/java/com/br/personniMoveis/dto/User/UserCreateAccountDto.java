@@ -1,7 +1,11 @@
 package com.br.personniMoveis.dto.User;
 
+import com.br.personniMoveis.constant.Profiles;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @AllArgsConstructor

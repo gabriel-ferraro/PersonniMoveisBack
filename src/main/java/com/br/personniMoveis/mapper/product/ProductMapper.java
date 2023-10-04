@@ -14,10 +14,6 @@ public abstract class ProductMapper {
 
     public static final ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-//    @Mapping(source = "detailList", target = "details")
-//    @Mapping(source = "materialList", target = "materials")
-//    @Mapping(source = "tagList", target = "tags")
-//    @Mapping(source = "sectionList", target = "sections")
     public abstract Product productDtoToProduct(ProductDto productDto);
 
     public abstract ProductGetDto productToProductGetDto(Product product);

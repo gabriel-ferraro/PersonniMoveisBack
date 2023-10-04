@@ -15,8 +15,10 @@ import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.DetailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -72,6 +74,14 @@ public class ProductService {
         return productRepository.findTagsFromProduct(productId);
     }
 
+    public List<Product> getMostRecentProducts(Integer amountOfProducts) {
+        // Se parâmetro passado é nulo ou menor que 1, atribui padrão: 4.
+        if (amountOfProducts == null || amountOfProducts < 1) {
+            amountOfProducts = 4;
+        }
+        return productRepository.getMostRecentProducts(amountOfProducts);
+    }
+
     public Product createProduct(ProductDto productDto) {
         return productRepository.save(ProductMapper.INSTANCE.productDtoToProduct(productDto));
     }
@@ -91,12 +101,27 @@ public class ProductService {
         }
         // Checa se produto tem tags.
         if (product.getTags() != null && !product.getTags().isEmpty()) {
-            product.getTags().forEach(tagService::createTag);
+            product.getTags().forEach(tag -> {
+                // Se tag tem id nulo, cria tag, senão inclui tag como nova tag do produto.
+                if (tag.getTagId() == null) {
+                    tagService.createTag(tag);
+                } else {
+
+                }
+            });
         }
         // Faz set da categoria caso tenha sido informada.
         if (categoryId != null) {
             product.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
         }
+        // Seta data de criação. Se produto já tem data de criação, atualiza data de modificação.
+        if (product.getDtCreated() == null) {
+            product.setDtCreated(LocalDateTime.now());
+        } else {
+            product.setDtUpdated(LocalDateTime.now());
+        }
+        // Seta disponibilidade de produto de acordo com a quantidade em estoque.
+        product.setAvailable(product.getQuantity() > 0);
         // Persiste produto.
         return productRepository.save(product);
     }

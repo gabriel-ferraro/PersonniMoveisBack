@@ -25,6 +25,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public UserEntity findUserOrThrowNotFoundException(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+    }
+
     public UserEntity createAccount(UserCreateAccountDto data) {
 //        UserEntity newAccount = userRepository.save(UserEntityMapper.INSTANCE
 //                .userCreateAccountDtoToUserEntity(userCreateAccountDto));
@@ -44,7 +49,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
     public UserEntity adminCreateAccount(UserAdminCreateAccountDto userAdminCreateAccountDto) {
         String encryptedPassword = passwordEncoder.encode(userAdminCreateAccountDto.getPassword());
         var adminUser = new UserEntity(userAdminCreateAccountDto);
@@ -56,12 +60,7 @@ public class UserService {
         return userRepository.findAll().stream().map(UserEntityMapper.INSTANCE::UserEntityToUserGetDto).toList();
     }
 
-//    public List<UserEntity> getAllUsers() {
-//        return userRepository.findAll();
-//    }
-
-    public UserEntity findUserOrThrowNotFoundException(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+    public List<UserEntity> getClientsWaitingForProduct(Long productId) {
+        return userRepository.getClientsWaitingForProduct(productId);
     }
 }
