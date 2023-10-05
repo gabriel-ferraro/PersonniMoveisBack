@@ -4,13 +4,11 @@ import com.br.personniMoveis.dto.MessageRequestDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
-import com.br.personniMoveis.model.product.Product;
-import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,19 +26,18 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("users")
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
 public class UserController {
 
     private final EmailService emailService;
 
     private final UserService userService;
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public UserController(EmailService emailService, UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping(path = "/create-account")
@@ -66,6 +63,39 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
+//    @PostMapping
+//    public ResponseEntity createAccount() {
+//
+//    }
+//
+//    @PutMapping
+//    public ResponseEntity updateAccountData() {
+//
+//    }
+//
+//    @DeleteMapping
+//    public ResponseEntity DeleteAccount() {
+//
+//    }
+//
+//    @PostMapping(path = "/login")
+//    public ResponseEntity doLogin() {
+//
+//    }
+//
+//    @PostMapping(path = "/logout")
+//    public ResponseEntity doLogout() {
+//
+//    }
+//    @PutMapping(path = "change-user-password")
+//    public ResponseEntity changeUserPassword() {
+//
+//    }
+//    @PutMapping(path = "change-phone")
+//    public ResponseEntity changeUserPhone() {
+//
+//    }
     /**
      * Faz validação da conta do usuário pelo número de celular.
      *
@@ -95,7 +125,6 @@ public class UserController {
 //    public ResponseEntity getProductsFromClient() {
 //
 //    }
-
     /**
      * Retorna todos "pedidos" do cliente contendo os produtos respectivos.
      *
@@ -105,19 +134,6 @@ public class UserController {
 //    public ResponseEntity getOrdersFromClient() {
 //
 //    }
-    @Operation(summary = "Envia e-mail de aviso sobre retorno do produto à loja para todos clientes que aguardavam.")
-    @PostMapping(path = "/product-wait-list-email")
-    public ResponseEntity<HttpStatus> productWaitListUpdateEmail(@RequestBody @Valid Product product) {
-        // Adquire lista de todos clientes que esperam pelo produto.
-        List<UserEntity> waitingClients = userService.getClientsWaitingForProduct(product.getProductId());
-        // Envia e-mail para todos clientes notificando a volta do produto.
-        waitingClients.forEach(
-                client -> this.emailService.productArrivedMessage(
-                        client.getEmail(), "Personni Móveis", product, client.getName(),
-                        "http://localhost:8080/produtos/".concat(String.valueOf(product.getProductId()))));
-        // Retorna sucesso.
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 
     /**
      * Método para testar envio de um email configurado para gerar conteúdo
@@ -126,7 +142,7 @@ public class UserController {
      * @param request Dto com conteúdo para envio da mensagem.
      * @return Http status 204 - No Content.
      */
-    @PostMapping(path = "/test-message")
+    @PostMapping(path = "test-message")
     public ResponseEntity<HttpStatus> testMessageToUserEmail(@RequestBody @Valid MessageRequestDto request) {
         emailService.test(request.getTo(), request.getStoreName(), request.getClientName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
