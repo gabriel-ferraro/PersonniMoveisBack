@@ -56,6 +56,7 @@ public class ProductService {
      *
      * @return Lista de todos produtos.
      */
+    @Transactional
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -70,6 +71,7 @@ public class ProductService {
         return productRepository.findTagsFromProduct(productId);
     }
 
+    @Transactional
     public List<Product> getMostRecentProducts(Integer amountOfProducts) {
         // Se parâmetro passado é nulo ou menor que 1, atribui padrão: 4.
         if (amountOfProducts == null || amountOfProducts < 1) {
