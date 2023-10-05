@@ -103,14 +103,14 @@ public class ProductService {
                 // Se tag tem id nulo, cria tag, senão inclui tag como nova tag do produto.
                 if (tag.getTagId() == null) {
                     tagService.createTag(tag);
-                } else {
-
                 }
             });
         }
         // Faz set da categoria caso tenha sido informada.
         if (categoryId != null) {
             product.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
+            // Seta id da categoria para possuir sua referência no produto.
+            product.setCategoryId(categoryId);
         }
         // Seta data de criação. Se produto já tem data de criação, atualiza data de modificação.
         if (product.getDtCreated() == null) {
