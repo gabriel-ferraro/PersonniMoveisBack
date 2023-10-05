@@ -1,11 +1,15 @@
 package com.br.personniMoveis.service.product;
 
-import com.br.personniMoveis.dto.product.*;
+import com.br.personniMoveis.dto.product.DetailDto;
+import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.AlreadyExistsException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
-import com.br.personniMoveis.mapper.product.*;
-import com.br.personniMoveis.model.product.*;
+import com.br.personniMoveis.mapper.product.DetailMapper;
+import com.br.personniMoveis.mapper.product.ProductMapper;
+import com.br.personniMoveis.model.product.Detail;
+import com.br.personniMoveis.model.product.Product;
+import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.repository.ProductRepository;
 import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.DetailService;

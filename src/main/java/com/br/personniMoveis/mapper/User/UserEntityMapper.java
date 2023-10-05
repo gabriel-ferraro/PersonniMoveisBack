@@ -1,12 +1,7 @@
 package com.br.personniMoveis.mapper.User;
 
-import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
-import com.br.personniMoveis.dto.product.DetailDto;
-import com.br.personniMoveis.mapper.ElementCmp.ElementCmpMapper;
-import com.br.personniMoveis.model.category.Category;
-import com.br.personniMoveis.model.product.Detail;
 import com.br.personniMoveis.model.user.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
