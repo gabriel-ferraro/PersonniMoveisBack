@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
      * @return Todos os produtos que possuem a tag com o Id informado.
      */
     @Query("SELECT new com.br.personniMoveis.dto.product.get.ProductGetDto(" +
-            "p.productId, p.name, p.value, p.quantity, p.editable, p.mainImgUrl, p.description) " +
+            "p.productId, p.name, p.value, p.quantity, p.editable, p.mainImg, p.description) " +
             "FROM Product p " +
             "JOIN p.tags t " +
             "WHERE t.tagId = :tagId")

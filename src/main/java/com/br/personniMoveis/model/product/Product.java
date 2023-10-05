@@ -41,8 +41,9 @@ public class Product {
     @Column(nullable = false)
     private Boolean editable;
 
-    @Column(name = "main_img_url")
-    private String mainImgUrl;
+    @Lob
+    @Column(name = "main_img", columnDefinition = "TEXT")
+    private String mainImg;
 
     private String description;
 
