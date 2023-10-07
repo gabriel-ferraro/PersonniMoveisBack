@@ -20,11 +20,7 @@ public class ProductImg {
     @Column(name = "product_img_id")
     private Long productImgId;
 
-    @Column(name = "product_image_id")
-    private Long productImageId;
-
-    @Column(name = "img_url")
-    private String imgUrl;
+    private String img;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

@@ -66,8 +66,9 @@ public class Product {
     /**
      * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
      */
+    @Lob
     @OneToMany
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", columnDefinition = "TEXT")
     private Set<ProductImg> secondaryImages = new HashSet<>();
 
     /**

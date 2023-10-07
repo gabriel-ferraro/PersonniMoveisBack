@@ -23,8 +23,8 @@ public class OptionCmp {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "img")
+    private String img;
 
     @Column(nullable = false)
     private Double price;

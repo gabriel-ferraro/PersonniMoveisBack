@@ -1,5 +1,6 @@
 package com.br.personniMoveis.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "client_address")
 public class ClientAddress {
     
     @Id
@@ -21,9 +23,15 @@ public class ClientAddress {
     @Column(name = "address_id")
     private Long addressId;
 
-    @Column(name = "adress_nickname", nullable = false)
+    @Column(name = "address_nickname", nullable = false)
     private String addressNickname;
-    
+
+    @Column(name = "cep", nullable = false)
+    private String CEP;
+
+    @Column(nullable = false)
+    private String state;
+
     @Column(nullable = false)
     private String city;
 
@@ -43,8 +51,9 @@ public class ClientAddress {
      * Detalhes do endereço (referência ou detalhes).
      */
     private String details;
-    
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private UserEntity clientAddress;
 }
