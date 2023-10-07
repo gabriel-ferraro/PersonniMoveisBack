@@ -27,8 +27,10 @@ public class SectionCmp {
     @NotNull
     private String name;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    /**
+     * índice para renderizar a imagem.
+     */
+    private Integer index;
 
     @NotNull
     private Long categoryId;

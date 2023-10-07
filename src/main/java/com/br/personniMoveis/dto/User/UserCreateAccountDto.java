@@ -4,10 +4,12 @@ import com.br.personniMoveis.constant.Profiles;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserCreateAccountDto {
 

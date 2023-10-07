@@ -25,6 +25,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("PersonniMoveis API")
                     .withSubject(user.getEmail())
+                    .withClaim("userId", user.getUserId())
                     .withExpiresAt(expirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception){
@@ -39,7 +40,18 @@ public class TokenService {
                     .withIssuer("PersonniMoveis API")
                     .build().verify(tokenJWT)
                     .getSubject();
+        } catch (JWTVerificationException exception){
+            throw new RuntimeException("Invalid or Expired JWT Token!");
+        }
+    }
 
+    public String getIdFromToken(String tokenJWT) {
+        try {
+            var algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("PersonniMoveis API")
+                    .build().verify(tokenJWT)
+                    .getClaim("userId").toString();
         } catch (JWTVerificationException exception){
             throw new RuntimeException("Invalid or Expired JWT Token!");
         }

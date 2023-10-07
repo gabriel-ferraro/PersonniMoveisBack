@@ -34,7 +34,8 @@ public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(nullable = false)
     private String name;
@@ -55,7 +56,7 @@ public class UserEntity implements UserDetails {
 
     @JsonIgnore
     @OneToMany
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "user_id")
     private final List<ClientAddress> addresses = new ArrayList<>();
 
     /**
@@ -126,7 +127,7 @@ public class UserEntity implements UserDetails {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(userId);
     }
 
 }

@@ -5,8 +5,10 @@ import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.User.UserEntityMapper;
+import com.br.personniMoveis.model.user.ClientAddress;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,32 +20,42 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final AddressService addressService;
+    private final TokenService tokenService;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, AddressService addressService, TokenService tokenService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.addressService = addressService;
+        this.tokenService = tokenService;
     }
 
     public UserEntity createAccount(UserCreateAccountDto data) {
-//        UserEntity newAccount = userRepository.save(UserEntityMapper.INSTANCE
-//                .userCreateAccountDtoToUserEntity(userCreateAccountDto));
         String encryptedPassword = passwordEncoder.encode(data.getPassword());
-
-//        data.setPassword(encryptedPassword);
-
-//        userCreateAccountDto.setProfile(userCreateAccountDto.getProfile());
-//        UserEntity newAccount = UserEntityMapper.INSTANCE
-//                .userCreateAccountDtoToUserEntity(userCreateAccountDto);
-        // Profile - caso não insira nenhum valor no campo profile ele retorna como valor padrão USER
-//        Profiles profile = (userCreateAccountDto.getProfile() != null) ? userCreateAccountDto.getProfile() : Profiles.USER;
-
         var user = new UserEntity(data);
         user.setPassword(encryptedPassword);
-//        passwordEncoder.encode(user.getPassword());
         return userRepository.save(user);
     }
 
+    @Transactional
+    public ClientAddress createAddress(String token, ClientAddress newAddress) {
+        // Adquire id do usuário via token e recebe endereço como arg.
+        Long userId = Long.valueOf(tokenService.getIdFromToken(token));
+        UserEntity user = this.findUserOrThrowNotFoundException(userId);
+        ClientAddress address = addressService.createAddress(newAddress);
+        //relaciona endereço com usuário.
+        user.getAddresses().add(address);
+        address.setClientAddress(user);
+        // Salva relação.
+        userRepository.save(user);
+        return newAddress;
+    }
+
+    public List<ClientAddress> getAllUserAddresses(Long userId) {
+        UserEntity user = this.findUserOrThrowNotFoundException(userId);
+        return user.getAddresses();
+    }
 
     public UserEntity adminCreateAccount(UserAdminCreateAccountDto userAdminCreateAccountDto) {
         String encryptedPassword = passwordEncoder.encode(userAdminCreateAccountDto.getPassword());
@@ -55,10 +67,6 @@ public class UserService {
     public List<UserGetDto> getAllUsers() {
         return userRepository.findAll().stream().map(UserEntityMapper.INSTANCE::UserEntityToUserGetDto).toList();
     }
-
-//    public List<UserEntity> getAllUsers() {
-//        return userRepository.findAll();
-//    }
 
     public UserEntity findUserOrThrowNotFoundException(Long id) {
         return userRepository.findById(id)

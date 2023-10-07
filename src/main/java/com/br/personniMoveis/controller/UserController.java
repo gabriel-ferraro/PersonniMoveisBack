@@ -4,6 +4,7 @@ import com.br.personniMoveis.dto.MessageRequestDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
+import com.br.personniMoveis.model.user.ClientAddress;
 import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("users")
+
 public class UserController {
 
     private final EmailService emailService;
@@ -42,7 +44,6 @@ public class UserController {
 
     @PostMapping(path = "/create-account")
     public ResponseEntity<HttpStatus> createUserAccount(@RequestBody @Valid UserCreateAccountDto createAccountDto) {
-//        var password = passwordEncoder.encode(createAccountDto.getPassword());
         userService.createAccount(createAccountDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -63,78 +64,19 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping(path = "/create-new-address")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ClientAddress> createNewAddress(@RequestHeader("Authorization") String token, @RequestBody @Valid ClientAddress address) {
+        return ResponseEntity.ok(userService.createAddress(token, address));
+    }
 
-//    @PostMapping
-//    public ResponseEntity createAccount() {
-//
-//    }
-//
-//    @PutMapping
-//    public ResponseEntity updateAccountData() {
-//
-//    }
-//
-//    @DeleteMapping
-//    public ResponseEntity DeleteAccount() {
-//
-//    }
-//
-//    @PostMapping(path = "/login")
-//    public ResponseEntity doLogin() {
-//
-//    }
-//
-//    @PostMapping(path = "/logout")
-//    public ResponseEntity doLogout() {
-//
-//    }
-//    @PutMapping(path = "change-user-password")
-//    public ResponseEntity changeUserPassword() {
-//
-//    }
-//    @PutMapping(path = "change-phone")
-//    public ResponseEntity changeUserPhone() {
-//
-//    }
-    /**
-     * Faz validação da conta do usuário pelo número de celular.
-     *
-     * @param confirmationCode Código de confirmação para validar conta.
-     * @return
-     */
-//    @PostMapping
-//    public ResponseEntity confirmUserAccountByPhone(String confirmationCode) {
-//
-//    }
-    /**
-     * Faz validação da conta do usuário pelo e-email.
-     *
-     * @param confirmationCode Código de confirmação para validar conta.
-     * @return
-     */
-//    @PostMapping
-//    public ResponseEntity confirmUserAccountByEmail(String confirmationCode) {
-//
-//    }
-    /**
-     * Retorna os produtos adquiridos pelo cliente.
-     *
-     * @return Retorna os produtos adquiridos pelo cliente.
-     */
-//    @GetMapping(path = "products-from-client")
-//    public ResponseEntity getProductsFromClient() {
-//
-//    }
-    /**
-     * Retorna todos "pedidos" do cliente contendo os produtos respectivos.
-     *
-     * @return Todos "pedidos" do cliente contendo os produtos respectivos.
-     */
-//    @GetMapping(path = "orders-from-client")
-//    public ResponseEntity getOrdersFromClient() {
-//
-//    }
-
+    @GetMapping(path = "/get-user-address/{userId}")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<ClientAddress>> getClientAddresses(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(userService.getAllUserAddresses(userId));
+    }
     /**
      * Método para testar envio de um email configurado para gerar conteúdo
      * MIME.
