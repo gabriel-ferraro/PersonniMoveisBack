@@ -41,7 +41,7 @@ public class UserService {
     @Transactional
     public ClientAddress createAddress(String token, ClientAddress newAddress) {
         // Adquire id do usuário via token e recebe endereço como arg.
-        Long userId = Long.valueOf(tokenService.getIdFromToken(token));
+        Long userId = Long.valueOf(tokenService.getInfoFromToken(token, "id"));
         UserEntity user = this.findUserOrThrowNotFoundException(userId);
         ClientAddress address = addressService.createAddress(newAddress);
         //relaciona endereço com usuário.

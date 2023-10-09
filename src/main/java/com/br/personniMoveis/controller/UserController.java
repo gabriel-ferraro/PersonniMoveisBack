@@ -31,15 +31,14 @@ import java.util.List;
 public class UserController {
 
     private final EmailService emailService;
-
     private final UserService userService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserController(EmailService emailService, UserService userService) {
+    @Autowired
+    public UserController(EmailService emailService, UserService userService, PasswordEncoder passwordEncoder) {
         this.emailService = emailService;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping(path = "/create-account")
