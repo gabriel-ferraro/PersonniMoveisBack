@@ -41,19 +41,26 @@ public class TokenService {
                     .build().verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            throw new RuntimeException("Invalid or Expired JWT Token!");
+            throw new RuntimeException("Token JWT inválido ou expirado!");
         }
     }
 
-    public String getIdFromToken(String tokenJWT) {
+    /**
+     * Adquire dados do token recebido na requisição, com base na chave recebida como parâmetro.
+     * @param tokenJWT Token recebido.
+     * @param key Nome do atributo que se deseja extrair do token (id, role, etc...);
+     * Se a chave informada não existir no token, retorna null.
+     * @return Valor referente ao parâmetro key ou null se chave não existe.
+     */
+    public String getInfoFromToken(String tokenJWT, String key) {
         try {
             var algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer("PersonniMoveis API")
                     .build().verify(tokenJWT)
-                    .getClaim("userId").toString();
+                    .getClaim(key).toString();
         } catch (JWTVerificationException exception){
-            throw new RuntimeException("Invalid or Expired JWT Token!");
+            throw new RuntimeException("Token JWT inválido ou expirado!!");
         }
     }
 
