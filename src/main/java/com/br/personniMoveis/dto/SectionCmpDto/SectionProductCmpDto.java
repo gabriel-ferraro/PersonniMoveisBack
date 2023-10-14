@@ -18,5 +18,7 @@ public class SectionProductCmpDto {
 
     private Long categoryId;
 
+    private Integer index;
+
     private Set<ElementProductCmpDto> elementProductCmpDtos;
 }

@@ -19,6 +19,8 @@ public class SectionCmpDto {
 
     private Long categoryId;
 
+    private Integer index;
+
     @JsonProperty("elementCmps")
     private Set<ElementCmpDto> elementCmpDtos;
 

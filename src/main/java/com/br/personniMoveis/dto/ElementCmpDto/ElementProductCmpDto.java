@@ -18,6 +18,8 @@ public class ElementProductCmpDto {
 
     private Long sectionCmpId;
 
+    private Boolean mandatory;
+
     private OptionProductCmpDto optionProductCmpDto;
 
 }
