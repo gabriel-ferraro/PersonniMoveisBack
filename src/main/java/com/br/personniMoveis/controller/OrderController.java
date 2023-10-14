@@ -31,12 +31,12 @@ public class OrderController {
      * completo persistido.
      *
      * @param userId       id do usuário que esta realizando a compra.
-     * @param orderRequest Dto de produtos selecionados pelo usuário para compra.
+     * @param ordersRequest Dto de produtos selecionados pelo usuário para compra.
      * @return Retorna o pedido realizado no carrinho persistido.
      */
     @PostMapping(path = "/{userId}")
-    public ResponseEntity<Order> createOrder(@PathVariable("userId") Long userId, @RequestBody @Valid List<OrderRequest> orderRequest) {
-        return ResponseEntity.ok(orderService.createOrder(userId, orderRequest));
+    public ResponseEntity<Order> createOrder(@PathVariable("userId") Long userId, @RequestBody @Valid List<OrderRequest> ordersRequest) {
+        return ResponseEntity.ok(orderService.createOrder(userId, ordersRequest));
     }
 
     @GetMapping
