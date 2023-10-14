@@ -92,30 +92,30 @@ public class ProductService {
      * Cria produto convencional completo (recebe payload para criação do produto e todos subitens).
      *
      * @param product    requisição para criação do produto.
-     * @param categoryId da opcional da categoria do produto (produto pode não estar em uma categoria).
+     * @param categoryId id opcional da categoria do produto (produto pode não estar em uma categoria).
      * @return O produto persistido no banco.
      */
     @Transactional
     public Product saveRegularProduct(Product product, Long categoryId) {
-        // Checa se produto recebido tem materiais.
-        if (product.getMaterials() != null && !product.getMaterials().isEmpty()) {
-            product.getMaterials().forEach(materialService::saveMaterial);
-        }
-        // Checa se produto tem tags.
-        if (product.getTags() != null && !product.getTags().isEmpty()) {
-            product.getTags().forEach(tag -> {
-                // Se tag tem id nulo, cria tag, senão inclui tag como nova tag do produto.
-                if (tag.getTagId() == null) {
-                    tagService.createTag(tag);
-                }
-            });
-        }
         // Faz set da categoria caso tenha sido informada.
         if (categoryId != null) {
             product.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
             // Seta id da categoria para possuir sua referência no produto.
             product.setCategoryId(categoryId);
         }
+        // Checa se produto recebido tem materiais.
+//        if (product.getMaterials() != null && !product.getMaterials().isEmpty()) {
+//            product.getMaterials().forEach(materialService::saveMaterial);
+//        }
+        // Checa se produto tem tags.
+//        if (product.getTags() != null && !product.getTags().isEmpty()) {
+//            product.getTags().forEach(tag -> {
+//                // Se tag tem id nulo, cria tag, senão inclui tag como nova tag do produto.
+//                if (tag.getTagId() == null) {
+//                    tagService.createTag(tag);
+//                }
+//            });
+//        }
         // Seta data de criação. Se produto já tem data de criação, atualiza data de modificação.
         if (product.getDtCreated() == null) {
             product.setDtCreated(LocalDateTime.now());

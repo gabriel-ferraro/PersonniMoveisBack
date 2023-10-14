@@ -28,7 +28,7 @@ public class SectionCmp {
     private String name;
 
     /**
-     * índice para renderizar a imagem.
+     * índice para renderizar a imagem na ordem esperada.
      */
     private Integer index;
 
