@@ -31,15 +31,14 @@ import java.util.List;
 public class UserController {
 
     private final EmailService emailService;
-
     private final UserService userService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserController(EmailService emailService, UserService userService) {
+    @Autowired
+    public UserController(EmailService emailService, UserService userService, PasswordEncoder passwordEncoder) {
         this.emailService = emailService;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping(path = "/create-account")
@@ -71,11 +70,11 @@ public class UserController {
         return ResponseEntity.ok(userService.createAddress(token, address));
     }
 
-    @GetMapping(path = "/get-user-address/{userId}")
+    @GetMapping(path = "/get-user-address")
     @SecurityRequirement(name = "bearer-key")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<ClientAddress>> getClientAddresses(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(userService.getAllUserAddresses(userId));
+    public ResponseEntity<List<ClientAddress>> getClientAddresses(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(userService.getAllUserAddresses(token));
     }
     /**
      * Método para testar envio de um email configurado para gerar conteúdo
