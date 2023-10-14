@@ -28,6 +28,8 @@ public class ElementCmp {
 
     private String type;
 
+    private Boolean mandatory;
+
     @NotNull
     private Long sectionCmpId;
 

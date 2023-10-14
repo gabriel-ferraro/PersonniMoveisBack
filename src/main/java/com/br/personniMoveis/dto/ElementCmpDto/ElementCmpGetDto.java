@@ -16,4 +16,6 @@ public class ElementCmpGetDto {
     private String type;
 
     private Long sectionCmpId;
+
+    private Boolean mandatory;
 }

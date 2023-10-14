@@ -14,4 +14,6 @@ public class SectionCmpGetDto {
     private String imgUrl;
 
     private Long categoryId;
+
+    private Integer index;
 }

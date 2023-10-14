@@ -21,6 +21,8 @@ public class ElementCmpDto {
 
     private Long sectionCmpId;
 
+    private Boolean mandatory;
+
     @JsonProperty("optionCmps")
     private Set<OptionCmpDto> optionCmpDtos;
 
