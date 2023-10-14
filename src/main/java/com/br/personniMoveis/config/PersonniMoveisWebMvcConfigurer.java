@@ -38,22 +38,6 @@ public class PersonniMoveisWebMvcConfigurer implements WebMvcConfigurer {
         resolver.add(pageHandler);
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("*", "http://localhost:8080"); // Inserir porta do front-end
-////                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
-//    }
-
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/*").allowedOrigins("*", "http://localhost:8080").allowedMethods("GET", "POST", "OPTIONS", "PUT")
-//                .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
-//                        "Access-Control-Request-Headers")
-//                .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
-//                .allowCredentials(true).maxAge(3600);
-//    }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
@@ -63,16 +47,4 @@ public class PersonniMoveisWebMvcConfigurer implements WebMvcConfigurer {
                 .allowedHeaders("*");
 
     }
-
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
-//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
-//        configuration.setAllowedHeaders(Arrays.asList("*"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-
 }

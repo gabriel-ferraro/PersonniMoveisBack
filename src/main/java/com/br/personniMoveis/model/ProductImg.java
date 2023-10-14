@@ -20,10 +20,11 @@ public class ProductImg {
     @Column(name = "product_img_id")
     private Long productImgId;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String img;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
 }
