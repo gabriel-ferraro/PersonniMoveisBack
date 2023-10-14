@@ -35,6 +35,11 @@ public class Order {
     @JsonIgnore
     private UserEntity user;
 
+    @Column(name = "is_cmp")
+    private Boolean isCmp;
+
+    private String status;
+
     @OneToMany
     @JoinColumn(name = "order_id")
     private final List<OrderItem> orderItems = new ArrayList<>();

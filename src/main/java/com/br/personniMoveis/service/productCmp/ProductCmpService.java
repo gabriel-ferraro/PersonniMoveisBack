@@ -6,6 +6,7 @@ import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetByIdDto;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpGetDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionProductCmpDto;
 import com.br.personniMoveis.exception.BadRequestException;
+import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.ProductCmp.ProductCmpMapper;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.OptionCmp;
@@ -40,6 +41,11 @@ public class ProductCmpService {
         this.optionCmpRepository = optionCmpRepository;
     }
 
+    public ProductCmp findProductCmpOrThrowNotFoundException(Long id) {
+        return productCmpRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Cmp não encontrado."));
+    }
+
     public ProductCmpGetDto findProductByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
         return ProductCmpMapper.INSTANCE.ProductCmpToProductCmpGetDto(                productCmpRepository.findById(id).orElseThrow(
                         () -> new BadRequestException(exceptionMessage)));
@@ -59,7 +65,7 @@ public class ProductCmpService {
         // Crie um novo produto
         ProductCmp newProductCmp = new ProductCmp();
         newProductCmp.setQuantity(productCmpCreateDto.getQuantity());
-        newProductCmp.setImgUrl(productCmpCreateDto.getImgUrl());
+        newProductCmp.setImg(productCmpCreateDto.getImgUrl());
         newProductCmp.setDescription(productCmpCreateDto.getDescription());
 
         // Mapeie a lista de seções

@@ -23,7 +23,8 @@ public class OptionCmp {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "img")
+    @Lob
+    @Column(name = "img", columnDefinition = "TEXT")
     private String img;
 
     @Column(nullable = false)

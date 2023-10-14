@@ -23,6 +23,8 @@ public class UserService {
     private final AddressService addressService;
     private final TokenService tokenService;
 
+
+
     @Autowired
     public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, AddressService addressService, TokenService tokenService) {
         this.passwordEncoder = passwordEncoder;
@@ -41,7 +43,7 @@ public class UserService {
     @Transactional
     public ClientAddress createAddress(String token, ClientAddress newAddress) {
         // Adquire id do usuário via token e recebe endereço como arg.
-        Long userId = Long.valueOf(tokenService.getIdFromToken(token));
+        Long userId = Long.valueOf(tokenService.getClaimFromToken(token, "userId"));
         UserEntity user = this.findUserOrThrowNotFoundException(userId);
         ClientAddress address = addressService.createAddress(newAddress);
         //relaciona endereço com usuário.
@@ -52,7 +54,8 @@ public class UserService {
         return newAddress;
     }
 
-    public List<ClientAddress> getAllUserAddresses(Long userId) {
+    public List<ClientAddress> getAllUserAddresses(String token) {
+        Long userId = Long.valueOf(tokenService.getClaimFromToken(token,"userId"));
         UserEntity user = this.findUserOrThrowNotFoundException(userId);
         return user.getAddresses();
     }

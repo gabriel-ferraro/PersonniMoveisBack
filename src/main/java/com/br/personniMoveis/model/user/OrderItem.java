@@ -25,10 +25,16 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private Long orderItemId;
 
+    /**
+     * Unidades do produtos que o cliente selecionou para comprar.
+     */
+    private Long selectedAmountOfProducts;
+
     private Double subtotal;
 
-    private Long quantity;
-
+    /**
+     * Ordem de pedido dos produtos.
+     */
     @ManyToMany
     @JoinTable(name = "order_order_item", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "order_item_id"))
     private final List<Product> products = new ArrayList<>();
@@ -42,4 +48,5 @@ public class OrderItem {
     public int hashCode() {
         return Objects.hash(orderItemId);
     }
+
 }
