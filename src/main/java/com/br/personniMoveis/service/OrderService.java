@@ -77,7 +77,7 @@ public class OrderService {
             //Cria item do pedido (identificação do produto e qtde selecionada).
             OrderItem orderItem = new OrderItem();
             orderItem.getProducts().add(newProduct);
-            orderItem.setQuantity(orderProduct.getQuantity());
+            orderItem.setSelectedAmountOfProducts(orderProduct.getQuantity());
             // Identifica se a quantidade de produtos em estoque é suficiente para a compra.
             if (newProduct.getQuantity() < orderProduct.getQuantity()) {
                 throw new InsufficientStockException("Quantidade insuficiente de produtos em estoque para realizar a operação: \nProduto: "
