@@ -31,13 +31,12 @@ public class ProductCmp {
     @Column(nullable = false)
     private Long quantity;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Lob
+    @Column(name = "mainImg", columnDefinition = "TEXT")
+    private String img;
 
     private String description;
 
     @OneToMany
     private Set<SectionCmp> sectionCmps = new HashSet<>();
-
-
 }
