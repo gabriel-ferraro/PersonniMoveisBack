@@ -2,8 +2,10 @@ package com.br.personniMoveis.model.product;
 
 import com.br.personniMoveis.model.ProductImg;
 import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.user.OrderItem;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +24,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "product")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product {
 
     @Id
@@ -110,6 +113,11 @@ public class Product {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "productWaitingList")
     private final List<UserEntity> users = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "product_order_item", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "order_item_id"))
+    private final List<OrderItem> orderItems = new ArrayList<>();
 
     @Override
     public int hashCode() {
