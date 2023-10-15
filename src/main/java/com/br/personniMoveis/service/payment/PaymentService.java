@@ -1,10 +1,11 @@
 package com.br.personniMoveis.service.payment;
 
+import br.com.gerencianet.gnsdk.Gerencianet;
+import br.com.gerencianet.gnsdk.exceptions.GerencianetException;
+import com.br.personniMoveis.model.user.UserEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import br.com.gerencianet.gnsdk.Gerencianet;
-import br.com.gerencianet.gnsdk.exceptions.GerencianetException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -12,10 +13,10 @@ import java.util.Map;
 
 @Service
 public class PaymentService {
-    public String paymentsPix(JsonNode payment) throws Exception {
-        String cpf = payment.get("devedor").get("cpf").asText();
-        String nome = payment.get("devedor").get("nome").asText();
-        String valor = payment.get("valor").get("original").asText();
+    public String paymentsPix(UserEntity user, Double total) throws Exception {
+        String cpf = user.getCpf();
+        String nome = user.getName();
+        String valor = total.toString();
 
         Credentials credentials = new Credentials();
         JSONObject options = createOptions(credentials);

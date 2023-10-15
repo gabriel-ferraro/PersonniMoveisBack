@@ -19,11 +19,12 @@ public class PaymentsController {
     public PaymentsController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
-    @PostMapping
-    public ResponseEntity<String> paymentPix(@RequestBody JsonNode payments) throws Exception {
-        String result = paymentService.paymentsPix(payments);
-        return ResponseEntity.ok(result);
-    }
+
+//    @PostMapping
+//    public ResponseEntity<String> paymentPix(@RequestBody JsonNode payments) throws Exception {
+//        String result = paymentService.paymentsPix(payments);
+//        return ResponseEntity.ok(result);
+//    }
 
 
 }

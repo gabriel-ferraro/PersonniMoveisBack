@@ -37,7 +37,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     /**
      * Retorna os produtos mais recentemente inseridos. Se o endpoint não receber um valor de
-     * quantidade, o default é retornar 4 produtos.
+     * quantidade, o default e retornar 4 produtos.
      *
      * @param amountOfProducts Quantidade de produtos recentemente insetidos que se deseja adquirir.
      * @return Os produtos mais recentemente inseridos.
