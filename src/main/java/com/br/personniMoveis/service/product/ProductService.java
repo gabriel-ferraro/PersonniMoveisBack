@@ -84,6 +84,10 @@ public class ProductService {
         return productRepository.getMostRecentProducts(amountOfProducts);
     }
 
+    public void saveProduct(Product product) {
+        productRepository.save(product);
+    }
+
     public Product createProduct(ProductDto productDto) {
         return productRepository.save(ProductMapper.INSTANCE.productDtoToProduct(productDto));
     }
@@ -195,10 +199,16 @@ public class ProductService {
         productRepository.save(productToBeUpdated);
     }
 
+//    @Transactional
+//    public void removeProductFromOrders(Long productId) {
+//        Product prod = findProductOrThrowNotFoundException(productId);
+//        prod.get
+//    }
+
     @Transactional
     public void deleteProductById(Long productId) {
         // Remove todas as tags do produto.
-        this.removeAllTagsInProduct(productId);
+//        this.removeProductFromOrders();
         productRepository.deleteById(productId);
     }
 

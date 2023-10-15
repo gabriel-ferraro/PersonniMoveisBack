@@ -3,7 +3,9 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.dto.OrderRequest;
 import com.br.personniMoveis.exception.InsufficientStockException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
+import com.br.personniMoveis.model.product.Option;
 import com.br.personniMoveis.model.product.Product;
+import com.br.personniMoveis.model.product.Section;
 import com.br.personniMoveis.model.user.Order;
 import com.br.personniMoveis.model.user.OrderItem;
 import com.br.personniMoveis.model.user.UserEntity;
@@ -25,14 +27,16 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final ProductService productService;
     private final UserService userService;
+    private final TokenService tokenService;
 
     @Autowired
     public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
-                        ProductService productService, UserService userService) {
+                        ProductService productService, UserService userService, TokenService tokenService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productService = productService;
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     public Order findOrderOrThrowBadRequestException(Long orderId) {
@@ -60,39 +64,47 @@ public class OrderService {
      * Cria pedido de um cliente identificando itens selecionados e quantidades. Determina subtotal de cada item e
      * persiste os itens do pedido e o pedido completo (relação de orderItems contido em order).
      *
-     * @param userId       id do usuário que esta realizando a compra.
+     * @param token        tem id do usuário que esta realizando a compra.
      * @param orderRequest Dto com id do cliente e IDs dos produtos selecionados para compra.
      * @return O pedido do cliente persistido.
      */
     @Transactional
-    public Order createOrder(Long userId, List<OrderRequest> orderRequest) {
-        // Identifica se usuário existe.
+    public Order createOrder(String token, List<OrderRequest> orderRequest) {
+        // Identifica se usuário existe pelo token.
+        Long userId = Long.valueOf(tokenService.getClaimFromToken(token, "userId"));
         UserEntity user = userService.findUserOrThrowNotFoundException(userId);
-        // Itens do pedido.
+        // Itens do pedido para relação com order.
         List<OrderItem> orderItemList = new ArrayList<>();
-        double totalValue = 0D;
+        double totalValue = 0;
         // Identfica produtos do carrinho e persiste todos como produtos do pedido do usuário.
-        for (OrderRequest orderProduct : orderRequest) {
-            Product newProduct = productService.findProductOrThrowNotFoundException(orderProduct.getProductId());
-            //Cria item do pedido (identificação do produto e qtde selecionada).
-            OrderItem orderItem = new OrderItem();
-            orderItem.getProducts().add(newProduct);
-            orderItem.setSelectedAmountOfProducts(orderProduct.getQuantity());
+        for (OrderRequest request : orderRequest) {
+            // Identifica produto selecionado no BD.
+            Product dbProduct = productService.findProductOrThrowNotFoundException(request.getProduct().getProductId());
             // Identifica se a quantidade de produtos em estoque é suficiente para a compra.
-            if (newProduct.getQuantity() < orderProduct.getQuantity()) {
+            if (dbProduct.getQuantity() < request.getAmount()) {
                 throw new InsufficientStockException("Quantidade insuficiente de produtos em estoque para realizar a operação: \nProduto: "
-                        + newProduct.getName() + " Qtde em estoque: " + newProduct.getQuantity()
-                        + " Qtde requisitada na compra: " + orderProduct.getQuantity());
+                        + dbProduct.getName() + " Qtde em estoque: " + dbProduct.getQuantity()
+                        + " Qtde requisitada na compra: " + request.getAmount());
             }
+            //Cria item do pedido (identificação do produto, opções e qtde selecionada).
+            OrderItem orderItem = new OrderItem();
+            orderItem.getProducts().add(request.getProduct());
+            orderItem.setSelectedAmountOfProducts(request.getAmount());
             // Subtrai quantidade de produtos adquiridos pelo cliente do estoque.
-            newProduct.setQuantity(newProduct.getQuantity() - orderProduct.getQuantity());
-            // Define o subtotal da compra do "item" (valor do produto * qtde).
-            double subtotal = newProduct.getValue() * orderProduct.getQuantity();
+            dbProduct.setQuantity(dbProduct.getQuantity() - request.getAmount());
+            // Calcula valor das seleções das opções.
+            double optionsSubtotal = this.calculateOptionsSubtotal(request.getProduct());
+            // Define o subtotal da compra do "item" (valor do produto + opções * qtde).
+            double subtotal = (dbProduct.getValue() + optionsSubtotal) * request.getAmount();
             orderItem.setSubtotal(subtotal);
             // Adiciona produto na relação orderItem.
             orderItemList.add(orderItem);
             // Persiste orderItem.
             orderItemRepository.save(orderItem);
+            // Faz relacionamento entre produto selecionado e pedido -> product-orderItem.
+            dbProduct.getOrderItems().add(orderItem);
+            //persiste mudanças no produto.
+            productService.saveProduct(dbProduct);
             // Soma ao valor total da compra do usuário.
             totalValue += subtotal;
         }
@@ -106,6 +118,20 @@ public class OrderService {
         newOrder.setUser(user);
         orderRepository.save(newOrder);
         return newOrder;
+    }
+
+    private double calculateOptionsSubtotal(Product product) {
+        double subtotal = 0;
+        if(product.getSections() != null && !product.getSections().isEmpty()) {
+            for(Section section : product.getSections()) {
+                if(section.getOptions() != null && !section.getOptions().isEmpty()) {
+                    for(Option option : section.getOptions()) {
+                        subtotal += option.getPrice();
+                    }
+                }
+            }
+        }
+        return subtotal;
     }
 
     @Transactional

@@ -30,14 +30,19 @@ public class OrderController {
      * Recebe uma coleção de itens do pedido (ids dos produtos e a quantidade selecionada de cada), retorna o pedido
      * completo persistido.
      *
-     * @param userId       id do usuário que esta realizando a compra.
+     * @param token         tem id do usuário que esta realizando a compra.
      * @param ordersRequest Dto de produtos selecionados pelo usuário para compra.
      * @return Retorna o pedido realizado no carrinho persistido.
      */
-    @PostMapping(path = "/{userId}")
-    public ResponseEntity<Order> createOrder(@PathVariable("userId") Long userId, @RequestBody @Valid List<OrderRequest> ordersRequest) {
-        return ResponseEntity.ok(orderService.createOrder(userId, ordersRequest));
+    @PostMapping(path = "/create-product-order")
+    public ResponseEntity<Order> createProductOrder(@RequestHeader("Authorization") String token, @RequestBody @Valid List<OrderRequest> ordersRequest) {
+        return ResponseEntity.ok(orderService.createOrder(token, ordersRequest));
     }
+
+//    @PostMapping(path = "/create-cmp-order")
+//    public ResponseEntity<Order> createCmpOrder() {
+//
+//    }
 
     @GetMapping
     public List<Order> getAllOrders() {
