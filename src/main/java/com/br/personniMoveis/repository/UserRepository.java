@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    UserDetails findByEmail(String email); //Método responsavel por fazer a consulta pelo usuario
-    // no banco de dados.
+    UserDetails findByEmail(String email); //Método responsavel por fazer a consulta pelo usuario no banco de dados.
 }
