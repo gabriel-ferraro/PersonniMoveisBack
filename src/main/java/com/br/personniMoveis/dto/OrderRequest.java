@@ -1,5 +1,6 @@
 package com.br.personniMoveis.dto;
 
+import com.br.personniMoveis.model.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderRequest {
-    private Long productId;
-    private Long quantity;
+    private Product product;
+    private Long amount;
 }

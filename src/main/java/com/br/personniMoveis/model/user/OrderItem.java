@@ -28,6 +28,7 @@ public class OrderItem {
     /**
      * Unidades do produtos que o cliente selecionou para comprar.
      */
+    @Column(name = "selected_amount_of_products")
     private Long selectedAmountOfProducts;
 
     private Double subtotal;
@@ -35,8 +36,7 @@ public class OrderItem {
     /**
      * Ordem de pedido dos produtos.
      */
-    @ManyToMany
-    @JoinTable(name = "order_order_item", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "order_item_id"))
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "orderItems")
     private final List<Product> products = new ArrayList<>();
 
     @ManyToOne
