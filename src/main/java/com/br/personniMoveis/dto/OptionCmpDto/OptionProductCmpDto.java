@@ -1,5 +1,6 @@
 package com.br.personniMoveis.dto.OptionCmpDto;
 
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class OptionProductCmpDto {
 
     private Double price;
 
-    private String imgUrl;
+    private String img;
 
     private Long elementCmpId;
 
