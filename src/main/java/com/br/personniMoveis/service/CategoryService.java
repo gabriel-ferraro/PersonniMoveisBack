@@ -17,6 +17,7 @@ import com.br.personniMoveis.repository.ElementCmpRepository;
 import com.br.personniMoveis.repository.OptionCmpRepository;
 import com.br.personniMoveis.repository.SectionCmpRepository;
 import com.br.personniMoveis.service.productCmp.SectionCmpService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,7 @@ public class CategoryService {
                 () -> new ResourceNotFoundException("Categoria não encontrada"));
     }
 
+    @Transactional
     public CategoryGetByIdDto findCategoryCmpByIdOrThrowBadRequestException(Long id) {
         Category category = findCategoryOrThrowNotFoundException(id);
 
