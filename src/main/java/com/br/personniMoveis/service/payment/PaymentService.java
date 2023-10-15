@@ -4,6 +4,7 @@ import br.com.gerencianet.gnsdk.Gerencianet;
 import br.com.gerencianet.gnsdk.exceptions.GerencianetException;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.catalina.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class PaymentService {
     public String paymentsPix(UserEntity user, Double total) throws Exception {
         String cpf = user.getCpf();
         String nome = user.getName();
-        String valor = total.toString();
+        String valor = "1.00";
 
         Credentials credentials = new Credentials();
         JSONObject options = createOptions(credentials);
@@ -26,7 +27,7 @@ public class PaymentService {
             existingKey = createPixKey(options);
         }
 
-        int IdQrCode = createPix(options, existingKey, cpf, nome, valor);
+        int IdQrCode = createPix(options, existingKey, user, valor);
         String base64Image = generateQRCode(options, IdQrCode);
 
         return base64Image;
@@ -77,11 +78,11 @@ public class PaymentService {
         return null;
     }
 
-    private int createPix(JSONObject options, String existingKey, String cpf, String nome, String valor) {
+    private int createPix(JSONObject options, String existingKey, UserEntity user, String valor) {
         int IdQrCode = 0;
         JSONObject body = new JSONObject();
         body.put("calendario", new JSONObject().put("expiracao", 3600));
-        body.put("devedor", new JSONObject().put("cpf", cpf).put("nome", nome));
+        body.put("devedor", new JSONObject().put("cpf", "12345678909").put("nome", user.getName()));
         body.put("valor", new JSONObject().put("original", valor));
         body.put("chave", existingKey);
         body.put("solicitacaoPagador", "Serviço realizado.");
