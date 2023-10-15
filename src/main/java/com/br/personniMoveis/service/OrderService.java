@@ -11,6 +11,7 @@ import com.br.personniMoveis.model.user.OrderItem;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.OrderItemRepository;
 import com.br.personniMoveis.repository.OrderRepository;
+import com.br.personniMoveis.service.payment.PaymentService;
 import com.br.personniMoveis.service.product.ProductService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +29,17 @@ public class OrderService {
     private final ProductService productService;
     private final UserService userService;
     private final TokenService tokenService;
+    private final PaymentService paymentService;
 
     @Autowired
     public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
-                        ProductService productService, UserService userService, TokenService tokenService) {
+                        ProductService productService, UserService userService, TokenService tokenService, com.br.personniMoveis.service.payment.PaymentService paymentService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productService = productService;
         this.userService = userService;
         this.tokenService = tokenService;
+        this.paymentService = paymentService;
     }
 
     public Order findOrderOrThrowBadRequestException(Long orderId) {
@@ -69,7 +72,7 @@ public class OrderService {
      * @return O pedido do cliente persistido.
      */
     @Transactional
-    public Order createOrder(String token, List<OrderRequest> orderRequest) {
+    public String createOrder(String token, List<OrderRequest> orderRequest) {
         // Identifica se usuário existe pelo token.
         Long userId = Long.valueOf(tokenService.getClaimFromToken(token, "userId"));
         UserEntity user = userService.findUserOrThrowNotFoundException(userId);
@@ -117,7 +120,11 @@ public class OrderService {
         // Setando usuário que realizou a compra.
         newOrder.setUser(user);
         orderRepository.save(newOrder);
-        return newOrder;
+        try {
+            return paymentService.paymentsPix(user, totalValue);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private double calculateOptionsSubtotal(Product product) {

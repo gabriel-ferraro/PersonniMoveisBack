@@ -35,7 +35,7 @@ public class OrderController {
      * @return Retorna o pedido realizado no carrinho persistido.
      */
     @PostMapping(path = "/create-product-order")
-    public ResponseEntity<Order> createProductOrder(@RequestHeader("Authorization") String token, @RequestBody @Valid List<OrderRequest> ordersRequest) {
+    public ResponseEntity<String> createProductOrder(@RequestHeader("Authorization") String token, @RequestBody @Valid List<OrderRequest> ordersRequest) {
         return ResponseEntity.ok(orderService.createOrder(token, ordersRequest));
     }
 
