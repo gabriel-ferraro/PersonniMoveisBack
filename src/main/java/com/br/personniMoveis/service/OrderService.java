@@ -72,7 +72,7 @@ public class OrderService {
         return null;
     }
 
-    public String makeOrder(String token, List<OrderRequest> orderRequest) {
+    public String makeOrder(String token, OrderRequest orderRequest) {
         // Checa se tem ao menos um produto/cmp senão joga exceção.
         try {
             this.validateOrderRequest(orderRequest);
@@ -85,10 +85,10 @@ public class OrderService {
         UserEntity user = userService.findUserOrThrowNotFoundException(userId);
         // Declara var para total dos pedidos cmp e produto.
         double orderTotal = 0;
-        if (orderRequest != null && !orderRequest.isEmpty()) {
-            orderTotal += this.totalProducts(user, orderRequest);
+        if (orderRequest.getRequestProduct() != null && !orderRequest.getRequestProduct().isEmpty()) {
+            orderTotal += this.totalProducts(user, orderRequest.getRequestProduct());
         }
-        if (orderRequest != null && !orderRequest.isEmpty()) {
+        if (orderRequest.getRequestProduct() != null && !orderRequest.getRequestProduct().isEmpty()) {
             orderTotal += this.totalCmps();
         }
         // Retorna qrCode Pix em base64.
@@ -104,19 +104,17 @@ public class OrderService {
      * persiste os itens do pedido e o pedido completo (relação de orderItems contido em order).
      * Retorna total da compra.
      *
-     * @param user                Identificação do usuário.
-     * @param orderRequest Dto com id do cliente e IDs dos produtos selecionados para compra.
+     * @param user            Identificação do usuário.
+     * @param requestProducts Dto com os produtos selecionados para compra.
      * @return O total da compra.
      */
     @Transactional
-    public Double totalProducts(UserEntity user, List<OrderRequest> orderRequest) {
+    public Double totalProducts(UserEntity user, List<RequestProduct> requestProducts) {
         // Itens do pedido para relação com order.
         List<OrderItem> orderItemList = new ArrayList<>();
         double totalValue = 0;
         // Identfica produtos do carrinho e persiste todos como produtos do pedido do usuário.
-        for (OrderRequest request : orderRequest) {
-            // Identifica produto na requisição.
-            RequestProduct reqProduct = request.getRequestProduct();
+        for (RequestProduct reqProduct : requestProducts) {
             // Identifica produto selecionado no BD.
             Product dbProduct = productService.findProductOrThrowNotFoundException(reqProduct.getProduct().getProductId());
             // Identifica se a quantidade de produtos em estoque é suficiente para a compra.
@@ -180,13 +178,15 @@ public class OrderService {
     }
 
     /**
-     * Valida payload da requisição de compra.
+     * Valida payload da requisição de compra. Se ambos cmp ou produtos não possuem produtos, da exceção.
      *
      * @param orderRequest payload da requisição de compra.
      */
-    private void validateOrderRequest(List<OrderRequest> orderRequest) throws Exception {
-        orderRequest.stream().findAny().orElseThrow(() ->
-                new Exception("orderRequest vazio - Não foram recebdos produtos para realizar o processo de compra."));
+    private void validateOrderRequest(OrderRequest orderRequest) throws Exception {
+        if (orderRequest.getRequestProduct() == null || orderRequest.getRequestProduct().isEmpty()
+                && orderRequest.getRequestCmp() == null || orderRequest.getRequestCmp().isEmpty()) {
+            throw new Exception("orderRequest vazio - Não foram recebdos produtos para realizar o processo de compra.");
+        }
     }
 
     @Transactional

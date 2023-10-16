@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Dto pode receber uma lista de prods ou cmps a serem comprados.
  */
@@ -12,6 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderRequest {
 
-    private RequestProduct requestProduct;
-    private RequestCmp requestCmp;
+    private List<RequestProduct> requestProduct;
+    private List<RequestCmp> requestCmp;
 }
