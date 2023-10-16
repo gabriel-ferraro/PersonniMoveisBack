@@ -14,11 +14,7 @@ import java.util.Map;
 
 @Service
 public class PaymentService {
-    public String paymentsPix(UserEntity user, Double total) throws Exception {
-        String cpf = user.getCpf();
-        String nome = user.getName();
-        String valor = "1.00";
-
+    public String paymentsPix(UserEntity user, Double total) {
         Credentials credentials = new Credentials();
         JSONObject options = createOptions(credentials);
         String existingKey = getOrCreatePixKey(options);
@@ -27,7 +23,7 @@ public class PaymentService {
             existingKey = createPixKey(options);
         }
 
-        int IdQrCode = createPix(options, existingKey, user, valor);
+        int IdQrCode = createPix(options, existingKey, user, total);
         String base64Image = generateQRCode(options, IdQrCode);
 
         return base64Image;
@@ -78,12 +74,12 @@ public class PaymentService {
         return null;
     }
 
-    private int createPix(JSONObject options, String existingKey, UserEntity user, String valor) {
+    private int createPix(JSONObject options, String existingKey, UserEntity user, Double valor) {
         int IdQrCode = 0;
         JSONObject body = new JSONObject();
         body.put("calendario", new JSONObject().put("expiracao", 3600));
-        body.put("devedor", new JSONObject().put("cpf", "12345678909").put("nome", user.getName()));
-        body.put("valor", new JSONObject().put("original", valor));
+        body.put("devedor", new JSONObject().put("cpf", user.getCpf()).put("nome", user.getName()));
+        body.put("valor", new JSONObject().put("original", String.format("%.2f", valor)));
         body.put("chave", existingKey);
         body.put("solicitacaoPagador", "Serviço realizado.");
 

@@ -34,15 +34,11 @@ public class OrderController {
      * @param ordersRequest Dto de produtos selecionados pelo usuário para compra.
      * @return Retorna o pedido realizado no carrinho persistido.
      */
-    @PostMapping(path = "/create-product-order")
-    public ResponseEntity<String> createProductOrder(@RequestHeader("Authorization") String token, @RequestBody @Valid List<OrderRequest> ordersRequest) {
-        return ResponseEntity.ok(orderService.createOrder(token, ordersRequest));
+    @PostMapping(path = "/create-order")
+    public ResponseEntity<String> createProductOrder(
+            @RequestHeader("Authorization") String token, @RequestBody @Valid List<OrderRequest> ordersRequest) {
+        return ResponseEntity.ok(orderService.makeOrder(token, ordersRequest));
     }
-
-//    @PostMapping(path = "/create-cmp-order")
-//    public ResponseEntity<Order> createCmpOrder() {
-//
-//    }
 
     @GetMapping
     public List<Order> getAllOrders() {
@@ -51,7 +47,7 @@ public class OrderController {
 
     @GetMapping(path = "/{clientId}")
     public ResponseEntity<List<Order>> getAllOrdersFromClientById(@PathVariable("clientId") Long clientId) {
-        return ResponseEntity.ok(orderService.getUserOrders(clientId));
+        return ResponseEntity.ok(orderService.getUserProductOrders(clientId));
     }
 
     @DeleteMapping
