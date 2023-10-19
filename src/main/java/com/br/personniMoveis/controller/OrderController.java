@@ -45,9 +45,9 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @GetMapping(path = "/{clientId}")
-    public ResponseEntity<List<Order>> getAllOrdersFromClientById(@PathVariable("clientId") Long clientId) {
-        return ResponseEntity.ok(orderService.getUserProductOrders(clientId));
+    @GetMapping(path = "client-orders")
+    public ResponseEntity<List<Order>> getAllOrdersFromClientById(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(orderService.getUserOrders(token));
     }
 
     @DeleteMapping

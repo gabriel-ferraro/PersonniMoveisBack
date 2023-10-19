@@ -31,12 +31,12 @@ public class Order {
     private LocalDateTime date;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    @JsonIgnore
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     private String status;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "order_id")
     private final List<OrderItem> orderItems = new ArrayList<>();

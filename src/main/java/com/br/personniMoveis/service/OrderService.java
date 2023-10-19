@@ -1,6 +1,7 @@
 package com.br.personniMoveis.service;
 
 import com.br.personniMoveis.dto.OrderRequest;
+import com.br.personniMoveis.dto.RequestCmp;
 import com.br.personniMoveis.dto.RequestProduct;
 import com.br.personniMoveis.exception.InsufficientStockException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
@@ -57,45 +58,49 @@ public class OrderService {
         return order.getOrderItems();
     }
 
+    @Transactional
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
-    public List<Order> getUserProductOrders(Long userId) {
+    @Transactional
+    public List<Order> getUserOrders(String token) {
         // Identifica se usuário indicado existe.
-        userService.findUserOrThrowNotFoundException(userId);
-        // Retorna pedidos do usuário via query.
-        return orderRepository.getUserOrders(userId);
+        Long userId = Long.valueOf(tokenService.getClaimFromToken(token, "userId"));
+        UserEntity user = userService.findUserOrThrowNotFoundException(userId);
+        // Retorna pedidos do usuário
+        return user.getOrders();
     }
 
     public List<Order> getUserCmpOrders() {
         return null;
     }
 
+    /**
+     * Faz pedido dos produtos (cmp ou regular) e retorna qrcode pix.
+     *
+     * @param token        token de id do user.
+     * @param orderRequest Pedido do cliente.
+     * @return qrcode pix.
+     */
     public String makeOrder(String token, OrderRequest orderRequest) {
-        // Checa se tem ao menos um produto/cmp senão joga exceção.
-        try {
-            this.validateOrderRequest(orderRequest);
-        } catch (Exception ex) {
-            throw new ResourceNotFoundException("Pedido de produto vazio");
-        }
-
         // Identifica se usuário existe pelo token.
         Long userId = Long.valueOf(tokenService.getClaimFromToken(token, "userId"));
         UserEntity user = userService.findUserOrThrowNotFoundException(userId);
+
         // Declara var para total dos pedidos cmp e produto.
         double orderTotal = 0;
         if (orderRequest.getRequestProduct() != null && !orderRequest.getRequestProduct().isEmpty()) {
             orderTotal += this.totalProducts(user, orderRequest.getRequestProduct());
         }
-        if (orderRequest.getRequestProduct() != null && !orderRequest.getRequestProduct().isEmpty()) {
-            orderTotal += this.totalCmps();
+        if (orderRequest.getRequestCmp() != null && !orderRequest.getRequestCmp().isEmpty()) {
+            orderTotal += this.totalCmps(user, orderRequest.getRequestCmp());
         }
         // Retorna qrCode Pix em base64.
         return getPixQrCode(user, orderTotal);
     }
 
-    public double totalCmps() {
+    public double totalCmps(UserEntity user, List<RequestCmp> requestCmps) {
         return 0;
     }
 
@@ -125,12 +130,12 @@ public class OrderService {
             }
             //Cria item do pedido (identificação do produto, opções e qtde selecionada).
             OrderItem orderItem = new OrderItem();
-            orderItem.getProducts().add(reqProduct.getProduct());
+            orderItem.getProducts().add(dbProduct);
             orderItem.setSelectedAmountOfProducts(reqProduct.getAmount());
             // Subtrai quantidade de produtos adquiridos pelo cliente do estoque.
             dbProduct.setQuantity(dbProduct.getQuantity() - reqProduct.getAmount());
             // Calcula valor das seleções das opções.
-            double optionsSubtotal = this.calculateOptionsSubtotal(dbProduct);//
+            double optionsSubtotal = this.calculateOptionsSubtotal(dbProduct);
             // Define o subtotal da compra do "item" (valor do produto + opções * qtde).
             double subtotal = (dbProduct.getValue() + optionsSubtotal) * reqProduct.getAmount();
             orderItem.setSubtotal(subtotal);
@@ -154,12 +159,14 @@ public class OrderService {
         // Setando usuário que realizou a compra.
         newOrder.setUser(user);
         orderRepository.save(newOrder);
+        user.getOrders().add(newOrder);
+        userService.saveUser(user);
         return totalValue;
     }
 
     @Transactional
     public String getPixQrCode(UserEntity user, Double total) {
-        // Envia Requisição para adquirir pix, retorna pix do valor total do pedido (cmp e produto).
+        // Envia Requisição para adquirir pix, retorna qrCode pix do valor total do pedido (cmp e produto).
         return paymentService.paymentsPix(user, total);
     }
 
@@ -175,18 +182,6 @@ public class OrderService {
             }
         }
         return subtotal;
-    }
-
-    /**
-     * Valida payload da requisição de compra. Se ambos cmp ou produtos não possuem produtos, da exceção.
-     *
-     * @param orderRequest payload da requisição de compra.
-     */
-    private void validateOrderRequest(OrderRequest orderRequest) throws Exception {
-        if (orderRequest.getRequestProduct() == null || orderRequest.getRequestProduct().isEmpty()
-                && orderRequest.getRequestCmp() == null || orderRequest.getRequestCmp().isEmpty()) {
-            throw new Exception("orderRequest vazio - Não foram recebdos produtos para realizar o processo de compra.");
-        }
     }
 
     @Transactional
