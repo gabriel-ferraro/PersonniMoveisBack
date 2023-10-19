@@ -40,6 +40,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void saveUser(UserEntity user) {
+        userRepository.save(user);
+    }
+
     @Transactional
     public ClientAddress createAddress(String token, ClientAddress newAddress) {
         // Adquire id do usuário via token e recebe endereço como arg.

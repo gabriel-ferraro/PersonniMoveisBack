@@ -42,7 +42,6 @@ public class PaymentService {
         try {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixListEvp", new HashMap<String, String>(), new JSONObject());
-            System.out.println(response);
             JSONArray chaves = response.getJSONArray("chaves");
             if (chaves.length() > 0) {
                 return chaves.getString(0);
@@ -60,7 +59,6 @@ public class PaymentService {
         try {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixCreateEvp", new HashMap<String, String>(), new JSONObject());
-            System.out.println(response);
             JSONArray chaves = response.getJSONArray("chaves");
             if (chaves.length() > 0) {
                 return chaves.getString(0);
@@ -91,7 +89,6 @@ public class PaymentService {
         try {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixCreateImmediateCharge", new HashMap<String, String>(), body);
-            System.out.println(response);
             IdQrCode = response.getJSONObject("loc").getInt("id");
 
         } catch (GerencianetException e) {
