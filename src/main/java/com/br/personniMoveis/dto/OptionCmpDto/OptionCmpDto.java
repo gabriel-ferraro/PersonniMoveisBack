@@ -1,5 +1,6 @@
 package com.br.personniMoveis.dto.OptionCmpDto;
 
+import com.br.personniMoveis.model.productCmp.ElementCmp;
 import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class OptionCmpDto {
 
     private String img;
 
-    private Long elementCmpId;
+    private ElementCmp elementCmp;
 
     public OptionCmpDto() {
 

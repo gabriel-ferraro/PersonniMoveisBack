@@ -1,5 +1,7 @@
 package com.br.personniMoveis.model.productCmp;
 
+import com.br.personniMoveis.model.category.Category;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -32,11 +35,18 @@ public class SectionCmp {
      */
     private Integer index;
 
-    @NotNull
-    private Long categoryId;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
 
     @OneToMany
-    private Set<ElementCmp> elementCmps = new HashSet<>();;
+    @JoinColumn(name = "section_cmp_id")
+    private Set<ElementCmp> elementCmps;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 
 }

@@ -1,11 +1,14 @@
 package com.br.personniMoveis.model.productCmp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Data
 @Builder
@@ -30,6 +33,13 @@ public class OptionCmp {
     @Column(nullable = false)
     private Double price;
 
-    @NotNull
-    private Long elementCmpId;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ElementCmp elementCmp;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }
