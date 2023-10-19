@@ -45,14 +45,15 @@ public class OptionCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createOptionCmp(OptionCmpDto optionCmpDtos, Long elementCmpId) {
+    public void createOptionCmp(OptionCmpDto optionCmpDto, Long elementCmpId) {
             // Busca a categoria
-            ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Section not found"));
+            ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
             // Converte e persiste os elementos
-            OptionCmp newOption = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDtos);
+            OptionCmp newOption = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDto);
             // Configura a seção nos elementos
-            newOption.setElementCmpId(elementCmpId);
+            newOption.setElementCmp(elementCmp);
             optionCmpRepository.save(newOption);
+
     }
 
     public void updateOptionCmp(OptionCmpDto optionCmpDto, Long optionCmpId) {
@@ -60,7 +61,7 @@ public class OptionCmpService {
         OptionCmp optionCmp = optionCmpRepository.findById(optionCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
         OptionCmp  OptionBeUpdated = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDto);
         OptionBeUpdated.setId(optionCmpId);
-        OptionBeUpdated.setElementCmpId(optionCmp.getElementCmpId()); // Mantém o mesmo elemento
+        OptionBeUpdated.setElementCmp(optionCmp.getElementCmp()); // Mantém o mesmo elemento
 
         // Persiste alteracoes.
         optionCmpRepository.save(OptionBeUpdated);

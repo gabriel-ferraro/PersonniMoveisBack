@@ -2,6 +2,7 @@ package com.br.personniMoveis.model.category;
 
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -34,15 +35,18 @@ public class Category {
     @Column(nullable = false)
     private Boolean allow_creation; // Permitir criação do produto que se encaixa na categoria.
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "id")
     private Set<Product> products;
 
     @OneToMany
+    @JoinColumn(name = "id")
     private Set<SectionCmp> sectionCmp;
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

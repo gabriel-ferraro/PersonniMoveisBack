@@ -49,19 +49,18 @@ public class SectionCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createSectionCmp(SectionCmpDto sectionCmpDtos, Long categoryId) {
+    public void createSectionCmp(SectionCmpDto sectionCmpDto, Long categoryId) {
         // Busca a categoria
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new BadRequestException("Category not found"));
-        // Setando categorias para cada seção
-        sectionCmpDtos.setCategoryId(categoryId);
         //Salvando seção
-        SectionCmp newSection = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpDtos);
+        SectionCmp newSection = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpDto);
+        newSection.setCategory(category);
         // Persiste a nova instância no banco de dados
         sectionCmpRepository.save(newSection);
 
         // Criando elementos relacionados, se necessário
-                if (sectionCmpDtos.getElementCmpDtos() != null) {
-                    for (ElementCmpDto elementCmpDto : sectionCmpDtos.getElementCmpDtos()) {
+                if (sectionCmpDto.getElementCmpDtos() != null) {
+                    for (ElementCmpDto elementCmpDto: sectionCmpDto.getElementCmpDtos()) {
                             if (!elementCmpDto.getName().isEmpty()) {
                                 elementCmpService.createElementCmp(elementCmpDto, newSection.getId());
                             }
@@ -76,7 +75,7 @@ public class SectionCmpService {
         // Atualiza os dados da seção
         SectionCmp updatedSection = SectionCmpMapper.INSTANCE.toSectionCmp(sectionCmpDto);
         updatedSection.setId(sectionCmpId);
-        updatedSection.setCategoryId(sectionCmp.getCategoryId()); // Mantém a mesma categoria
+        updatedSection.setCategory(sectionCmp.getCategory()); // Mantém a mesma categoria
         sectionCmpRepository.save(updatedSection);
 
         if (!sectionCmpDto.getElementCmpDtos().isEmpty()) {

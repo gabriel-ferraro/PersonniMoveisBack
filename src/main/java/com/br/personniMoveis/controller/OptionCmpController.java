@@ -2,6 +2,7 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpGetDto;
+import com.br.personniMoveis.model.productCmp.OptionCmp;
 import com.br.personniMoveis.service.productCmp.OptionCmpService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -40,8 +41,8 @@ public class OptionCmpController {
     }
 
     @PostMapping(path = "/{elementCmpId}")
-    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid OptionCmpDto optionCmpDtos, @PathVariable("elementCmpId") Long elementCmpId) {
-        optionCmpService.createOptionCmp(optionCmpDtos, elementCmpId);
+    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid OptionCmpDto optionCmpDto, @PathVariable("elementCmpId") Long elementCmpId) {
+        optionCmpService.createOptionCmp(optionCmpDto, elementCmpId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
