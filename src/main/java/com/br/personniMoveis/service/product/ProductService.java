@@ -13,10 +13,12 @@ import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.repository.ProductRepository;
 import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.DetailService;
+import com.br.personniMoveis.service.TokenService;
+import com.br.personniMoveis.utils.AuthUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,15 +31,18 @@ public class ProductService {
     private final DetailService detailService;
     private final MaterialService materialService;
     private final TagService tagService;
+    private final AuthUtils authUtils;
 
     @Autowired
     public ProductService(ProductRepository productRepository, CategoryService categoryService,
-                          DetailService detailService, TagService tagService, MaterialService materialService) {
+                          DetailService detailService, TagService tagService, MaterialService materialService,
+                          TokenService tokenService, AuthUtils authUtils) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
         this.detailService = detailService;
         this.tagService = tagService;
         this.materialService = materialService;
+        this.authUtils = authUtils;
     }
 
     public Product findProductOrThrowNotFoundException(Long id) {
@@ -164,7 +169,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void removeDetailInProduct(Long productId, Long detailId) {
+    public void removeDetailInProduct(String token, Long productId, Long detailId) {
+        authUtils.validateUserAdmin(token);
         Product product = findProductOrThrowNotFoundException(productId);
         Detail detail = findDetailInProductOrThrowNotFoundException(product, detailId);
         product.getDetails().remove(detail);
