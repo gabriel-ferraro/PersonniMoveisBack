@@ -134,6 +134,10 @@ public class OrderService {
             orderItem.setSelectedAmountOfProducts(reqProduct.getAmount());
             // Subtrai quantidade de produtos adquiridos pelo cliente do estoque.
             dbProduct.setQuantity(dbProduct.getQuantity() - reqProduct.getAmount());
+            // Se qtde de produto é zero, produto se torna indisponível.
+            if(dbProduct.getQuantity() == 0) {
+                dbProduct.setAvailable(false);
+            }
             // Calcula valor das seleções das opções.
             double optionsSubtotal = this.calculateOptionsSubtotal(dbProduct);
             // Define o subtotal da compra do "item" (valor do produto + opções * qtde).

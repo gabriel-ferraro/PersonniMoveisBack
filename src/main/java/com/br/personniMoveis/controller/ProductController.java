@@ -8,9 +8,7 @@ import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.product.Tag;
 import com.br.personniMoveis.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.hibernate.Remove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,13 +71,14 @@ public class ProductController {
     /**
      * Remove um detalhe de um prduto e deleta o detalhe.
      *
-     * @param productId Id do produto
      * @param detailId  id do detalhe.
      * @return Http status 201.
      */
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> removeDetailInProduct(Long productId, Long detailId) {
-        productService.removeDetailInProduct(productId, detailId);
+    @DeleteMapping(path = "/detail/{productId}/{detailId}")
+    public ResponseEntity<HttpStatus> removeDetailInProduct(
+            @RequestHeader("Authorization") String token, @PathVariable("productId") Long productId,
+            @PathVariable("detailId") Long detailId) {
+        productService.removeDetailInProduct(token, productId, detailId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
