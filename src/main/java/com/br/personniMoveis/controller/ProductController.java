@@ -2,6 +2,7 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
+import com.br.personniMoveis.dto.product.ProductPutDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.model.product.Detail;
 import com.br.personniMoveis.model.product.Product;
@@ -126,14 +127,21 @@ public class ProductController {
     @Operation(summary = "Cria/edita produto convencional", description = "Endpoint que recebe todo payload para " +
             "criação ou edição do produto convencional como req param e seus subitens. Recebe um id opcional para setar a categoria do produto.")
     @PostMapping(path = "/save-full-product")
-    public ResponseEntity<Product> createFullProduct(
+    public ResponseEntity<Product> saveFullProduct(
             @RequestParam(name = "categoryId", required = false) Long categoryId,
             @RequestBody @Valid Product product) {
-        return ResponseEntity.ok(productService.saveRegularProduct(product, categoryId));
+        return ResponseEntity.ok(productService.createProduct(product, categoryId));
+    }
+
+    @PutMapping(path = "/save-full-product")
+    public ResponseEntity<Product> editFullProduct(
+            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @RequestBody @Valid Product product) {
+        return ResponseEntity.ok(productService.createProduct(product, categoryId));
     }
 
     @PutMapping(path = "/{productId}")
-    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductDto productDto, @PathVariable("productId") Long productId) {
+    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductPutDto productDto, @PathVariable("productId") Long productId) {
         productService.updateProduct(productDto, productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -155,6 +163,14 @@ public class ProductController {
     @DeleteMapping(path = "/{productId}/delete-all-tags")
     public ResponseEntity<HttpStatus> removeAllTagsInProduct(@PathVariable("productId") Long productId) {
         productService.removeAllTagsInProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "Notifica clientes da volta do produto à loja.",
+            description = "Envia e-mail para todos clientes que tem o produto na lista de espera.")
+    @PostMapping(path = "/notify-clients-email/{productId}/{productUrl}")
+    public ResponseEntity<HttpStatus> notifyClientsProductReturned(@PathVariable("productId") Long productId, @PathVariable("productUrl") String productUrl) {
+        productService.notifyClientsProductReturned(productId, productUrl);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

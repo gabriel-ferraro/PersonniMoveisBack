@@ -27,10 +27,12 @@ public class EmailService {
      * Injeta objeto para enviar e-mail.
      */
     private final JavaMailSender javaMailSender;
+    private final StorePropertiesService storeService;
 
     @Autowired
-    public EmailService(JavaMailSender javaMailSender) {
+    public EmailService(JavaMailSender javaMailSender, StorePropertiesService storeService) {
         this.javaMailSender = javaMailSender;
+        this.storeService = storeService;
     }
 
     /**
@@ -128,14 +130,13 @@ public class EmailService {
      * retornou à loja.
      *
      * @param to         Endereço de e-mail de destino.
-     * @param storeName  Nome da loja do e-commerce.
      * @param product    Detalhes do produto a serem exibidos ao cliente.
      * @param clientName Nome do cliente.
      * @param productUrl URL do produto que retornou ao estoque.
      */
-    public void productArrivedMessage(String to, String storeName, Product product, String clientName, String productUrl) {
+    public void productArrivedMessage(String to, String clientName, Product product, String productUrl) {
         // Constrói strings de conteúdo do e-mail.
-        String subject = "Produto que você aguardava acabou de chagar na ".concat(storeName);
+        String subject = "Um produto que você aguardava acabou de chagar na ".concat(storeService.getStore().getStoreName());
         String mainContent = generateDiv(
                 "Olá ".concat(clientName).concat(", o produto ".concat(product.getName()).concat(" da sua lista de espera acabou de retornar para nossa loja!")),
                 Optional.empty(),
