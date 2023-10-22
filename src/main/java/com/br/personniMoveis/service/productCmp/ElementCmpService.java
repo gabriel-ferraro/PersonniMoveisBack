@@ -53,20 +53,20 @@ public class ElementCmpService {
                         () -> new BadRequestException(exceptionMessage)));
     }
 
-    public void createElementCmp(ElementCmpDto elementCmpDtos, Long sectionCmpId) {
+    public void createElementCmp(ElementCmpDto elementCmpDto, Long sectionCmpId) {
             // Busca a seção
             SectionCmp sectionCmp = sectionCmpRepository.findById(sectionCmpId)
                     .orElseThrow(() -> new BadRequestException("Section not found"));
             // Converte e persiste os elementos
-            ElementCmp newElement = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtos);
+            ElementCmp newElement = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDto);
             // Configura a seção nos elementos
-            newElement.setSectionCmpId(sectionCmpId);
+            newElement.setSectionCmp(sectionCmp);
             // Persiste a nova instância no banco de dados
             elementCmpRepository.save(newElement);;
 
             // Criando elementos relacionados, se necessário
-            if (elementCmpDtos.getOptionCmpDtos() != null) {
-                for (OptionCmpDto optionCmpDto : elementCmpDtos.getOptionCmpDtos()) {
+            if (elementCmpDto.getOptionCmpDtos() != null) {
+                for (OptionCmpDto optionCmpDto : elementCmpDto.getOptionCmpDtos()) {
                     if (!optionCmpDto.getName().isEmpty()) {
                         optionCmpService.createOptionCmp(optionCmpDto, newElement.getId());
                     }
@@ -80,7 +80,7 @@ public class ElementCmpService {
         ElementCmp elementCmp = elementCmpRepository.findById(elementCmpId).orElseThrow(() -> new BadRequestException("Element not found"));
         // Atualiza os dados da seção
         ElementCmp ElementBeUpdated = ElementCmpMapper.INSTANCE.toElementCmp(elementCmpDtos);
-        ElementBeUpdated.setSectionCmpId(elementCmp.getSectionCmpId());//Mantem a mesma seção
+        ElementBeUpdated.setSectionCmp(elementCmp.getSectionCmp());//Mantem a mesma seção
         ElementBeUpdated.setId(elementCmpId);
         // Persiste alteracoes.
         elementCmpRepository.save(ElementBeUpdated);

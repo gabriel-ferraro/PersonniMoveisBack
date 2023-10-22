@@ -47,6 +47,7 @@ public class CategoryService {
         this.optionCmpRepository = optionCmpRepository;
     }
 
+
     public Category findCategoryOrThrowNotFoundException(Long id) {
         return categoryRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Categoria não encontrada"));
@@ -75,6 +76,7 @@ public class CategoryService {
         categoryGetByIdDto.setSectionCmps(sectionCmps);
         return categoryGetByIdDto;
     }
+
 
     public void createCategoryCmp(CategoryCmpDto categoryCmpDto) {
         // Cria nova categoria.

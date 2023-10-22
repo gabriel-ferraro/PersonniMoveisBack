@@ -4,6 +4,7 @@ import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
+import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -30,9 +31,9 @@ public class CategoryController {
     }
 
     @Operation(summary = "Categoria", description = "Adquire a categoria CMP do id informado")
-    @GetMapping(path = "/category-cmp/{categoryId}")
-    public ResponseEntity<CategoryGetByIdDto> getCategoryCmpById(@PathVariable("categoryId") Long categoryId) {
-        return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<CategoryGetByIdDto> getCategoryCmpById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(id));
     }
 
     @Operation(summary = "Adquire produtos na categoria (CMP ou não)", description = "Lista todos os produtos da categoria de id informado")
@@ -49,16 +50,16 @@ public class CategoryController {
         return ResponseEntity.ok(Category);
     }
 
-    @Operation(summary = "Busca categoria por Id com relacionamentos", description = "Lista todas as categorias mas com relacionamento")
-    @GetMapping(path = "/{categoryId}")
-    public ResponseEntity<CategoryGetByIdDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
-        return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
-    }
+//    @Operation(summary = "Busca categoria por Id com relacionamentos", description = "Lista todas as categorias mas com relacionamento")
+//    @GetMapping(path = "/{categoryId}")
+//    public ResponseEntity<CategoryGetByIdDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
+//        return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
+//    }
 
     @Operation(summary = "Cria Categoria", description = "Cria categoria com seções, elementos e opções")
     @PostMapping
-    public ResponseEntity<HttpStatus> createCategory(@RequestBody @Valid CategoryCmpDto categoryDto) {
-        categoryService.createCategoryCmp(categoryDto);
+    public ResponseEntity<Category> createCategory(@RequestBody @Valid CategoryCmpDto categoryCmpDto) {
+        categoryService.createCategoryCmp(categoryCmpDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

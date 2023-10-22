@@ -1,6 +1,7 @@
 package com.br.personniMoveis.dto.SectionCmpDto;
 
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
+import com.br.personniMoveis.model.category.Category;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +18,9 @@ public class SectionCmpDto {
 
     private String imgUrl;
 
-    private Long categoryId;
-
     private Integer index;
+
+    private Category category;
 
     @JsonProperty("elementCmps")
     private Set<ElementCmpDto> elementCmpDtos;
