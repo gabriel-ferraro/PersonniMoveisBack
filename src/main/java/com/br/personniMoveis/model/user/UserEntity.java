@@ -77,6 +77,10 @@ public class UserEntity implements UserDetails {
     @JoinColumn(name = "user_id")
     private final List<Order> orders = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private final List<OrderCmp> orderCmps = new ArrayList<>();
+
     public UserEntity(UserCreateAccountDto data) {
         this.name = data.getName();
         this.email = data.getEmail();

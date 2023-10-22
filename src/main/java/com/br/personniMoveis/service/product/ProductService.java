@@ -2,23 +2,20 @@ package com.br.personniMoveis.service.product;
 
 import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
+import com.br.personniMoveis.dto.product.ProductPutDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.AlreadyExistsException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.mapper.product.ProductMapper;
-import com.br.personniMoveis.model.product.Detail;
-import com.br.personniMoveis.model.product.Product;
-import com.br.personniMoveis.model.product.Tag;
+import com.br.personniMoveis.model.product.*;
+import com.br.personniMoveis.repository.ProductImgRepository;
 import com.br.personniMoveis.repository.ProductRepository;
-import com.br.personniMoveis.service.CategoryService;
-import com.br.personniMoveis.service.DetailService;
-import com.br.personniMoveis.service.TokenService;
+import com.br.personniMoveis.service.*;
 import com.br.personniMoveis.utils.AuthUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,22 +24,28 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductImgService productImgService;
     private final CategoryService categoryService;
     private final DetailService detailService;
-    private final MaterialService materialService;
+    private final SectionService sectionService;
+    private final OptionService optionService;
     private final TagService tagService;
     private final AuthUtils authUtils;
+    private final EmailService emailService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryService categoryService,
-                          DetailService detailService, TagService tagService, MaterialService materialService,
-                          TokenService tokenService, AuthUtils authUtils) {
+    public ProductService(ProductRepository productRepository, ProductImgService productImgService,
+                          CategoryService categoryService, DetailService detailService, SectionService sectionService,
+                          OptionService optionService, TagService tagService, AuthUtils authUtils, EmailService emailService) {
         this.productRepository = productRepository;
+        this.productImgService = productImgService;
         this.categoryService = categoryService;
         this.detailService = detailService;
+        this.sectionService = sectionService;
+        this.optionService = optionService;
         this.tagService = tagService;
-        this.materialService = materialService;
         this.authUtils = authUtils;
+        this.emailService = emailService;
     }
 
     public Product findProductOrThrowNotFoundException(Long id) {
@@ -105,41 +108,19 @@ public class ProductService {
      * @return O produto persistido no banco.
      */
     @Transactional
-    public Product saveRegularProduct(Product product, Long categoryId) {
+    public Product createProduct(Product product, Long categoryId) {
         // Faz set da categoria caso tenha sido informada.
         if (categoryId != null) {
             product.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
             // Seta id da categoria para possuir sua referência no produto.
             product.setCategoryId(categoryId);
         }
-        // Checa se produto recebido tem materiais.
-//        if (product.getMaterials() != null && !product.getMaterials().isEmpty()) {
-//            product.getMaterials().forEach(materialService::saveMaterial);
-//        }
-        // Checa se produto tem tags.
-//        if (product.getTags() != null && !product.getTags().isEmpty()) {
-//            product.getTags().forEach(tag -> {
-//                // Se tag tem id nulo, cria tag, senão inclui tag como nova tag do produto.
-//                if (tag.getTagId() == null) {
-//                    tagService.createTag(tag);
-//                }
-//            });
-//        }
-        // Seta data de criação. Se produto já tem data de criação, atualiza data de modificação.
-        if (product.getDtCreated() == null) {
-            product.setDtCreated(LocalDateTime.now());
-        } else {
-            product.setDtUpdated(LocalDateTime.now());
-        }
+        // Seta data de criação.
+        product.setDtCreated(LocalDateTime.now());
         // Seta disponibilidade de produto de acordo com a quantidade em estoque.
         product.setAvailable(product.getQuantity() > 0);
         // Persiste produto.
         return productRepository.save(product);
-    }
-
-    public List<DetailDto> getAllDetailsFromProduct(Long productId) {
-        Product product = findProductOrThrowNotFoundException(productId);
-        return product.getDetails().stream().map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
     }
 
     /**
@@ -195,26 +176,42 @@ public class ProductService {
         tag.getProducts().add(product);
     }
 
-    public void updateProduct(ProductDto productDto, Long productId) {
+    public void updateProduct(ProductPutDto productDto, Long productId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         this.findProductOrThrowNotFoundException(productId);
         // Faz alteracoes no produto.
-        Product productToBeUpdated = ProductMapper.INSTANCE.productDtoToProduct(productDto);
+        Product productToBeUpdated = ProductMapper.INSTANCE.productPutDtoToProduct(productDto);
+        // id.
         productToBeUpdated.setProductId(productId);
+        // Seta data de atualização.
+        productToBeUpdated.setDtUpdated(LocalDateTime.now());
+        // details.
+        if(productDto.getDetails() != null && !productDto.getDetails().isEmpty()) {
+            productDto.getDetails().forEach(detailService::saveDetail);
+        }
+        // imagens secundarias.
+        if(productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
+            productDto.getSecondaryImages().forEach(productImgService::saveProductImg);
+        }
+        //productToBeUpdated.setSecondaryImages(productDto.getDetails());
+        // sections e options.
+        if (productDto.getSections() != null && !productDto.getSections().isEmpty()) {
+            for (Section section : productDto.getSections()) {
+                if (section.getOptions() != null && !section.getOptions().isEmpty()) {
+                    for (Option option : section.getOptions()) {
+                        optionService.saveOption(option);
+                    }
+                }
+                sectionService.saveService(section);
+            }
+        }
         // Persiste alteracoes.
         productRepository.save(productToBeUpdated);
     }
 
-//    @Transactional
-//    public void removeProductFromOrders(Long productId) {
-//        Product prod = findProductOrThrowNotFoundException(productId);
-//        prod.get
-//    }
-
     @Transactional
     public void deleteProductById(Long productId) {
         // Remove todas as tags do produto.
-//        this.removeProductFromOrders();
         productRepository.deleteById(productId);
     }
 
@@ -232,5 +229,11 @@ public class ProductService {
         Product product = this.findProductOrThrowNotFoundException(productId);
         // Remove todas as tags do produto e salva alterações.
         product.getTags().clear();
+    }
+
+    public void notifyClientsProductReturned(Long productId, String productUrl) {
+        Product product = this.findProductOrThrowNotFoundException(productId);
+        // Identifica usuários que estão na lista de espera pelo produto e envia e-mail.
+        product.getUsers().forEach(user -> emailService.productArrivedMessage(user.getEmail(), user.getName(), product, productUrl));
     }
 }

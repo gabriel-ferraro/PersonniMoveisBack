@@ -1,13 +1,15 @@
 package com.br.personniMoveis.model.productCmp;
 
+import com.br.personniMoveis.model.user.OrderItem;
+import com.br.personniMoveis.model.user.OrderItemCmp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Mapeamento ORM para o produto "padrão" e produto "editável".
@@ -39,4 +41,14 @@ public class ProductCmp {
 
     @OneToMany
     private Set<SectionCmp> sectionCmps = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "cmp_order_item", joinColumns = @JoinColumn(name = "product_cmp_id"), inverseJoinColumns = @JoinColumn(name = "order_item_cmp_id"))
+    private final List<OrderItemCmp> orderCmps = new ArrayList<>();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
