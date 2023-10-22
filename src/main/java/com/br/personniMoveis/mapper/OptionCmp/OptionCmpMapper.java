@@ -16,9 +16,8 @@ public abstract class OptionCmpMapper {
 
     @Mapping(target = "id", ignore = true)
     public abstract Set<OptionCmp> toOptionCmpList(Set<OptionCmpDto> optionCmp);
-
     @Mapping(target = "id", ignore = true)
-    public abstract OptionCmp toOptionCmp(OptionCmpDto optionCmp);
+    public abstract OptionCmp toOptionCmp(OptionCmpDto optionCmpDto);
 
     public abstract OptionCmpGetDto OptionCmpToOptionCmpGetDto(OptionCmp optionCmp);
 

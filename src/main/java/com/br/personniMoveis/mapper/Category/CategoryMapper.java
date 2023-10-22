@@ -20,7 +20,10 @@ public abstract class CategoryMapper {
     public abstract Category categoryDtoToCategoryTest(CategoryDto categoryDto);
 
     @Mapping(target = "id", ignore = true)
-    public abstract Category categoryCmpDtoToCategory(CategoryCmpDto categorycmpDto);
+    public abstract Category categoryCmpDtoToCategory(CategoryCmpDto categoryCmpDto);
+
+    @Mapping(target = "id", ignore = true)
+    public abstract Category categoryCmpToCategory(Category category);
 
     public abstract CategoryGetDto CategoryToCategoryGetDto(Category category);
 
