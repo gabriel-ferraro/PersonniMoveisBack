@@ -61,7 +61,7 @@ public class ProductCmpService {
     }
 
 
-    public void createProductCmp(ProductCmpDto productCmpCreateDto) {
+    public ProductCmp createProductCmp(ProductCmpDto productCmpCreateDto) {
         // Crie um novo produto
         ProductCmp newProductCmp = new ProductCmp();
         newProductCmp.setQuantity(productCmpCreateDto.getQuantity());
@@ -100,7 +100,7 @@ public class ProductCmpService {
         // Atribua o valor total ao produto
         newProductCmp.setValueTotal(totalOptionPrice);
         // Salve o novo produto no banco de dados
-        productCmpRepository.save(newProductCmp);
+        return productCmpRepository.save(newProductCmp);
     }
 
     private double calculateTotalOptionPrice(ProductCmp productCmp) {
