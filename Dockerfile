@@ -10,5 +10,6 @@ RUN mvn package -DskipTests
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/personniMoveis-0.0.1-SNAPSHOT.jar app.jar
+COPY certificatePix /app/certificatePix
 EXPOSE 8081
 CMD ["java", "-jar", "app.jar"]

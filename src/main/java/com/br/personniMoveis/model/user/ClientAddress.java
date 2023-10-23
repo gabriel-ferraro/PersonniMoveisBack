@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 /**
  * Mapeamento ORM para endereço do cliente.
  */
@@ -52,8 +54,12 @@ public class ClientAddress {
      */
     private String details;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity clientAddress;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(addressId);
+    }
 }

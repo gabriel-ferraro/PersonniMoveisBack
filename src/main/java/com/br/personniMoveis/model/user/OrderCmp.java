@@ -17,13 +17,13 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "order_table")
-public class Order {
+@Table(name = "order_cmp_table")
+public class OrderCmp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "order_id")
-    private Long orderId;
+    @Column(name = "order_cmp_id")
+    private Long orderCmpId;
 
     @Column(name = "total_price")
     private Double totalPrice;
@@ -38,11 +38,11 @@ public class Order {
 
     @JsonIgnore
     @OneToMany
-    @JoinColumn(name = "order_id")
-    private final List<OrderItem> orderItems = new ArrayList<>();
+    @JoinColumn(name = "order_cmp_id")
+    private final List<OrderItemCmp> orderCmpItems = new ArrayList<>();
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId);
+        return Objects.hash(orderCmpId);
     }
 }

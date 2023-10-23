@@ -31,27 +31,23 @@ public class OrderController {
      * completo persistido.
      *
      * @param token         tem id do usuário que esta realizando a compra.
-     * @param ordersRequest Dto de produtos selecionados pelo usuário para compra.
+     * @param orderRequest Dto de produtos selecionados pelo usuário para compra.
      * @return Retorna o pedido realizado no carrinho persistido.
      */
-    @PostMapping(path = "/create-product-order")
-    public ResponseEntity<String> createProductOrder(@RequestHeader("Authorization") String token, @RequestBody @Valid List<OrderRequest> ordersRequest) {
-        return ResponseEntity.ok(orderService.createOrder(token, ordersRequest));
+    @PostMapping(path = "/create-order")
+    public ResponseEntity<String> createProductOrder(
+            @RequestHeader("Authorization") String token, @RequestBody @Valid OrderRequest orderRequest) {
+        return ResponseEntity.ok(orderService.makeOrder(token, orderRequest));
     }
-
-//    @PostMapping(path = "/create-cmp-order")
-//    public ResponseEntity<Order> createCmpOrder() {
-//
-//    }
 
     @GetMapping
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
-    @GetMapping(path = "/{clientId}")
-    public ResponseEntity<List<Order>> getAllOrdersFromClientById(@PathVariable("clientId") Long clientId) {
-        return ResponseEntity.ok(orderService.getUserOrders(clientId));
+    @GetMapping(path = "client-orders")
+    public ResponseEntity<List<Order>> getAllOrdersFromClientById(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(orderService.getUserOrders(token));
     }
 
     @DeleteMapping

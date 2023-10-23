@@ -3,10 +3,10 @@ package com.br.personniMoveis.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.CONFLICT)
-public class InsufficientStockException extends RuntimeException {
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
+public class UnauthorizedRequestException extends RuntimeException{
 
-    public InsufficientStockException(String message) {
+    public UnauthorizedRequestException(String message) {
         super(message);
     }
 }
