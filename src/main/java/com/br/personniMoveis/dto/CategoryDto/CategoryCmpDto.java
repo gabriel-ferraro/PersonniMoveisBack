@@ -21,6 +21,6 @@ public class CategoryCmpDto {
 
     private Boolean allow_creation; // Permitir criação do produto que se encaixa na categoria.
 
-    @JsonProperty("sectionCmp")
+    @JsonProperty("sectionCmps")
     private Set<SectionCmpDto> sectionCmpDtos;
 }
