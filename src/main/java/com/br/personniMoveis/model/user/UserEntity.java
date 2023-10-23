@@ -5,6 +5,7 @@ import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.model.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,7 @@ import java.util.Objects;
  * UserDetails do Spring Boot para ser desse tipo e se beneficiar da
  * reutilização de código para autenticação e autorização.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @Builder
 @AllArgsConstructor
@@ -63,9 +65,21 @@ public class UserEntity implements UserDetails {
      * Lista de espera por produtos que não estão disponíveis. Serve como controle para notificar clientes quando se
      * tornarem disponíveis.
      */
+    @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "user_waiting_product", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JoinTable(name = "user_waiting_product", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> productWaitingList;
+
+    /**
+     * Pedidos do cliente.
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private final List<Order> orders = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private final List<OrderCmp> orderCmps = new ArrayList<>();
 
     public UserEntity(UserCreateAccountDto data) {
         this.name = data.getName();

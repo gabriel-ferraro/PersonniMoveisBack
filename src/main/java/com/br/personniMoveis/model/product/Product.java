@@ -69,7 +69,7 @@ public class Product {
     /**
      * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Set<ProductImg> secondaryImages = new HashSet<>();
 

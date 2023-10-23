@@ -1,10 +1,12 @@
-package com.br.personniMoveis.service;
+package com.br.personniMoveis.service.product;
 
 import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.model.product.Detail;
 import com.br.personniMoveis.repository.DetailRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,7 @@ public class DetailService {
 
     private final DetailRepository detailRepository;
 
+    @Autowired
     public DetailService(DetailRepository detailRepository) {
         this.detailRepository = detailRepository;
     }
@@ -28,7 +31,7 @@ public class DetailService {
                 .map(DetailMapper.INSTANCE::detailToDetailGetDto).toList();
     }
 
-    public Detail createDetail(Detail detail) {
+    public Detail saveDetail(Detail detail) {
         return detailRepository.save(detail);
     }
 

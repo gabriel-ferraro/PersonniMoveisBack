@@ -1,6 +1,6 @@
 package com.br.personniMoveis.service.product;
 
-import com.br.personniMoveis.model.product.Option;
+import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.product.Section;
 import com.br.personniMoveis.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +10,22 @@ import org.springframework.stereotype.Service;
 public class SectionService {
 
     private final SectionRepository sectionRepository;
-    private final OptionService optionService;
 
     @Autowired
-    public SectionService(SectionRepository sectionRepository, OptionService optionService) {
+    public SectionService(SectionRepository sectionRepository) {
         this.sectionRepository = sectionRepository;
-        this.optionService = optionService;
     }
 
-    public Section createSection(Section section) {
+    public Section findSectionOrThrowNotFoundException(Long sectionId) {
+        return sectionRepository.findById(sectionId).orElseThrow(
+                () -> new ResourceNotFoundException("Não foi possível encontrar a seção."));
+    }
+
+    public Section saveService(Section section) {
         return sectionRepository.save(section);
     }
 
-    public Option createOption(Option option) {
-        return optionService.createOption(option);
+    public void deleteSection(Long sectionId) {
+        sectionRepository.delete(this.findSectionOrThrowNotFoundException(sectionId));
     }
 }
