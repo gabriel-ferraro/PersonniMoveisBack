@@ -13,6 +13,8 @@ public abstract class ProductCmpMapper {
 
     public abstract ProductCmp toProductCmp(ProductCmpDto productCmpDtoCmp);
 
+    public abstract ProductCmpDto cmpToDto(ProductCmp productCmp);
+
     public abstract ProductCmpGetDto ProductCmpToProductCmpGetDto(ProductCmp productCmp);
 
     public abstract ProductCmpGetByIdDto ProductCmpToProductCmpGetByIdDto(ProductCmp productCmp);

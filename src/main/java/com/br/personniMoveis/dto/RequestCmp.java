@@ -1,6 +1,6 @@
 package com.br.personniMoveis.dto;
 
-import com.br.personniMoveis.model.productCmp.ProductCmp;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RequestCmp {
     
-    private ProductCmp productCmp;
+    private ProductCmpDto productCmp;
     private Long amount;
 }

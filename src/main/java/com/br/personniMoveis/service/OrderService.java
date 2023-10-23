@@ -1,11 +1,13 @@
 package com.br.personniMoveis.service;
 
 import com.br.personniMoveis.dto.OrderRequest;
+import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
 import com.br.personniMoveis.dto.RequestCmp;
 import com.br.personniMoveis.dto.RequestProduct;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.exception.ConflictException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
+import com.br.personniMoveis.mapper.ProductCmp.ProductCmpMapper;
 import com.br.personniMoveis.model.product.Option;
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.product.Section;
@@ -104,8 +106,6 @@ public class OrderService {
         }
         // Identifica se usuário existe pelo token.
         UserEntity user = userService.findUserOrThrowNotFoundException(authUtils.getUserId(token));
-        System.out.println("----------------TESTE----------------");
-        System.out.println(orderRequest.getRequestCmp().toString());
         // Declara var para total dos pedidos cmp e produto.
         double orderTotal = 0;
         if (orderRequest.getRequestProduct() != null && !orderRequest.getRequestProduct().isEmpty()) {
@@ -115,12 +115,16 @@ public class OrderService {
             orderTotal += this.totalCmps(user, orderRequest.getRequestCmp());
         }
         // Retorna qrCode Pix em base64.
-        System.out.println("----------------TOTAL: " + orderTotal);
         return getPixQrCode(user, orderTotal);
     }
 
     public double totalCmps(UserEntity user, List<RequestCmp> requestCmps) {
-
+        // Salva dados do cmp antes de fazer pedido.
+        List<ProductCmp> persistedCmps = new ArrayList<>();
+        for (RequestCmp req : requestCmps) {
+            req.setProductCmp(ProductCmpMapper.INSTANCE.cmpToDto(
+                    productCmpService.createProductCmp(req.getProductCmp())));
+        };
         // Itens do pedido cmp para relação com order.
         List<OrderItemCmp> orderItemList = new ArrayList<>();
         double totalValue = 0;
