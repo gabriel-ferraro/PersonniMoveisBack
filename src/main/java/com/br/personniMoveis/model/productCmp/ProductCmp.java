@@ -1,6 +1,5 @@
 package com.br.personniMoveis.model.productCmp;
 
-import com.br.personniMoveis.model.user.OrderItem;
 import com.br.personniMoveis.model.user.OrderItemCmp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

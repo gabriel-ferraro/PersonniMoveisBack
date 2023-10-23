@@ -40,7 +40,7 @@ public class OrderItemCmp {
     private final List<ProductCmp> productCmps = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_cmp_id")
     private OrderCmp orderCmp;
 
     @Override

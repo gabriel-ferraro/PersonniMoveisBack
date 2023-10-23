@@ -3,11 +3,13 @@ package com.br.personniMoveis.dto.SectionCmpDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementProductCmpDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SectionProductCmpDto {
 
     private Long sectionId;
