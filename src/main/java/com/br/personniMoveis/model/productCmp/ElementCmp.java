@@ -33,6 +33,8 @@ public class ElementCmp {
 
     private Boolean mandatory;
 
+    private Integer index;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private SectionCmp sectionCmp;
