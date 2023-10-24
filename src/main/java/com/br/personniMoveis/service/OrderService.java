@@ -69,7 +69,6 @@ public class OrderService {
         return order.getOrderItems();
     }
 
-    @Transactional
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
