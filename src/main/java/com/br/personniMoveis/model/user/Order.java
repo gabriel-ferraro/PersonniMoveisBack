@@ -30,7 +30,7 @@ public class Order {
 
     private LocalDateTime date;
 
-    //@JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;

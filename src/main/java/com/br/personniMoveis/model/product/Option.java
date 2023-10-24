@@ -26,8 +26,8 @@ public class Option {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "main_img")
+    private String mainImg;
 
     private Double price;
 
