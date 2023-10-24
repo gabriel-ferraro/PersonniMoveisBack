@@ -29,8 +29,8 @@ public class Section {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "img_url")
-    private String imgUrl;
+    @Column(name = "main_img")
+    private String mainImg;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

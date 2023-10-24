@@ -15,7 +15,7 @@ public class ProductDto {
     private Double value;
     private Long quantity;
     private Boolean editable;
-    private String mainImgUrl;
+    private String mainImg;
     private String description;
     private Set<ProductImg> secondaryImages;
     private Set<DetailDto> detailList;
