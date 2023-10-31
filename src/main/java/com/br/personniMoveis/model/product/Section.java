@@ -29,7 +29,8 @@ public class Section {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "main_img")
+    @Lob
+    @Column(name = "main_img", columnDefinition = "TEXT")
     private String mainImg;
 
     @JsonIgnore
@@ -37,7 +38,7 @@ public class Section {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "section_id")
     private Set<Option> options;
 
