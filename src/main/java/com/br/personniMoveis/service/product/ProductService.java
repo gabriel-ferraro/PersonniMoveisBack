@@ -9,9 +9,9 @@ import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.mapper.product.ProductMapper;
 import com.br.personniMoveis.model.product.*;
-import com.br.personniMoveis.repository.ProductImgRepository;
 import com.br.personniMoveis.repository.ProductRepository;
-import com.br.personniMoveis.service.*;
+import com.br.personniMoveis.service.CategoryService;
+import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.utils.AuthUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,18 +109,32 @@ public class ProductService {
      */
     @Transactional
     public Product createProduct(Product product, Long categoryId) {
+        Product newProd = new Product();
+        newProd = product;
         // Faz set da categoria caso tenha sido informada.
         if (categoryId != null) {
-            product.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
             // Seta id da categoria para possuir sua referência no produto.
-            product.setCategoryId(categoryId);
+            newProd.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
+            newProd.setCategoryId(categoryId);
+        }
+        if (product.getSections() != null && !product.getSections().isEmpty()) {
+            for(Section section : product.getSections()) {
+                if (section.getOptions() != null && !section.getOptions().isEmpty()) {
+                    for(Option option : section.getOptions()) {
+                        optionService.saveOption(option);
+                        section.getOptions().add(option);
+                    }
+                }
+                sectionService.saveSection(section);
+                product.getSections().add(section);
+            }
         }
         // Seta data de criação.
-        product.setDtCreated(LocalDateTime.now());
+        newProd.setDtCreated(LocalDateTime.now());
         // Seta disponibilidade de produto de acordo com a quantidade em estoque.
-        product.setAvailable(product.getQuantity() > 0);
+        newProd.setAvailable(product.getQuantity() > 0);
         // Persiste produto.
-        return productRepository.save(product);
+        return productRepository.save(newProd);
     }
 
     /**
@@ -200,9 +214,11 @@ public class ProductService {
                 if (section.getOptions() != null && !section.getOptions().isEmpty()) {
                     for (Option option : section.getOptions()) {
                         optionService.saveOption(option);
+                        section.getOptions().add(option);
                     }
                 }
-                sectionService.saveService(section);
+                sectionService.saveSection(section);
+                productToBeUpdated.getSections().add(section);
             }
         }
         // Persiste alteracoes.
