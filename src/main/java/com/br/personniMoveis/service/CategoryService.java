@@ -120,6 +120,7 @@ public class CategoryService {
         SectionCmpDto newSectionCmp = new SectionCmpDto();
         newSectionCmp.setName(sectionCmpDto.getName());
         newSectionCmp.setImgUrl(sectionCmpDto.getImgUrl());
+        newSectionCmp.setIndex(sectionCmpDto.getIndex());
         newSectionCmp.setElementCmpDtos(sectionCmpDto.getElementCmpDtos());
         sectionCmpService.createSectionCmp(newSectionCmp, categoryId);
     }

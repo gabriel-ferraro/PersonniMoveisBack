@@ -21,6 +21,8 @@ public class ElementCmpDto {
 
     private String type;
 
+    private Integer index;
+
     private Boolean mandatory;
 
     private SectionCmp sectionCmp;

@@ -96,6 +96,7 @@ public class SectionCmpService {
         ElementCmpDto newElementDto = new ElementCmpDto();
         newElementDto.setName(elementDto.getName());
         newElementDto.setImgUrl(elementDto.getImgUrl());
+        newElementDto.setIndex(elementDto.getIndex());
         newElementDto.setType(elementDto.getType());
         newElementDto.setOptionCmpDtos(elementDto.getOptionCmpDtos());
         elementCmpService.createElementCmp(newElementDto, sectionCmpId);

@@ -15,6 +15,7 @@ import java.util.Map;
 @Service
 public class PaymentService {
     public String paymentsPix(UserEntity user, Double total) {
+        String txid = "";
         Credentials credentials = new Credentials();
         JSONObject options = createOptions(credentials);
         String existingKey = getOrCreatePixKey(options);
