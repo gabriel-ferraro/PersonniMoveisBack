@@ -37,6 +37,9 @@ public class Order {
 
     private String status;
 
+    private String txid;
+
+
     @JsonIgnore
     @OneToMany
     @JoinColumn(name = "order_id")
