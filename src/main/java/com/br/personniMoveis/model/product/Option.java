@@ -26,7 +26,8 @@ public class Option {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "main_img")
+    @Lob
+    @Column(name = "main_img", columnDefinition = "TEXT")
     private String mainImg;
 
     private Double price;

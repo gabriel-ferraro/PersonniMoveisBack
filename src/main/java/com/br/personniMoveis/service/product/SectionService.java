@@ -3,6 +3,7 @@ package com.br.personniMoveis.service.product;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.product.Section;
 import com.br.personniMoveis.repository.SectionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,8 @@ public class SectionService {
                 () -> new ResourceNotFoundException("Não foi possível encontrar a seção."));
     }
 
-    public Section saveService(Section section) {
+    @Transactional
+    public Section saveSection(Section section) {
         return sectionRepository.save(section);
     }
 
