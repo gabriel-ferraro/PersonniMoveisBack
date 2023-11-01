@@ -87,7 +87,7 @@ public class Product {
     @JoinTable(name = "product_material", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "material_id"))
     private Set<Material> materials;
 
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Set<Section> sections;
 
@@ -102,7 +102,7 @@ public class Product {
      * Produto pode ser de SOMENTE UMA categoria, ou de nehuma, como: caderias, armários, mesas, etc...
      */
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id")
     private Category category;
 
