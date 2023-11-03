@@ -36,7 +36,7 @@ public class OrderItemCmp {
     /**
      * Ordem de pedido dos cmps.
      */
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "orderCmps")
+    @ManyToMany(mappedBy = "orderCmps")
     private final List<ProductCmp> productCmps = new ArrayList<>();
 
     @ManyToOne

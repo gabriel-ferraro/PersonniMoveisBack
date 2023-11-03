@@ -1,6 +1,7 @@
 package com.br.personniMoveis.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "order_cmp_table")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderCmp {
 
     @Id
@@ -30,6 +32,7 @@ public class OrderCmp {
 
     private LocalDateTime date;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;

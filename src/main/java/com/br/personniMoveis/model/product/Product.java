@@ -56,8 +56,19 @@ public class Product {
     @Column(name = "dt_updated")
     private LocalDateTime dtUpdated;
 
+    /**
+     * Flag para disponibilidade do produto no catálogo (se produto ainda está sendo vendido). Obs: o produto pode estar
+     * visível no catálogo mas não disponível para venda (available = false).
+     */
     @Column
     private Boolean available;
+
+    /**
+     * Flag para fazer exclusão lógica - determina se produto foi removido:
+     * (não pode ser mais comprado, não parece mais em pesquisas).
+     */
+    @Column
+    private Boolean isRemoved;
 
     /**
      * Usado somente como referência para uso no front. Não é utilizado para controle da relação entre produto e categoria
@@ -69,7 +80,7 @@ public class Product {
     /**
      * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Set<ProductImg> secondaryImages = new HashSet<>();
 

@@ -21,4 +21,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
             WHERE c.id = :id
             """)
     List<ProductGetDto> getAllProductsInCategory(@Param("id") Long categoryId);
+
+    /**
+     * Encontra as categorias vigentes (não removidas lógicamente).
+     */
+    List<Category> findByIsRemovedFalse();
 }

@@ -74,6 +74,11 @@ public class OrderService {
     }
 
     @Transactional
+    public List<OrderCmp> getAllOrdersCmp() {
+        return orderCmpRepository.findAll();
+    }
+
+    @Transactional
     public List<Order> getUserOrders(String token) {
         // Identifica se usuário indicado existe.
         Long userId = authUtils.getUserId(token);

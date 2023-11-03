@@ -42,6 +42,13 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
      * @param amountOfProducts Quantidade de produtos recentemente insetidos que se deseja adquirir.
      * @return Os produtos mais recentemente inseridos.
      */
-    @Query("SELECT p FROM Product p ORDER BY p.dtCreated DESC LIMIT :amountOfProducts")
+    @Query("SELECT p FROM Product p " +
+            "WHERE p.isRemoved = false " +
+            "ORDER BY p.dtCreated DESC LIMIT :amountOfProducts")
     List<Product> getMostRecentProducts(Integer amountOfProducts);
+
+    /**
+     * Encontra produtos vigentes (não excluidos logicamente do BD).
+     */
+    List<Product> findByIsRemovedFalse();
 }

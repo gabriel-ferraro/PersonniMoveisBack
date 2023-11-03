@@ -33,7 +33,7 @@ public class Option {
     private Double price;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "section_id")
     private Section section;
 }

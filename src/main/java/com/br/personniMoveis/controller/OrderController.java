@@ -2,6 +2,7 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.OrderRequest;
 import com.br.personniMoveis.model.user.Order;
+import com.br.personniMoveis.model.user.OrderCmp;
 import com.br.personniMoveis.service.OrderService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -40,12 +41,20 @@ public class OrderController {
         return ResponseEntity.ok(orderService.makeOrder(token, orderRequest));
     }
 
+    /**
+     * Retorna pedidos do produtos e cmps.
+     */
     @GetMapping
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
-    @GetMapping(path = "client-orders")
+    @GetMapping(path = "/cmp")
+    public List<OrderCmp> getAllOrdersCmp() {
+        return orderService.getAllOrdersCmp();
+    }
+
+    @GetMapping(path = "/client-orders")
     public ResponseEntity<List<Order>> getAllOrdersFromClientById(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(orderService.getUserOrders(token));
     }
