@@ -35,6 +35,13 @@ public class Category {
     @Column(nullable = false)
     private Boolean allow_creation; // Permitir criação do produto que se encaixa na categoria.
 
+    /**
+     * Flag para fazer exclusão lógica - determina se cmp foi removido:
+     * (não pode ser mais comprado, não parece mais em pesquisas).
+     */
+    @Column
+    private Boolean isRemoved;
+
     @JsonIgnore
     @OneToMany
     @JoinColumn(name = "id")

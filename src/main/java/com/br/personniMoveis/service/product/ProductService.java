@@ -64,13 +64,13 @@ public class ProductService {
     }
 
     /**
-     * Retorna todos produtos.
+     * Retorna todos produtos vigentes.
      *
      * @return Lista de todos produtos.
      */
     @Transactional
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findByIsRemovedFalse();
     }
 
     public List<ProductGetDto> getAllProductsWithTagId(Long tagId) {
@@ -118,9 +118,9 @@ public class ProductService {
             newProd.setCategoryId(categoryId);
         }
         if (product.getSections() != null && !product.getSections().isEmpty()) {
-            for(Section section : product.getSections()) {
+            for (Section section : product.getSections()) {
                 if (section.getOptions() != null && !section.getOptions().isEmpty()) {
-                    for(Option option : section.getOptions()) {
+                    for (Option option : section.getOptions()) {
                         optionService.saveOption(option);
                         section.getOptions().add(option);
                     }
@@ -133,6 +133,8 @@ public class ProductService {
         newProd.setDtCreated(LocalDateTime.now());
         // Seta disponibilidade de produto de acordo com a quantidade em estoque.
         newProd.setAvailable(product.getQuantity() > 0);
+        // Seta que produto está vigente (não foi removido).
+        newProd.setIsRemoved(false);
         // Persiste produto.
         return productRepository.save(newProd);
     }
@@ -200,11 +202,11 @@ public class ProductService {
         // Seta data de atualização.
         productToBeUpdated.setDtUpdated(LocalDateTime.now());
         // details.
-        if(productDto.getDetails() != null && !productDto.getDetails().isEmpty()) {
+        if (productDto.getDetails() != null && !productDto.getDetails().isEmpty()) {
             productDto.getDetails().forEach(detailService::saveDetail);
         }
         // imagens secundarias.
-        if(productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
+        if (productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
             productDto.getSecondaryImages().forEach(productImgService::saveProductImg);
         }
         //productToBeUpdated.setSecondaryImages(productDto.getDetails());
@@ -225,10 +227,13 @@ public class ProductService {
         productRepository.save(productToBeUpdated);
     }
 
+    /**
+     * Delete lógico do produto no BD.
+     */
     @Transactional
-    public void deleteProductById(Long productId) {
-        // Remove todas as tags do produto.
-        productRepository.deleteById(productId);
+    public void deleteProduct(Long productId) {
+        Product prod = findProductOrThrowNotFoundException(productId);
+        prod.setIsRemoved(true);
     }
 
     @Transactional

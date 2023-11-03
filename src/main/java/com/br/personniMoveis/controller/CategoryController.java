@@ -73,7 +73,7 @@ public class CategoryController {
     @Operation(summary = "Deleta Categoria", description = "Deleta categoria se não tiver nenhum relacionametno")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<HttpStatus> deleteProductCmpById(@PathVariable("id") Long id) {
-        categoryService.deleteCategoryById(id);
+        categoryService.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

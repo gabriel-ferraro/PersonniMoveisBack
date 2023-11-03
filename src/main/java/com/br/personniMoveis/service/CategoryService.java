@@ -21,6 +21,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,6 +82,8 @@ public class CategoryService {
     public void createCategoryCmp(CategoryCmpDto categoryCmpDto) {
         // Cria nova categoria.
         Category newCategory = CategoryMapper.INSTANCE.categoryCmpDtoToCategory(categoryCmpDto);
+        // Seta que categoria existe.
+        newCategory.setIsRemoved(false);
         // Persiste no BD.
         categoryRepository.save(newCategory);
 
@@ -125,19 +128,29 @@ public class CategoryService {
         sectionCmpService.createSectionCmp(newSectionCmp, categoryId);
     }
 
-    public void deleteCategoryById(Long id) {
+    /**
+     * Faz delete lógico da categoria.
+     */
+    public void deleteCategory(Long id) {
         Category categoryToDelete = findCategoryOrThrowNotFoundException(id);
         // Verifica se há seções relacionadas à categoria
-        Set<SectionCmp> sectionsWithCategory = sectionCmpRepository.findByCategoryId(id);
-        if (!sectionsWithCategory.isEmpty()) {
-            throw new BadRequestException("Não é possível deletar categoria, existem seções associadas.");
-        }
-        // Deleta a categoria
-        categoryRepository.delete(categoryToDelete);
+//        Set<SectionCmp> sectionsWithCategory = sectionCmpRepository.findByCategoryId(id);
+//        if (!sectionsWithCategory.isEmpty()) {
+//            throw new BadRequestException("Não é possível deletar categoria, existem seções associadas.");
+//        }
+//        // Deleta a categoria
+//        categoryRepository.delete(categoryToDelete);
+
+        // Faz delete lógico da categoria.
+        categoryToDelete.setIsRemoved(true);
+        categoryRepository.save(categoryToDelete);
     }
 
+    /**
+     * Retorna categorias vigentes.
+     */
     public List<CategoryGetDto> getAllCategories() {
-        return categoryRepository.findAll().stream().map(CategoryMapper.INSTANCE::CategoryToCategoryGetDto).toList();
+        return categoryRepository.findByIsRemovedFalse().stream().map(CategoryMapper.INSTANCE::CategoryToCategoryGetDto).toList();
     }
 
     public List<ProductGetDto> getAllProductsInCategory(Long categoryId) {

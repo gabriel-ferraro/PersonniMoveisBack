@@ -58,8 +58,7 @@ public class UserService {
     }
 
     public List<ClientAddress> getAllUserAddresses(String token) {
-        Long userId = authUtils.getUserId(token);
-        UserEntity user = this.findUserOrThrowNotFoundException(userId);
+        UserEntity user = this.findUserOrThrowNotFoundException(authUtils.getUserId(token));
         return user.getAddresses();
     }
 

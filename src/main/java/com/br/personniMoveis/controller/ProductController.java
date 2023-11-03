@@ -146,9 +146,12 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Faz remoção lógica do produto (não remove do BD, so altera flag para que produto não apareça como disponível ou filtravel).
+     */
     @DeleteMapping(path = "/{productId}")
-    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("productId") Long productId) {
-        productService.deleteProductById(productId);
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("productId") Long productId) {
+        productService.deleteProduct(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
