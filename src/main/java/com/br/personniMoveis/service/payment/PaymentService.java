@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,10 +79,11 @@ public class PaymentService {
 
     private TxIdAndQrCodeId createPix(JSONObject options, String existingKey, UserEntity user, Double valor) {
         TxIdAndQrCodeId txId = new TxIdAndQrCodeId();
+        BigDecimal valorDecimal = new BigDecimal(valor).setScale(2);
         JSONObject body = new JSONObject();
         body.put("calendario", new JSONObject().put("expiracao", 3600));
         body.put("devedor", new JSONObject().put("cpf", user.getCpf()).put("nome", user.getName()));
-        body.put("valor", new JSONObject().put("original", String.format("%.2f", valor)));
+        body.put("valor", new JSONObject().put("original", String.format(String.valueOf(valorDecimal))));
         body.put("chave", existingKey);
         body.put("solicitacaoPagador", "Serviço realizado.");
 
@@ -93,8 +95,9 @@ public class PaymentService {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixCreateImmediateCharge", new HashMap<String, String>(), body);
 
-            txId.setTxId(response.getJSONObject("txid").toString());
+            txId.setTxId(response.getString("txid"));
             txId.setQrcodeId(response.getJSONObject("loc").getInt("id"));
+
 
         } catch (GerencianetException e) {
             System.out.println(e.getError());
