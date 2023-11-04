@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +83,9 @@ public class PaymentService {
         JSONObject body = new JSONObject();
         body.put("calendario", new JSONObject().put("expiracao", 3600));
         body.put("devedor", new JSONObject().put("cpf", user.getCpf()).put("nome", user.getName()));
-        body.put("valor", new JSONObject().put("original", String.format(String.valueOf(valor))));
+        // Transformando decimal java para String com duas casas decimais e . -> ex valor válido: 10.45
+        String valorComDecimal = new DecimalFormat("0.00").format(valor);
+        body.put("valor", new JSONObject().put("original", String.format(valorComDecimal)));
         body.put("chave", existingKey);
         body.put("solicitacaoPagador", "Serviço realizado.");
 
