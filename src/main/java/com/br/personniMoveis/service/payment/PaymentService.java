@@ -79,11 +79,10 @@ public class PaymentService {
 
     private TxIdAndQrCodeId createPix(JSONObject options, String existingKey, UserEntity user, Double valor) {
         TxIdAndQrCodeId txId = new TxIdAndQrCodeId();
-        BigDecimal valorDecimal = new BigDecimal(valor).setScale(2);
         JSONObject body = new JSONObject();
         body.put("calendario", new JSONObject().put("expiracao", 3600));
         body.put("devedor", new JSONObject().put("cpf", user.getCpf()).put("nome", user.getName()));
-        body.put("valor", new JSONObject().put("original", String.format(String.valueOf(valorDecimal))));
+        body.put("valor", new JSONObject().put("original", String.format(String.valueOf(valor))));
         body.put("chave", existingKey);
         body.put("solicitacaoPagador", "Serviço realizado.");
 
