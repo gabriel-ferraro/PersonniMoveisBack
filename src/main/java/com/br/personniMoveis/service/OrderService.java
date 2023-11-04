@@ -134,7 +134,7 @@ public class OrderService {
         }
         if (orderCmpTxid.getOrderId() != null) {
             OrderCmp orderCmp = orderCmpRepository.findById(orderCmpTxid.getOrderId()).orElseThrow();
-            orderCmp.setTxId(pixAndTxId.getTxId());
+            orderCmp.setTxid(pixAndTxId.getTxId());
             orderCmpRepository.save(orderCmp);
         }
 
