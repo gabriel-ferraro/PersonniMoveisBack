@@ -2,9 +2,9 @@ package com.br.personniMoveis.service.payment;
 
 import br.com.gerencianet.gnsdk.Gerencianet;
 import br.com.gerencianet.gnsdk.exceptions.GerencianetException;
+import com.br.personniMoveis.dto.PixAndTxId;
+import com.br.personniMoveis.dto.TxIdAndQrCodeId;
 import com.br.personniMoveis.model.user.UserEntity;
-import com.fasterxml.jackson.databind.JsonNode;
-import org.apache.catalina.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ import java.util.Map;
 
 @Service
 public class PaymentService {
-    public String paymentsPix(UserEntity user, Double total) {
-        String txid = "";
+    public PixAndTxId paymentsPix(UserEntity user, Double total) {
+        String txId = "";
         Credentials credentials = new Credentials();
         JSONObject options = createOptions(credentials);
         String existingKey = getOrCreatePixKey(options);
@@ -24,10 +24,13 @@ public class PaymentService {
             existingKey = createPixKey(options);
         }
 
-        int IdQrCode = createPix(options, existingKey, user, total);
-        String base64Image = generateQRCode(options, IdQrCode);
+        TxIdAndQrCodeId IdQrCode = createPix(options, existingKey, user, total);
+        String base64Image = generateQRCode(options, IdQrCode.getQrcodeId());
 
-        return base64Image;
+        PixAndTxId code = new PixAndTxId();
+        code.setBase64(base64Image);
+        code.setTxId(IdQrCode.getTxId());
+        return code;
     }
 
     private JSONObject createOptions(Credentials credentials) {
@@ -73,8 +76,8 @@ public class PaymentService {
         return null;
     }
 
-    private int createPix(JSONObject options, String existingKey, UserEntity user, Double valor) {
-        int IdQrCode = 0;
+    private TxIdAndQrCodeId createPix(JSONObject options, String existingKey, UserEntity user, Double valor) {
+        TxIdAndQrCodeId txId = new TxIdAndQrCodeId();
         JSONObject body = new JSONObject();
         body.put("calendario", new JSONObject().put("expiracao", 3600));
         body.put("devedor", new JSONObject().put("cpf", user.getCpf()).put("nome", user.getName()));
@@ -89,7 +92,9 @@ public class PaymentService {
         try {
             Gerencianet gn = new Gerencianet(options);
             JSONObject response = gn.call("pixCreateImmediateCharge", new HashMap<String, String>(), body);
-            IdQrCode = response.getJSONObject("loc").getInt("id");
+
+            txId.setTxId(response.getJSONObject("txid").toString());
+            txId.setQrcodeId(response.getJSONObject("loc").getInt("id"));
 
         } catch (GerencianetException e) {
             System.out.println(e.getError());
@@ -97,7 +102,7 @@ public class PaymentService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return IdQrCode;
+        return txId;
     }
 
     private String generateQRCode(JSONObject options, int IdQrCode) {

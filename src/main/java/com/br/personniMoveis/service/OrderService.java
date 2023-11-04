@@ -1,9 +1,7 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.dto.OrderRequest;
+import com.br.personniMoveis.dto.*;
 import com.br.personniMoveis.dto.ProductCmp.ProductCmpDto;
-import com.br.personniMoveis.dto.RequestCmp;
-import com.br.personniMoveis.dto.RequestProduct;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.exception.ConflictException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
@@ -103,26 +101,45 @@ public class OrderService {
      * @return qrcode pix.
      */
     public String makeOrder(String token, OrderRequest orderRequest) {
+        OrderAndTxId orderProdTxid = new OrderAndTxId();
+        OrderAndTxId orderCmpTxid = new OrderAndTxId();
         try{
             this.validateOrder(orderRequest);
         } catch(BadRequestException ex) {
-            return "Erro: " + ex;
+            throw new BadRequestException("Erro: " + ex);
         }
         // Identifica se usuário existe pelo token.
         UserEntity user = userService.findUserOrThrowNotFoundException(authUtils.getUserId(token));
         // Declara var para total dos pedidos cmp e produto.
         double orderTotal = 0;
+
+        //
         if (orderRequest.getRequestProduct() != null && !orderRequest.getRequestProduct().isEmpty()) {
-            orderTotal += this.totalProducts(user, orderRequest.getRequestProduct());
+            orderProdTxid = this.totalProducts(user, orderRequest.getRequestProduct());
+            orderTotal += orderProdTxid.getTotalValue();
         }
+
         if (orderRequest.getRequestCmp() != null && !orderRequest.getRequestCmp().isEmpty()) {
-            orderTotal += this.totalCmps(user, orderRequest.getRequestCmp());
+            orderCmpTxid = this.totalCmps(user, orderRequest.getRequestCmp());
+            orderTotal += orderCmpTxid.getTotalValue();
         }
+
         // Retorna qrCode Pix em base64.
-        return getPixQrCode(user, orderTotal);
+        PixAndTxId pixAndTxId = getPixQrCode(user, orderTotal);
+
+        if (orderProdTxid.getOrderId() != null) {
+            Order order = findOrderOrThrowBadRequestException(orderProdTxid.getOrderId());
+            order.setTxid(pixAndTxId.getTxId());
+        }
+        if (orderCmpTxid.getOrderId() != null) {
+            OrderCmp orderCmp = orderCmpRepository.findById(orderCmpTxid.getOrderId()).orElseThrow();
+            orderCmp.setTxId(pixAndTxId.getTxId());
+        }
+
+        return pixAndTxId.getBase64();
     }
 
-    public double totalCmps(UserEntity user, List<RequestCmp> requestCmps) {
+    public OrderAndTxId totalCmps(UserEntity user, List<RequestCmp> requestCmps) {
         // Salva dados do cmp antes de fazer pedido.
         List<ProductCmp> persistedCmps = new ArrayList<>();
         for (RequestCmp req : requestCmps) {
@@ -166,7 +183,11 @@ public class OrderService {
         orderCmpRepository.save(newOrder);
         user.getOrderCmps().add(newOrder);
         userService.saveUser(user);
-        return totalValue;
+        //
+        OrderAndTxId completeOrder = new OrderAndTxId();
+        completeOrder.setOrderId(newOrder.getOrderCmpId());
+        completeOrder.setTotalValue(totalValue);
+        return completeOrder;
     }
 
     /**
@@ -179,7 +200,7 @@ public class OrderService {
      * @return O total da compra.
      */
     @Transactional
-    public Double totalProducts(UserEntity user, List<RequestProduct> requestProducts) {
+    public OrderAndTxId totalProducts(UserEntity user, List<RequestProduct> requestProducts) {
         // Itens do pedido para relação com order.
         List<OrderItem> orderItemList = new ArrayList<>();
         double totalValue = 0;
@@ -230,11 +251,15 @@ public class OrderService {
         orderRepository.save(newOrder);
         user.getOrders().add(newOrder);
         userService.saveUser(user);
-        return totalValue;
+        //
+        OrderAndTxId completeOrder = new OrderAndTxId();
+        completeOrder.setOrderId(newOrder.getOrderId());
+        completeOrder.setTotalValue(totalValue);
+        return completeOrder;
     }
 
     @Transactional
-    public String getPixQrCode(UserEntity user, Double total) {
+    public PixAndTxId getPixQrCode(UserEntity user, Double total) {
         // Envia Requisição para adquirir pix, retorna qrCode pix do valor total do pedido (cmp e produto).
         return paymentService.paymentsPix(user, total);
     }
