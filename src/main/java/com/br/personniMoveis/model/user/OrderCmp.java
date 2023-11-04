@@ -39,7 +39,7 @@ public class OrderCmp {
 
     private String status;
 
-    private String txId;
+    private String txid;
 
     @JsonIgnore
     @OneToMany
