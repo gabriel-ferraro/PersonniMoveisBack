@@ -1,6 +1,7 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.OrderRequest;
+import com.br.personniMoveis.dto.PixAndTxId;
 import com.br.personniMoveis.model.user.Order;
 import com.br.personniMoveis.model.user.OrderCmp;
 import com.br.personniMoveis.service.OrderService;

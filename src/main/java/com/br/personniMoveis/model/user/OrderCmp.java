@@ -39,6 +39,8 @@ public class OrderCmp {
 
     private String status;
 
+    private String txId;
+
     @JsonIgnore
     @OneToMany
     @JoinColumn(name = "order_cmp_id")
