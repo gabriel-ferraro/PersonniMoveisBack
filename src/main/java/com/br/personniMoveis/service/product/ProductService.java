@@ -199,6 +199,8 @@ public class ProductService {
         Product productToBeUpdated = ProductMapper.INSTANCE.productPutDtoToProduct(productDto);
         // id.
         productToBeUpdated.setProductId(productId);
+        // Vigente.
+        productToBeUpdated.setIsRemoved(false);
         // Seta data de atualização.
         productToBeUpdated.setDtUpdated(LocalDateTime.now());
         // details.

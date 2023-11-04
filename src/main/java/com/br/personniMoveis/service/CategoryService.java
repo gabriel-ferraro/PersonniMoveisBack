@@ -102,6 +102,7 @@ public class CategoryService {
         // Atualiza os dados da categoria
         Category updatedCategory = CategoryMapper.INSTANCE.categoryCmpDtoToCategory(categoryCmpDto);
         updatedCategory.setId(categoryId);
+        updatedCategory.setIsRemoved(false);
         categoryRepository.save(updatedCategory);
 
         // Atualiza seções existentes ou cria novas seções
