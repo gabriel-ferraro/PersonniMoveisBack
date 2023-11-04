@@ -130,10 +130,12 @@ public class OrderService {
         if (orderProdTxid.getOrderId() != null) {
             Order order = findOrderOrThrowBadRequestException(orderProdTxid.getOrderId());
             order.setTxid(pixAndTxId.getTxId());
+            orderRepository.save(order);
         }
         if (orderCmpTxid.getOrderId() != null) {
             OrderCmp orderCmp = orderCmpRepository.findById(orderCmpTxid.getOrderId()).orElseThrow();
             orderCmp.setTxId(pixAndTxId.getTxId());
+            orderCmpRepository.save(orderCmp);
         }
 
         return pixAndTxId.getBase64();
