@@ -20,6 +20,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -176,31 +179,25 @@ public class PersonniMoveisApplication {
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido Cmp não encontrado."));
     }
 
-
     private static boolean isOrderCreatedMoreThan5MinutesAgo(String creationDateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo")); // Define o fuso horário para o Brasil (BRT)
+//            Date creationDate = dateFormat.parse(creationDateStr);
+//
+//            // Subtrai 3 horas do creationDate
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(creationDate);
+//            calendar.add(Calendar.HOUR_OF_DAY, -3);
+//            Date creationDateMinus3Hours = calendar.getTime();
 
-        try {
-            Date creationDate = dateFormat.parse(creationDateStr);
+        // Define o formato da string de entrada
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-            // Subtrai 3 horas do creationDate
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(creationDate);
-            calendar.add(Calendar.HOUR_OF_DAY, -3);
-            Date creationDateMinus3Hours = calendar.getTime();
+        // Faz o parsing da string para LocalDateTime usando o formato e o fuso horário GMT-3
+        //LocalDateTime localDateTime = LocalDateTime.parse(creationDateStr, formatter);
 
-            Date currentDate = new Date();
-            long differenceInMillis = currentDate.getTime() - creationDateMinus3Hours.getTime();
-            long differenceInMinutes = differenceInMillis / (60 * 1000);
-            return differenceInMinutes > 5;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
+        //Duration duration = Duration.between(localDateTime, LocalDateTime.now());
+        // Se for maior que 300s (5 minutos).
+        //return duration.getSeconds() > 300L;
+
+        return false;
     }
-
-
-
-
 }
