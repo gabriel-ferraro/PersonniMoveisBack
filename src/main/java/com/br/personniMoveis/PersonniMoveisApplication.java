@@ -44,7 +44,7 @@ public class PersonniMoveisApplication {
         SpringApplication.run(PersonniMoveisApplication.class, args);
 
         // Roda script para popular com dados padrão.
-        executeDbPopulation();
+        //executeDbPopulation();
         // Executa update para checar status de pedidos.
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -65,9 +65,6 @@ public class PersonniMoveisApplication {
         String jdbcUrl = "jdbc:postgresql://personniMoveisDB:5432/personniDEV";
         String username = "admin";
         String password = "123456";
-
-        // Nome do arquivo contendo o script SQL
-        //String sqlFile = "/main/resources/data.sql";
 
         try {
             // Estabelecer a conexão com o banco de dados.
