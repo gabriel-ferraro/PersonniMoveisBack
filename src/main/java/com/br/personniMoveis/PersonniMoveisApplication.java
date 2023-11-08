@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -23,7 +22,12 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.HashMap;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +49,12 @@ public class PersonniMoveisApplication {
 
         // Roda script para popular com dados padrão.
         //executeDbPopulation();
+
+        // Executa update para checar status de pedidos.
+        //executeStatusPayments();
+    }
+
+    private static void executeStatusPayments(){
         // Executa update para checar status de pedidos.
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -138,6 +148,19 @@ public class PersonniMoveisApplication {
                     if (txid != null) {
                         // 3. Use o valor de "txid" para buscar detalhes da carga Pix com a biblioteca Gerencianet
                         String status = pixDetailCharge(txid);
+                        if("CONCLUIDA".equals(status)){
+                            if(id != null){
+                                Order orderWithStatus = findOrderWithTxid(id);
+                                if (orderWithStatus != null) {
+                                    orderWithStatus.setStatus(status);
+                                    orderRepository.save(orderWithStatus);
+                                }
+                            }else if(idCmp != null){
+                                OrderCmp orderCmpWithStatus = findOrderCmpWithTxid(idCmp);
+                                orderCmpWithStatus.setStatus(status);
+                                orderCmpRepository.save(orderCmpWithStatus);
+                            }
+                        }
                         if ("ATIVA".equals(status)) {
                             // 4. Verifique a data de criação
                             if (isOrderCreatedMoreThan5MinutesAgo(date)) {
@@ -219,24 +242,17 @@ public class PersonniMoveisApplication {
     }
 
     private static boolean isOrderCreatedMoreThan5MinutesAgo(String creationDateStr) {
-//            Date creationDate = dateFormat.parse(creationDateStr);
-//
-//            // Subtrai 3 horas do creationDate
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(creationDate);
-//            calendar.add(Calendar.HOUR_OF_DAY, -3);
-//            Date creationDateMinus3Hours = calendar.getTime();
+        try {
+            String[] dates = creationDateStr.split("\\.");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(dates[0], formatter);
+            long differenceInMillis  = ChronoUnit.MINUTES.between(dateTime, LocalDateTime.now());
+            return differenceInMillis > 5;
+        }catch (Exception ex){
+            System.out.println(ex);
 
-        // Define o formato da string de entrada
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
-        // Faz o parsing da string para LocalDateTime usando o formato e o fuso horário GMT-3
-        //LocalDateTime localDateTime = LocalDateTime.parse(creationDateStr, formatter);
-
-        //Duration duration = Duration.between(localDateTime, LocalDateTime.now());
-        // Se for maior que 300s (5 minutos).
-        //return duration.getSeconds() > 300L;
-
+        }
         return false;
     }
+
 }
