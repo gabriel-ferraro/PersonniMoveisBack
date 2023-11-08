@@ -1,15 +1,13 @@
-package com.br.personniMoveis.dto.User;
+package com.br.personniMoveis.dto;
 
-
-import com.br.personniMoveis.constant.Profiles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class UserGetDto {
-
-    private Long userId;
+@NoArgsConstructor
+public class UserUpdateInfoDto {
 
     private String name;
 
@@ -19,6 +17,8 @@ public class UserGetDto {
 
     private String phoneNumber;
 
-    private Profiles profile;
+    private String currentPassword;
+
+    private String newPassword;
 
 }

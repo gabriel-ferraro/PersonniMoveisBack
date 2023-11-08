@@ -3,6 +3,7 @@ package com.br.personniMoveis.model.user;
 import com.br.personniMoveis.constant.Profiles;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
+import com.br.personniMoveis.dto.UserAdminInfo;
 import com.br.personniMoveis.model.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -53,6 +54,9 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column
+    private Boolean isRemoved;
 
     private Profiles profile;
 
@@ -110,6 +114,35 @@ public class UserEntity implements UserDetails {
         }
     }
 
+    public void updateFromDto(UserEntity updatedUser) {
+        this.name = updatedUser.getName();
+        this.email = updatedUser.getEmail();
+        this.cpf = updatedUser.getCpf();
+        this.phoneNumber = updatedUser.getPhoneNumber();
+    }
+
+    public void AdminUpdateInfo(UserAdminInfo data) {
+        this.name = data.getName();
+        this.email = data.getEmail();
+        this.cpf = data.getCpf();
+        this.phoneNumber = data.getPhoneNumber();
+        this.profile = data.getProfile();
+    }
+
+    public ClientAddress getAddressById(Long addressId) {
+        for (ClientAddress address : addresses) {
+            if (address.getAddressId().equals(addressId)) {
+                return address;
+            }
+        }
+        // Se o endereço não for encontrado, você pode lançar uma exceção ou retornar null
+        return null;
+    }
+
+    public void updatePassword(String newEncryptedPassword) {
+        this.password = newEncryptedPassword;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -139,6 +172,7 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(userId);

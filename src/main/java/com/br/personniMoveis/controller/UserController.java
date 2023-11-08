@@ -4,16 +4,20 @@ import com.br.personniMoveis.dto.MessageRequestDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
+import com.br.personniMoveis.dto.UserAdminInfo;
+import com.br.personniMoveis.dto.UserUpdateInfoDto;
+import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.user.ClientAddress;
+import com.br.personniMoveis.repository.UserRepository;
 import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,13 +36,13 @@ public class UserController {
 
     private final EmailService emailService;
     private final UserService userService;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(EmailService emailService, UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(EmailService emailService, UserService userService, UserRepository userRepository) {
         this.emailService = emailService;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @PostMapping(path = "/create-account")
@@ -53,6 +57,41 @@ public class UserController {
     public ResponseEntity<List<UserGetDto>> getAllUsers() {
         List<UserGetDto> Users = userService.getAllUsers();
         return ResponseEntity.ok(Users);
+    }
+
+    // Metodo para pegar info do usuario logado
+    @GetMapping(path = "/user-info")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<UserGetDto> getUserById(@RequestHeader("Authorization") String token) {
+        UserGetDto user = userService.getUser(token);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping(path = "/get-user-address/{addressId}")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ClientAddress> getSingleAddress(@RequestHeader("Authorization") String token, @PathVariable Long addressId) {
+        ClientAddress clientAddress = userService.getSingleAddress(token, addressId);
+        return ResponseEntity.ok(clientAddress);
+    }
+
+    @PutMapping("/edit-user-address")
+    public ResponseEntity<String> updateAddress(@RequestHeader("Authorization") String token, @PathVariable Long addressId, @RequestBody ClientAddress updatedAddress) {
+        try {
+            userService.updateAddress(token, addressId, updatedAddress);
+            return ResponseEntity.ok("Endereço atualizado com sucesso.");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PutMapping(path = "/update-user")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody UserUpdateInfoDto userUpdateInfoDto, @RequestHeader("Authorization") String token) throws ChangeSetPersister.NotFoundException {
+        userService.updateUserInfo(userUpdateInfoDto, token);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(path = "/admin-create-account")
@@ -76,6 +115,16 @@ public class UserController {
     public ResponseEntity<List<ClientAddress>> getClientAddresses(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(userService.getAllUserAddresses(token));
     }
+
+    // Metodo para pegar info de um usuario da tela de Admin
+    @GetMapping(path = "/adminUser-info/{userId}")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserAdminInfo> adminGetUser(@PathVariable Long userId) {
+        var user = userRepository.getReferenceById(userId);
+        return ResponseEntity.ok(new UserAdminInfo(user));
+    }
+
     /**
      * Método para testar envio de um email configurado para gerar conteúdo
      * MIME.
@@ -87,5 +136,29 @@ public class UserController {
     public ResponseEntity<HttpStatus> testMessageToUserEmail(@RequestBody @Valid MessageRequestDto request) {
         emailService.test(request.getTo(), request.getStoreName(), request.getClientName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(path = "/admin-update-user")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> adminUpdateUser(@RequestBody UserAdminInfo userAdminInfo) {
+        userService.AdminUpdateUserInfo(userAdminInfo);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping(path = "/{userId}")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> adminDeleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(path = "/delete-user-address/{addressId}")
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ClientAddress> deleteUserAddress(@RequestHeader("Authorization") String token, @PathVariable Long addressId) {
+        userService.deleteUserAddress(token, addressId);
+        return ResponseEntity.noContent().build();
     }
 }
