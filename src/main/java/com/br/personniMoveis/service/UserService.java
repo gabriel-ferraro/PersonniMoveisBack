@@ -3,18 +3,23 @@ package com.br.personniMoveis.service;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
+import com.br.personniMoveis.dto.UserAdminInfo;
+import com.br.personniMoveis.dto.UserUpdateInfoDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.User.UserEntityMapper;
 import com.br.personniMoveis.model.user.ClientAddress;
 import com.br.personniMoveis.model.user.UserEntity;
+import com.br.personniMoveis.repository.AddressRepository;
 import com.br.personniMoveis.repository.UserRepository;
 import com.br.personniMoveis.utils.AuthUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,23 +28,30 @@ public class UserService {
     private final UserRepository userRepository;
     private final AddressService addressService;
     private final AuthUtils authUtils;
+    private final AddressRepository addressRepository;
+    private final UserEntityMapper userEntityMapper;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, AddressService addressService, AuthUtils authUtils) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, AddressService addressService,
+                       AuthUtils authUtils, AddressRepository addressRepository, UserEntityMapper userEntityMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.addressService = addressService;
         this.authUtils = authUtils;
+        this.addressRepository = addressRepository;
+        this.userEntityMapper = userEntityMapper;
     }
 
     public UserEntity createAccount(UserCreateAccountDto data) {
         String encryptedPassword = passwordEncoder.encode(data.getPassword());
         var user = new UserEntity(data);
         user.setPassword(encryptedPassword);
+        user.setIsRemoved(false);
         return userRepository.save(user);
     }
 
     public void saveUser(UserEntity user) {
+        user.setIsRemoved(false);
         userRepository.save(user);
     }
 
@@ -66,11 +78,89 @@ public class UserService {
         String encryptedPassword = passwordEncoder.encode(userAdminCreateAccountDto.getPassword());
         var adminUser = new UserEntity(userAdminCreateAccountDto);
         adminUser.setPassword(encryptedPassword);
+        adminUser.setIsRemoved(false);
         return userRepository.save(adminUser);
     }
 
+    @Transactional
+    public void deleteUser(Long userId) {
+        UserEntity user = findUserOrThrowNotFoundException(userId);
+                user.setIsRemoved(true);
+        userRepository.save(user);
+    }
+
     public List<UserGetDto> getAllUsers() {
-        return userRepository.findAll().stream().map(UserEntityMapper.INSTANCE::UserEntityToUserGetDto).toList();
+        return userRepository.findByIsRemovedFalse().stream().map(UserEntityMapper.INSTANCE::UserEntityToUserGetDto).toList();
+    }
+
+    public ClientAddress getSingleAddress(String token, Long addressId) {
+        Long userId = authUtils.getUserId(token);
+        UserEntity user = this.findUserOrThrowNotFoundException(userId);
+        return user.getAddressById(addressId);
+    }
+
+    @Transactional
+    public void updateAddress(String token, Long addressId, ClientAddress updatedAddress) {
+        Long userId = authUtils.getUserId(token);
+        UserEntity user = findUserOrThrowNotFoundException(userId);
+
+        // Encontre o endereço a ser atualizado na lista de endereços do usuário
+        Optional<ClientAddress> addressToUpdate = user.getAddresses().stream()
+                .filter(address -> address.getAddressId().equals(addressId))
+                .findFirst();
+
+        if (addressToUpdate.isPresent()) {
+            ClientAddress address = addressToUpdate.get();
+            address.updateFrom(updatedAddress);
+
+            // Salve as alterações
+            saveUser(user);
+        } else {
+            throw new ResourceNotFoundException("Endereço não encontrado ou não pertence ao usuário.");
+        }
+    }
+
+    @Transactional
+    public void deleteUserAddress(String token, Long addressId) {
+        Long userId = authUtils.getUserId(token);
+        UserEntity user = findUserOrThrowNotFoundException(userId);
+        ClientAddress address = user.getAddressById(addressId);
+        addressRepository.deleteById(address.getAddressId());
+    }
+
+    public void updateUserInfo(UserUpdateInfoDto userUpdateInfoDto, String token) throws ChangeSetPersister.NotFoundException {
+        Long userId = authUtils.getUserId(token);
+        UserEntity existingUser = userRepository.findById(userId).orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+        UserEntity updatedUser = userEntityMapper.userGetInfoDtoToUser(userUpdateInfoDto);
+        updatedUser.setUserId(userId);
+        String currentPassword = userUpdateInfoDto.getCurrentPassword();
+        String newPassword = userUpdateInfoDto.getNewPassword();
+
+
+        // Criptografar a nova senha, se fornecida
+        if (newPassword != null && !newPassword.isEmpty()) {
+            // Verificar se a senha atual corresponde à senha armazenada
+            if (!passwordEncoder.matches(currentPassword, existingUser.getPassword())) {
+                throw new RuntimeException("A senha atual fornecida está incorreta");
+            }
+            // Criptografar a nova senha
+            String newEncryptedPassword = passwordEncoder.encode(newPassword);
+            existingUser.updatePassword(newEncryptedPassword);
+        }
+        existingUser.updateFromDto(updatedUser);
+        userRepository.save(existingUser);
+    }
+
+    public void AdminUpdateUserInfo(UserAdminInfo userAdminInfo) {
+        var user = userRepository.getReferenceById(userAdminInfo.getUserId());
+        user.AdminUpdateInfo(userAdminInfo);
+        userRepository.save(user);
+    }
+
+    public UserGetDto getUser(String token) {
+        Long Id = authUtils.getUserId(token);
+        UserEntity user = this.findUserOrThrowNotFoundException(Id);
+        return UserEntityMapper.INSTANCE.UserEntityToUserGetInfoDto(user);
     }
 
     public UserEntity findUserOrThrowNotFoundException(Long id) {

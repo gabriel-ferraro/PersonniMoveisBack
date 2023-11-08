@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductService {
@@ -108,35 +111,67 @@ public class ProductService {
      * @return O produto persistido no banco.
      */
     @Transactional
-    public Product createProduct(Product product, Long categoryId) {
+    public Product createFullProduct(Product product, Long categoryId) {
         Product newProd = new Product();
-        newProd = product;
+        newProd.setName(product.getName());
+        newProd.setValue(product.getValue());
+        newProd.setQuantity(product.getQuantity());
+        newProd.setEditable(product.getEditable());
+        newProd.setMainImg(product.getMainImg());
+        newProd.setDescription(product.getDescription());
+        // Seta disponibilidade de produto de acordo com a quantidade em estoque.
+        newProd.setAvailable(product.getAvailable() && product.getQuantity() > 0);
+        newProd.setIsRemoved(false);
         // Faz set da categoria caso tenha sido informada.
         if (categoryId != null) {
             // Seta id da categoria para possuir sua referência no produto.
             newProd.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
             newProd.setCategoryId(categoryId);
         }
+        if (product.getDetails() != null && !product.getDetails().isEmpty()) {
+            newProd.setDetails(product.getDetails());
+        }
+        // seta imagens secundarias.
+        if (product.getSecondaryImages() != null && !product.getSecondaryImages().isEmpty()) {
+            newProd.setSecondaryImages(product.getSecondaryImages());
+        }
+        // Set de seções.
         if (product.getSections() != null && !product.getSections().isEmpty()) {
+            Set<Section> newSections = new HashSet<>();
             for (Section section : product.getSections()) {
+                Set<Option> newOptions = new HashSet<>();
                 if (section.getOptions() != null && !section.getOptions().isEmpty()) {
                     for (Option option : section.getOptions()) {
                         optionService.saveOption(option);
-                        section.getOptions().add(option);
+                        newOptions.add(option);
                     }
                 }
+                // Atualize a lista de opções da seção com as novas opções.
+                section.setOptions(newOptions);
                 sectionService.saveSection(section);
-                product.getSections().add(section);
+                // lista novas seções.
+                newSections.add(section);
             }
+            newProd.setSections(newSections);
         }
-        // Seta data de criação.
+        // Seta data de criação do prod para agora.
         newProd.setDtCreated(LocalDateTime.now());
-        // Seta disponibilidade de produto de acordo com a quantidade em estoque.
-        newProd.setAvailable(product.getQuantity() > 0);
-        // Seta que produto está vigente (não foi removido).
-        newProd.setIsRemoved(false);
         // Persiste produto.
         return productRepository.save(newProd);
+    }
+
+    @Transactional
+    public Product updateFullProduct(Product product, Long categoryId) {
+        this.findProductOrThrowNotFoundException(product.getProductId());
+        // seta catId.
+        if (categoryId != null) {
+            product.setCategoryId(categoryId);
+        }
+        // Determina que esta vigente.
+        product.setIsRemoved(false);
+        // seta data de update;
+        product.setDtUpdated(LocalDateTime.now());
+        return productRepository.save(product);
     }
 
     /**
@@ -192,10 +227,11 @@ public class ProductService {
         tag.getProducts().add(product);
     }
 
+    @Transactional
     public void updateProduct(ProductPutDto productDto, Long productId) {
-        // Encontra produto existente para atualiza-lo ou joga exceção.
-        this.findProductOrThrowNotFoundException(productId);
-        // Faz alteracoes no produto.
+        // Encontra produto existente para atualizá-lo ou lança exceção.
+        Product existingProduct = this.findProductOrThrowNotFoundException(productId);
+        // Faz alterações no produto.
         Product productToBeUpdated = ProductMapper.INSTANCE.productPutDtoToProduct(productDto);
         // id.
         productToBeUpdated.setProductId(productId);
@@ -211,20 +247,24 @@ public class ProductService {
         if (productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
             productDto.getSecondaryImages().forEach(productImgService::saveProductImg);
         }
-        //productToBeUpdated.setSecondaryImages(productDto.getDetails());
-        // sections e options.
+        // Set para salvar as seções.
+        Set<Section> updatedSections = new HashSet<>();
         if (productDto.getSections() != null && !productDto.getSections().isEmpty()) {
             for (Section section : productDto.getSections()) {
+                Set<Option> updatedOptions = new HashSet<>();
                 if (section.getOptions() != null && !section.getOptions().isEmpty()) {
                     for (Option option : section.getOptions()) {
                         optionService.saveOption(option);
-                        section.getOptions().add(option);
+                        updatedOptions.add(option);
                     }
                 }
+                section.setOptions(updatedOptions);
                 sectionService.saveSection(section);
-                productToBeUpdated.getSections().add(section);
+                updatedSections.add(section);
             }
         }
+        // salvando seções.
+        productToBeUpdated.setSections(updatedSections);
         // Persiste alteracoes.
         productRepository.save(productToBeUpdated);
     }
