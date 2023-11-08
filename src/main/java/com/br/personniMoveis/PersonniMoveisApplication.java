@@ -12,14 +12,21 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -40,6 +47,15 @@ public class PersonniMoveisApplication {
     public static void main(String[] args) {
         SpringApplication.run(PersonniMoveisApplication.class, args);
 
+        // Roda script para popular com dados padrão.
+        //executeDbPopulation();
+
+        // Executa update para checar status de pedidos.
+        //executeStatusPayments();
+    }
+
+    private static void executeStatusPayments(){
+        // Executa update para checar status de pedidos.
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         // URL para a primeira lista de pedidos
@@ -53,6 +69,42 @@ public class PersonniMoveisApplication {
             processOrders(ordersUrl);
             processOrders(ordersCmpUrl);
         }, 0, 10, TimeUnit.SECONDS);
+    }
+
+    private static void executeDbPopulation() {
+        String jdbcUrl = "jdbc:postgresql://personniMoveisDB:5432/personniDEV";
+        String username = "admin";
+        String password = "123456";
+
+        try {
+            // Estabelecer a conexão com o banco de dados.
+            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+            // Criar um objeto Statement para enviar comandos SQL
+            Statement statement = connection.createStatement();
+            // Ler o script SQL do arquivo.
+            ClassPathResource resource = new ClassPathResource("data.sql");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+
+            StringBuilder stringBuilder = new StringBuilder();
+            String linha;
+            while ((linha = bufferedReader.readLine()) != null) {
+                stringBuilder.append(linha);
+                stringBuilder.append("\n");
+            }
+            bufferedReader.close();
+
+            // Executar o script SQL
+            String scriptSql = stringBuilder.toString();
+            statement.executeUpdate(scriptSql);
+
+            // Fechar a conexão com o banco de dados
+            statement.close();
+            connection.close();
+
+            System.out.println("Script SQL executado com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void processOrders(String ordersUrl) {
@@ -96,6 +148,19 @@ public class PersonniMoveisApplication {
                     if (txid != null) {
                         // 3. Use o valor de "txid" para buscar detalhes da carga Pix com a biblioteca Gerencianet
                         String status = pixDetailCharge(txid);
+                        if("CONCLUIDA".equals(status)){
+                            if(id != null){
+                                Order orderWithStatus = findOrderWithTxid(id);
+                                if (orderWithStatus != null) {
+                                    orderWithStatus.setStatus(status);
+                                    orderRepository.save(orderWithStatus);
+                                }
+                            }else if(idCmp != null){
+                                OrderCmp orderCmpWithStatus = findOrderCmpWithTxid(idCmp);
+                                orderCmpWithStatus.setStatus(status);
+                                orderCmpRepository.save(orderCmpWithStatus);
+                            }
+                        }
                         if ("ATIVA".equals(status)) {
                             // 4. Verifique a data de criação
                             if (isOrderCreatedMoreThan5MinutesAgo(date)) {
@@ -176,31 +241,18 @@ public class PersonniMoveisApplication {
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido Cmp não encontrado."));
     }
 
-
     private static boolean isOrderCreatedMoreThan5MinutesAgo(String creationDateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo")); // Define o fuso horário para o Brasil (BRT)
-
         try {
-            Date creationDate = dateFormat.parse(creationDateStr);
+            String[] dates = creationDateStr.split("\\.");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(dates[0], formatter);
+            long differenceInMillis  = ChronoUnit.MINUTES.between(dateTime, LocalDateTime.now());
+            return differenceInMillis > 5;
+        }catch (Exception ex){
+            System.out.println(ex);
 
-            // Subtrai 3 horas do creationDate
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(creationDate);
-            calendar.add(Calendar.HOUR_OF_DAY, -3);
-            Date creationDateMinus3Hours = calendar.getTime();
-
-            Date currentDate = new Date();
-            long differenceInMillis = currentDate.getTime() - creationDateMinus3Hours.getTime();
-            long differenceInMinutes = differenceInMillis / (60 * 1000);
-            return differenceInMinutes > 5;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
         }
+        return false;
     }
-
-
-
 
 }
