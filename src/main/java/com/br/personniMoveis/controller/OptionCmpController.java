@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class OptionCmpController {
     }
 
     @PostMapping(path = "/{elementCmpId}")
-    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid OptionCmpDto optionCmpDto, @PathVariable("elementCmpId") Long elementCmpId) {
+    public ResponseEntity<String> createOptionCmp(@RequestBody @Valid OptionCmpDto optionCmpDto, @PathVariable("elementCmpId") Long elementCmpId) throws IOException {
         optionCmpService.createOptionCmp(optionCmpDto, elementCmpId);
         return new ResponseEntity(HttpStatus.CREATED);
     }

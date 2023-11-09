@@ -8,9 +8,12 @@ import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.OptionCmp;
 import com.br.personniMoveis.repository.ElementCmpRepository;
 import com.br.personniMoveis.repository.OptionCmpRepository;
+import com.br.personniMoveis.service.UploadDriveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,12 +25,15 @@ public class OptionCmpService {
 
     private final OptionCmpRepository optionCmpRepository;
 
+    private final UploadDriveService uploadDriveService;
+
 
     @Autowired
-    public OptionCmpService(ElementCmpRepository elementCmpRepository, OptionCmpRepository optionCmpRepository)
+    public OptionCmpService(ElementCmpRepository elementCmpRepository, OptionCmpRepository optionCmpRepository,UploadDriveService uploadDriveService)
     {
         this.elementCmpRepository = elementCmpRepository;
         this.optionCmpRepository = optionCmpRepository;
+        this.uploadDriveService = uploadDriveService;
 
     }
 
@@ -52,7 +58,19 @@ public class OptionCmpService {
             OptionCmp newOption = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDto);
             // Configura a seção nos elementos
             newOption.setElementCmp(elementCmp);
-            optionCmpRepository.save(newOption);
+
+
+        try {
+            String url = uploadDriveService.uploadBase64File(optionCmpDto.getImg(), optionCmpDto.getName());
+            newOption.setImg(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        optionCmpRepository.save(newOption);
 
     }
 
@@ -62,6 +80,17 @@ public class OptionCmpService {
         OptionCmp  OptionBeUpdated = OptionCmpMapper.INSTANCE.toOptionCmp(optionCmpDto);
         OptionBeUpdated.setId(optionCmpId);
         OptionBeUpdated.setElementCmp(optionCmp.getElementCmp()); // Mantém o mesmo elemento
+
+        try {
+            String url = uploadDriveService.updateDriveFile(optionCmpDto.getImg(),optionCmpDto.getImg(), optionCmpDto.getName());
+            OptionBeUpdated.setImg(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         // Persiste alteracoes.
         optionCmpRepository.save(OptionBeUpdated);

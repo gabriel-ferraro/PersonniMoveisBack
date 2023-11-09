@@ -19,15 +19,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +43,7 @@ public class PersonniMoveisApplication {
         this.orderCmpRepository = orderCmpRepository;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws GeneralSecurityException, IOException {
         SpringApplication.run(PersonniMoveisApplication.class, args);
 
         // Roda script para popular com dados padrão.
@@ -52,9 +51,10 @@ public class PersonniMoveisApplication {
 
         // Executa update para checar status de pedidos.
         //executeStatusPayments();
+
     }
 
-    private static void executeStatusPayments(){
+    private static void executeStatusPayments() {
         // Executa update para checar status de pedidos.
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -148,14 +148,14 @@ public class PersonniMoveisApplication {
                     if (txid != null) {
                         // 3. Use o valor de "txid" para buscar detalhes da carga Pix com a biblioteca Gerencianet
                         String status = pixDetailCharge(txid);
-                        if("CONCLUIDA".equals(status)){
-                            if(id != null){
+                        if ("CONCLUIDA".equals(status)) {
+                            if (id != null) {
                                 Order orderWithStatus = findOrderWithTxid(id);
                                 if (orderWithStatus != null) {
                                     orderWithStatus.setStatus(status);
                                     orderRepository.save(orderWithStatus);
                                 }
-                            }else if(idCmp != null){
+                            } else if (idCmp != null) {
                                 OrderCmp orderCmpWithStatus = findOrderCmpWithTxid(idCmp);
                                 orderCmpWithStatus.setStatus(status);
                                 orderCmpRepository.save(orderCmpWithStatus);
@@ -166,13 +166,13 @@ public class PersonniMoveisApplication {
                             if (isOrderCreatedMoreThan5MinutesAgo(date)) {
                                 status = "CANCELADO";
                             }
-                            if(id != null){
+                            if (id != null) {
                                 Order orderWithStatus = findOrderWithTxid(id);
                                 if (orderWithStatus != null) {
                                     orderWithStatus.setStatus(status);
                                     orderRepository.save(orderWithStatus);
                                 }
-                            }else if(idCmp != null){
+                            } else if (idCmp != null) {
                                 OrderCmp orderCmpWithStatus = findOrderCmpWithTxid(idCmp);
                                 orderCmpWithStatus.setStatus(status);
                                 orderCmpRepository.save(orderCmpWithStatus);
@@ -246,13 +246,14 @@ public class PersonniMoveisApplication {
             String[] dates = creationDateStr.split("\\.");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime dateTime = LocalDateTime.parse(dates[0], formatter);
-            long differenceInMillis  = ChronoUnit.MINUTES.between(dateTime, LocalDateTime.now());
+            long differenceInMillis = ChronoUnit.MINUTES.between(dateTime, LocalDateTime.now());
             return differenceInMillis > 5;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
 
         }
         return false;
     }
+
 
 }
