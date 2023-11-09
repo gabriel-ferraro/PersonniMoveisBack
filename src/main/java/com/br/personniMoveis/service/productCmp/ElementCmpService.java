@@ -91,7 +91,7 @@ public class ElementCmpService {
                     if (optionCmpDto.getId() != null && optionCmpDto.getId() > 0) {
                         optionCmpService.updateOptionCmp(optionCmpDto, optionCmpDto.getId());
                     } else {
-                        createNewElementCmp(optionCmpDto, elementCmpId);
+                        createNewOptionCmp(optionCmpDto, elementCmpId);
                     }
                 }
             }
@@ -99,7 +99,7 @@ public class ElementCmpService {
     }
 
     //PARA CRIAÇÃO DA OPÇÃO CASO TENHA OPÇÕES NO ELEMENTO
-    private void createNewElementCmp(OptionCmpDto optionCmpDto, Long elementCmpId) {
+    private void createNewOptionCmp(OptionCmpDto optionCmpDto, Long elementCmpId) {
         OptionCmpDto newOptionDto = new OptionCmpDto();
         newOptionDto.setName(optionCmpDto.getName());
         newOptionDto.setPrice(optionCmpDto.getPrice());
