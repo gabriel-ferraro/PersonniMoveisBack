@@ -19,7 +19,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("orders")
-@SecurityRequirement(name = "bearer-key")
 public class OrderController {
     private final OrderService orderService;
 

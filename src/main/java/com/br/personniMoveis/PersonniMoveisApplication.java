@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,9 +19,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -46,9 +42,6 @@ public class PersonniMoveisApplication {
     public static void main(String[] args) throws GeneralSecurityException, IOException {
         SpringApplication.run(PersonniMoveisApplication.class, args);
 
-        // Roda script para popular com dados padrão.
-        //executeDbPopulation();
-
         // Executa update para checar status de pedidos.
         //executeStatusPayments();
 
@@ -69,42 +62,6 @@ public class PersonniMoveisApplication {
             processOrders(ordersUrl);
             processOrders(ordersCmpUrl);
         }, 0, 10, TimeUnit.SECONDS);
-    }
-
-    private static void executeDbPopulation() {
-        String jdbcUrl = "jdbc:postgresql://personniMoveisDB:5432/personniDEV";
-        String username = "admin";
-        String password = "123456";
-
-        try {
-            // Estabelecer a conexão com o banco de dados.
-            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-            // Criar um objeto Statement para enviar comandos SQL
-            Statement statement = connection.createStatement();
-            // Ler o script SQL do arquivo.
-            ClassPathResource resource = new ClassPathResource("data.sql");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
-
-            StringBuilder stringBuilder = new StringBuilder();
-            String linha;
-            while ((linha = bufferedReader.readLine()) != null) {
-                stringBuilder.append(linha);
-                stringBuilder.append("\n");
-            }
-            bufferedReader.close();
-
-            // Executar o script SQL
-            String scriptSql = stringBuilder.toString();
-            statement.executeUpdate(scriptSql);
-
-            // Fechar a conexão com o banco de dados
-            statement.close();
-            connection.close();
-
-            System.out.println("Script SQL executado com sucesso!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private static void processOrders(String ordersUrl) {
