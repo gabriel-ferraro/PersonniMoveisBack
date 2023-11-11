@@ -31,7 +31,7 @@ public class UploadDriveService {
 
     private static final String APPLICATION_NAME = "PersonniMoveis";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "1//04qy0opY6HpCGCgYIARAAGAQSNwF-L9IrEGMxjOQlrf8YTUxQWnioug1A7OSJRE2LbR8IYvH95JDrFZJ4BPoRFeNqg16lUUg2wE8";
+    private static final String TOKENS_DIRECTORY_PATH = "1//04bt5FxDiyIe5CgYIARAAGAQSNwF-L9IrRENkNySL9zJ4rf5eQL0etFh9mpLGrn3zipPnwB0FHGxmzDCWULYMBq_btIYnFfCiG7w";
     private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_APPDATA, DriveScopes.DRIVE_METADATA);
     private static final String CREDENTIALS_FILE_PATH = "/credentialsDrive.json";
 
@@ -58,7 +58,7 @@ public class UploadDriveService {
     }
 
     public static String uploadBase64File(String base64String, String fileName) throws IOException, GeneralSecurityException {
-        String folderId = "1sKGJEpo-_sG2ApMaSFyoTeDT9GpG6E9F";
+        String folderId = "1f3L9G6EB7OtNxacpVN9o4JRL8-mGSlx_";
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -98,7 +98,7 @@ public class UploadDriveService {
     public static String updateDriveFile(String fileId, String imageUrl, String fileName) throws Exception {
         try {
             String[]id = fileId.split("=");
-            String folderId = "1sKGJEpo-_sG2ApMaSFyoTeDT9GpG6E9F";
+            String folderId = "1f3L9G6EB7OtNxacpVN9o4JRL8-mGSlx_";
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                     .setApplicationName(APPLICATION_NAME)
