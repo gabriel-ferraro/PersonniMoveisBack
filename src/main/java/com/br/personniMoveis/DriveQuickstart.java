@@ -22,36 +22,14 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
-/* class to demonstrate use of Drive files list API */
 public class DriveQuickstart {
-    /**
-     * Application name.
-     */
     private static final String APPLICATION_NAME = "PersonniMoveis";
-    /**
-     * Global instance of the JSON factory.
-     */
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    /**
-     * Directory to store authorization tokens for this application.
-     */
     private static final String TOKENS_DIRECTORY_PATH = "1//04qy0opY6HpCGCgYIARAAGAQSNwF-L9IrEGMxjOQlrf8YTUxQWnioug1A7OSJRE2LbR8IYvH95JDrFZJ4BPoRFeNqg16lUUg2wE8";
-
-    /**
-     * Global instance of the scopes required by this quickstart.
-     * If modifying these scopes, delete your previously saved tokens/ folder.
-     */
     private static final List<String> SCOPES =
             Collections.singletonList(DriveScopes.DRIVE_METADATA_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "/credentialsDrive.json";
 
-    /**
-     * Creates an authorized Credential object.
-     *
-     * @param HTTP_TRANSPORT The network HTTP Transport.
-     * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
-     */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
         // Load client secrets.
