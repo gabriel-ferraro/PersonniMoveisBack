@@ -34,3 +34,4 @@ services:
       - DB_PASSWORD=123456
     ports:
       - "8081:8081"
+      - "8888:8888"
