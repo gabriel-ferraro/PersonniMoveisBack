@@ -82,12 +82,8 @@ public class OptionCmpService {
         OptionBeUpdated.setElementCmp(optionCmp.getElementCmp()); // Mantém o mesmo elemento
 
         try {
-            String url = uploadDriveService.updateDriveFile(optionCmpDto.getImg(),optionCmpDto.getImg(), optionCmpDto.getName());
+            String url = UploadDriveService.updateDriveFile(optionCmpDto.getImg(),optionCmpDto.getImg(), optionCmpDto.getName());
             OptionBeUpdated.setImg(url);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
