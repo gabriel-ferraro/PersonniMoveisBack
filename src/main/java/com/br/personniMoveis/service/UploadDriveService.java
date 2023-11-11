@@ -29,9 +29,9 @@ import java.util.List;
 @Service
 public class UploadDriveService {
 
-    private static final String APPLICATION_NAME = "PersonniMoveis";
+    private static final String APPLICATION_NAME = "PersonniMoveisWeb";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "1//04bt5FxDiyIe5CgYIARAAGAQSNwF-L9IrRENkNySL9zJ4rf5eQL0etFh9mpLGrn3zipPnwB0FHGxmzDCWULYMBq_btIYnFfCiG7w";
+    private static final String TOKENS_DIRECTORY_PATH = "1//04cV9CgUNz7sICgYIARAAGAQSNwF-L9IrPAgpVWQRKTW8nHxpT3aXfdgYVjNSUdpX6MHJ2XS3_QbKwrM-6Xwn1JTaaTzBhb24548";
     private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_APPDATA, DriveScopes.DRIVE_METADATA);
     private static final String CREDENTIALS_FILE_PATH = "/credentialsDrive.json";
 

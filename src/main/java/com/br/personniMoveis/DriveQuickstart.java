@@ -23,9 +23,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class DriveQuickstart {
-    private static final String APPLICATION_NAME = "PersonniMoveis";
+    private static final String APPLICATION_NAME = "PersonniMoveis Drive";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "1//04bt5FxDiyIe5CgYIARAAGAQSNwF-L9IrRENkNySL9zJ4rf5eQL0etFh9mpLGrn3zipPnwB0FHGxmzDCWULYMBq_btIYnFfCiG7w";
+    private static final String TOKENS_DIRECTORY_PATH = "1//04cV9CgUNz7sICgYIARAAGAQSNwF-L9IrPAgpVWQRKTW8nHxpT3aXfdgYVjNSUdpX6MHJ2XS3_QbKwrM-6Xwn1JTaaTzBhb24548";
     private static final List<String> SCOPES =
             Collections.singletonList(DriveScopes.DRIVE_METADATA_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "/credentialsDrive.json";
