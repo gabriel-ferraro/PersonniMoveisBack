@@ -43,7 +43,7 @@ public class PersonniMoveisApplication {
         SpringApplication.run(PersonniMoveisApplication.class, args);
 
         // Executa update para checar status de pedidos.
-        //executeStatusPayments();
+        executeStatusPayments();
 
     }
 
