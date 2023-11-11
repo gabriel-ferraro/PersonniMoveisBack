@@ -95,7 +95,7 @@ public class UploadDriveService {
 
     }
 
-    public static String updateDriveFile(String fileId, String imageUrl, String fileName) throws Exception {
+    public static String updateDriveFile(String imageUrl, String fileName) throws Exception {
         try {
 
             byte[] fileBytes;
@@ -154,20 +154,8 @@ public class UploadDriveService {
         return input != null && (input.startsWith("https://") || input.startsWith("http://"));
     }
 
-
     private static byte[] convertBase64ToBytes(String base64Data) {
         return Base64.getDecoder().decode(base64Data.split(",")[1]);
-    }
-
-    private static byte[] convertGoogleDriveUrlToBytes(String fileId) throws IOException, GeneralSecurityException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
-        return outputStream.toByteArray();
     }
 
 }
