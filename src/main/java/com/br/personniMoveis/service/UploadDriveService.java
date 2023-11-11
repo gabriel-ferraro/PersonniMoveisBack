@@ -31,7 +31,7 @@ public class UploadDriveService {
 
     private static final String APPLICATION_NAME = "PersonniMoveisWeb";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "1//04cV9CgUNz7sICgYIARAAGAQSNwF-L9IrPAgpVWQRKTW8nHxpT3aXfdgYVjNSUdpX6MHJ2XS3_QbKwrM-6Xwn1JTaaTzBhb24548";
+    private static final String TOKENS_DIRECTORY_PATH = "1//04H-HCyydvwYdCgYIARAAGAQSNwF-L9IrTNAqmtEscSEQx_f25nBxsCVLIw7d1qIcRcQEeeYpZJKzNE9F6zd5Bkjz1_Vzh_ibhhY";
     private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_APPDATA, DriveScopes.DRIVE_METADATA);
     private static final String CREDENTIALS_FILE_PATH = "/credentialsDrive.json";
 
@@ -97,25 +97,25 @@ public class UploadDriveService {
 
     public static String updateDriveFile(String fileId, String imageUrl, String fileName) throws Exception {
         try {
-            String[]id = fileId.split("=");
-            String folderId = "1f3L9G6EB7OtNxacpVN9o4JRL8-mGSlx_";
-            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
 
             byte[] fileBytes;
 
             if (isBase64(imageUrl)) {
                 fileBytes = convertBase64ToBytes(imageUrl);
             } else if (isUrl(imageUrl)) {
-                fileBytes = convertGoogleDriveUrlToBytes(id[1]);
+                return imageUrl;
             } else {
                 System.out.println("Invalid Image Data");
                 return null;
             }
-            // Exclui o arquivo existente
-            service.files().delete(id[1]).execute();
+
+            String folderId = "1f3L9G6EB7OtNxacpVN9o4JRL8-mGSlx_";
+            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+
+
 
             java.io.File tempFile = java.io.File.createTempFile("temp-file", ".tmp");
             tempFile.deleteOnExit();
