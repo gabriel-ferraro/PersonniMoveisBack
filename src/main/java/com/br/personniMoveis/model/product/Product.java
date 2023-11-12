@@ -44,8 +44,7 @@ public class Product {
     @Column(nullable = false)
     private Boolean editable;
 
-    @Lob
-    @Column(name = "main_img", columnDefinition = "TEXT")
+    @Column(name = "main_img")
     private String mainImg;
 
     private String description;

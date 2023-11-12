@@ -47,11 +47,11 @@ public class ProductCmpService {
     }
 
     public ProductCmpGetDto findProductByIdOrThrowBadRequestException(Long id, String exceptionMessage) {
-        return ProductCmpMapper.INSTANCE.ProductCmpToProductCmpGetDto(                productCmpRepository.findById(id).orElseThrow(
-                        () -> new BadRequestException(exceptionMessage)));
+        return ProductCmpMapper.INSTANCE.ProductCmpToProductCmpGetDto(productCmpRepository.findById(id).orElseThrow(
+                () -> new BadRequestException(exceptionMessage)));
     }
 
-    public ProductCmpGetByIdDto findProdutctCmpByIdOrThrowBadRequestException(Long id){
+    public ProductCmpGetByIdDto findProdutctCmpByIdOrThrowBadRequestException(Long id) {
         ProductCmp productCmp = productCmpRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("ProductCmp not found"));
 
@@ -59,7 +59,6 @@ public class ProductCmpService {
 
         return productCmpGetByIdDto;
     }
-
 
     public ProductCmp createProductCmp(ProductCmpDto productCmpCreateDto) {
         // Crie um novo produto
@@ -117,8 +116,7 @@ public class ProductCmpService {
         return totalOptionPrice;
     }
 
-
-        public void updateProduct(ProductCmpDto productCmpDto, Long productId) {
+    public void updateProduct(ProductCmpDto productCmpDto, Long productId) {
         // Encontra produto existente para atualiza-lo ou joga exceção.
         findProductByIdOrThrowBadRequestException(productId, "Product not found");
         // Faz alteracoes no produto.
