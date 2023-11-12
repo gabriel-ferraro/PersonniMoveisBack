@@ -85,7 +85,8 @@ public class PaymentService {
         body.put("devedor", new JSONObject().put("cpf", user.getCpf()).put("nome", user.getName()));
         // Transformando decimal java para String com duas casas decimais e . -> ex valor válido: 10.45
         String valorComDecimal = new DecimalFormat("0.00").format(valor);
-        body.put("valor", new JSONObject().put("original", valorComDecimal));
+        String valorReplace = valorComDecimal.replace(",", ".");
+        body.put("valor", new JSONObject().put("original", valorReplace));
         body.put("chave", existingKey);
         body.put("solicitacaoPagador", "Serviço realizado.");
 
