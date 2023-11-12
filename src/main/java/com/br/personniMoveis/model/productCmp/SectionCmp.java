@@ -35,6 +35,11 @@ public class SectionCmp {
      */
     private Integer index;
 
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<ProductCmp> productCmp;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;

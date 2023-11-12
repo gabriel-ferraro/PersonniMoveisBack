@@ -38,7 +38,8 @@ public class ProductCmp {
 
     private String description;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "product_cmp_section", joinColumns = @JoinColumn(name = "product_cmp_id"), inverseJoinColumns = @JoinColumn(name = "section_cmp_id"))
     private Set<SectionCmp> sectionCmps = new HashSet<>();
 
     @JsonIgnore
