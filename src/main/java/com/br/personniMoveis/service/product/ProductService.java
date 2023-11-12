@@ -12,13 +12,13 @@ import com.br.personniMoveis.model.product.*;
 import com.br.personniMoveis.repository.ProductRepository;
 import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.EmailService;
+import com.br.personniMoveis.service.UploadDriveService;
 import com.br.personniMoveis.utils.AuthUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,11 +35,12 @@ public class ProductService {
     private final TagService tagService;
     private final AuthUtils authUtils;
     private final EmailService emailService;
+    private final UploadDriveService uploadDriveService;
 
     @Autowired
     public ProductService(ProductRepository productRepository, ProductImgService productImgService,
                           CategoryService categoryService, DetailService detailService, SectionService sectionService,
-                          OptionService optionService, TagService tagService, AuthUtils authUtils, EmailService emailService) {
+                          OptionService optionService, TagService tagService, AuthUtils authUtils, EmailService emailService, UploadDriveService uploadDriveService) {
         this.productRepository = productRepository;
         this.productImgService = productImgService;
         this.categoryService = categoryService;
@@ -49,6 +50,7 @@ public class ProductService {
         this.tagService = tagService;
         this.authUtils = authUtils;
         this.emailService = emailService;
+        this.uploadDriveService = uploadDriveService;
     }
 
     public Product findProductOrThrowNotFoundException(Long id) {
@@ -117,7 +119,12 @@ public class ProductService {
         newProd.setValue(product.getValue());
         newProd.setQuantity(product.getQuantity());
         newProd.setEditable(product.getEditable());
-        newProd.setMainImg(product.getMainImg());
+        try {
+            String result = UploadDriveService.updateDriveFile(product.getMainImg(), product.getName());
+            newProd.setMainImg(result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         newProd.setDescription(product.getDescription());
         // Seta disponibilidade de produto de acordo com a quantidade em estoque.
         newProd.setAvailable(product.getAvailable() && product.getQuantity() > 0);
@@ -171,6 +178,12 @@ public class ProductService {
         product.setIsRemoved(false);
         // seta data de update;
         product.setDtUpdated(LocalDateTime.now());
+        try {
+            String result = UploadDriveService.updateDriveFile(product.getMainImg(), product.getName());
+            product.setMainImg(result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return productRepository.save(product);
     }
 
