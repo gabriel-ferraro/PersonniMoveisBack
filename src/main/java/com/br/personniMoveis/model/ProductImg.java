@@ -23,8 +23,7 @@ public class ProductImg {
     @Column(name = "product_img_id")
     private Long productImgId;
 
-    @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String img;
 
     @JsonIgnore

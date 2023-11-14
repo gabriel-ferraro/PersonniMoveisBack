@@ -26,10 +26,13 @@ public class Option {
     @Column(nullable = false)
     private String name;
 
-    @Lob
-    @Column(name = "main_img", columnDefinition = "TEXT")
+    @Column(name = "main_img")
     private String mainImg;
 
+    @Column
+    private String description;
+
+    @Column
     private Double price;
 
     @JsonIgnore
