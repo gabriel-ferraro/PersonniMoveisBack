@@ -111,7 +111,6 @@ public class Product {
     /**
      * Produto pode ser de SOMENTE UMA categoria, ou de nehuma, como: caderias, armários, mesas, etc...
      */
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id")
     private Category category;
