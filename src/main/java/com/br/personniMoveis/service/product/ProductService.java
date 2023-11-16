@@ -9,6 +9,7 @@ import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.mapper.product.ProductMapper;
+import com.br.personniMoveis.model.ProductImg;
 import com.br.personniMoveis.model.product.*;
 import com.br.personniMoveis.repository.ProductRepository;
 import com.br.personniMoveis.service.CategoryService;
@@ -125,7 +126,7 @@ public class ProductService {
         newProd.setQuantity(product.getQuantity());
         newProd.setEditable(product.getEditable());
         try {
-            String result = UploadDriveService.updateDriveFile(product.getMainImg(), product.getName());
+            String result = UploadDriveService.uploadBase64File(product.getMainImg(), product.getName());
             newProd.setMainImg(result);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -143,7 +144,14 @@ public class ProductService {
         }
         // seta imagens secundarias.
         if (product.getSecondaryImages() != null && !product.getSecondaryImages().isEmpty()) {
-            newProd.setSecondaryImages(product.getSecondaryImages());
+            for (ProductImg item:product.getSecondaryImages()) {
+                try {
+                    String result = UploadDriveService.uploadBase64File(item.getImg(), product.getName());
+                    newProd.setMainImg(result);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         // Set de seções.
         if (product.getSections() != null && !product.getSections().isEmpty()) {
