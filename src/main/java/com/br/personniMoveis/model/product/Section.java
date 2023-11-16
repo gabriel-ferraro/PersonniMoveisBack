@@ -29,10 +29,6 @@ public class Section {
     @Column(nullable = false)
     private String name;
 
-    @Lob
-    @Column(name = "main_img", columnDefinition = "TEXT")
-    private String mainImg;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")

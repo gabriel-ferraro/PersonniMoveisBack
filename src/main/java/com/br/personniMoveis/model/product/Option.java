@@ -26,7 +26,7 @@ public class Option {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "main_img")
+    @Column(name = "main_img", length = 1000)
     private String mainImg;
 
     @Column

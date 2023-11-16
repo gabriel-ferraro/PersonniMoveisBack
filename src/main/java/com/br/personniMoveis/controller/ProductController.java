@@ -126,26 +126,26 @@ public class ProductController {
      * @return Retorna o produto persistido completo.
      */
     @Operation(summary = "Cria/edita produto convencional", description = "Endpoint que recebe todo payload para " +
-            "criação ou edição do produto convencional como req param e seus subitens. Recebe um id opcional para setar a categoria do produto.")
+            "criação ou edição do produto convencional como req param e seus subitens. Recebe um id para setar a categoria do produto.")
     @PostMapping(path = "/save-full-product")
     public ResponseEntity<Product> saveFullProduct(
-            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @RequestParam(name = "categoryId") Long categoryId,
             @RequestBody @Valid Product product) {
         return ResponseEntity.ok(productService.createFullProduct(product, categoryId));
     }
 
     @PutMapping(path = "/save-full-product")
     public ResponseEntity<Product> editFullProduct(
-            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @RequestParam(name = "categoryId") Long categoryId,
             @RequestBody @Valid Product product) {
-        return ResponseEntity.ok(productService.updateFullProduct(product, categoryId));
+        return ResponseEntity.ok(productService.updateProduct(product, categoryId));
     }
 
-    @PutMapping(path = "/{productId}")
-    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductPutDto productDto, @PathVariable("productId") Long productId) {
-        productService.updateProduct(productDto, productId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @PutMapping(path = "/{productId}")
+//    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductPutDto productDto, @PathVariable("productId") Long productId) {
+//        productService.updateProduct(productDto, productId);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
     /**
      * Faz remoção lógica do produto (não remove do BD, so altera flag para que produto não apareça como disponível ou filtravel).

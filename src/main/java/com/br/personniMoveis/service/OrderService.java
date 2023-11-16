@@ -100,7 +100,7 @@ public class OrderService {
      * @param orderRequest Pedido do cliente.
      * @return qrcode pix.
      */
-    public String makeOrder(String token, OrderRequest orderRequest) {
+    public String makeOrder(String token, OrderRequest orderRequest, Double shipmentFee) {
         OrderAndTxId orderProdTxid = new OrderAndTxId();
         OrderAndTxId orderCmpTxid = new OrderAndTxId();
         try{
@@ -123,6 +123,9 @@ public class OrderService {
             orderCmpTxid = this.totalCmps(user, orderRequest.getRequestCmp());
             orderTotal += orderCmpTxid.getTotalValue();
         }
+
+        // Adicionando valor do frete ao pedido.
+        orderTotal += shipmentFee;
 
         // Retorna qrCode Pix em base64.
         PixAndTxId pixAndTxId = getPixQrCode(user, orderTotal);
@@ -303,7 +306,7 @@ public class OrderService {
         if ((orderRequest.getRequestProduct() == null || orderRequest.getRequestProduct().isEmpty()) &&
                 (orderRequest.getRequestCmp() == null || orderRequest.getRequestCmp().isEmpty())
         ) {
-            throw new BadRequestException("Erro - n]ao há produtos na requisição");
+            throw new BadRequestException("Erro - Não há produtos na requisição");
         }
     }
 }

@@ -19,7 +19,6 @@ public class StorePropertiesService {
         return storePropertiesRepository.findById(1L).orElse(this.createStore());
     }
 
-    //@Transactional
     public StoreProperties createStore() {
         StoreProperties store = new StoreProperties();
         store.setStoreId(1L);
