@@ -15,6 +15,8 @@ public class OptionCmpDto {
 
     private Double price;
 
+    private String descriptions;
+
     private String img;
 
     private ElementCmp elementCmp;
