@@ -59,14 +59,15 @@ public class OptionCmpService {
             // Configura a seção nos elementos
             newOption.setElementCmp(elementCmp);
 
-
-        try {
-            String url = uploadDriveService.uploadBase64File(optionCmpDto.getImg(), optionCmpDto.getName());
-            newOption.setImg(url);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+        if(optionCmpDto.getImg() != null) {
+            try {
+                String url = uploadDriveService.uploadBase64File(optionCmpDto.getImg(), optionCmpDto.getName());
+                newOption.setImg(url);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (GeneralSecurityException e) {
+                throw new RuntimeException(e);
+            }
         }
 
 
