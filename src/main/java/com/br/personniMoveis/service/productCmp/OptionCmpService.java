@@ -59,7 +59,7 @@ public class OptionCmpService {
             // Configura a seção nos elementos
             newOption.setElementCmp(elementCmp);
 
-        if(optionCmpDto.getImg() != null) {
+        if(optionCmpDto.getImg() != "") {
             try {
                 String url = uploadDriveService.uploadBase64File(optionCmpDto.getImg(), optionCmpDto.getName());
                 newOption.setImg(url);
@@ -82,7 +82,7 @@ public class OptionCmpService {
         OptionBeUpdated.setId(optionCmpId);
         OptionBeUpdated.setElementCmp(optionCmp.getElementCmp()); // Mantém o mesmo elemento
 
-        if(optionCmp.getImg() != null){
+        if(optionCmp.getImg() != ""){
             try {
                 String url = UploadDriveService.updateDriveFile(optionCmpDto.getImg(), optionCmpDto.getName());
                 OptionBeUpdated.setImg(url);
