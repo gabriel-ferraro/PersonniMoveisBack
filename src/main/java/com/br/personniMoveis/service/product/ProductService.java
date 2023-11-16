@@ -128,8 +128,10 @@ public class ProductService {
         newProd.setQuantity(product.getQuantity());
         newProd.setEditable(product.getEditable());
         try {
-            String result = UploadDriveService.uploadBase64File(product.getMainImg(), product.getName());
-            newProd.setMainImg(result);
+            if(product.getMainImg() != null) {
+                String result = UploadDriveService.uploadBase64File(product.getMainImg(), product.getName());
+                newProd.setMainImg(result);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -154,8 +156,10 @@ public class ProductService {
                     for (Option option : section.getOptions()) {
                         // Set das imagens da opção.
                         try {
-                            String result = UploadDriveService.updateDriveFile(option.getMainImg(), option.getName());
-                            option.setMainImg(result);
+                            if(option.getMainImg() != null) {
+                                String result = UploadDriveService.updateDriveFile(option.getMainImg(), option.getName());
+                                option.setMainImg(result);
+                            }
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -179,18 +183,20 @@ public class ProductService {
         if (product.getSecondaryImages() != null && !product.getSecondaryImages().isEmpty()) {
             for (ProductImg item : product.getSecondaryImages()) {
                 try {
-                    String result = UploadDriveService.uploadBase64File(item.getImg(), product.getName());
+                    if (product.getSecondaryImages() != null) {
+                        String result = UploadDriveService.uploadBase64File(item.getImg(), product.getName());
 
-                    // Cria uma nova instância de ProductImg para cada imagem
-                    ProductImg newImg = new ProductImg();
-                    newImg.setImg(result);
-                    newImg.setProduct(newProd); // Configura a relação bidirecional
+                        // Cria uma nova instância de ProductImg para cada imagem
+                        ProductImg newImg = new ProductImg();
+                        newImg.setImg(result);
+                        newImg.setProduct(newProd); // Configura a relação bidirecional
 
-                    // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
-                    productImgRepository.save(newImg);
+                        // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
+                        productImgRepository.save(newImg);
 
-                    // Adiciona a nova instância ao conjunto de imagens secundárias de newProd
-                    newProd.getSecondaryImages().add(newImg);
+                        // Adiciona a nova instância ao conjunto de imagens secundárias de newProd
+                        newProd.getSecondaryImages().add(newImg);
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
