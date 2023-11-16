@@ -5,6 +5,7 @@ import com.br.personniMoveis.dto.product.ProductDto;
 import com.br.personniMoveis.dto.product.ProductPutDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.AlreadyExistsException;
+import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.mapper.product.ProductMapper;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -115,6 +117,9 @@ public class ProductService {
     @Transactional
     public Product createFullProduct(Product product, Long categoryId) {
         Product newProd = new Product();
+        // Seta id da categoria para possuir sua referência no produto.
+        newProd.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
+        newProd.setCategoryId(categoryId);
         newProd.setName(product.getName());
         newProd.setValue(product.getValue());
         newProd.setQuantity(product.getQuantity());
@@ -130,10 +135,8 @@ public class ProductService {
         newProd.setAvailable(product.getAvailable() && product.getQuantity() > 0);
         newProd.setIsRemoved(false);
         // Faz set da categoria caso tenha sido informada.
-        if (categoryId != null) {
-            // Seta id da categoria para possuir sua referência no produto.
-            newProd.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
-            newProd.setCategoryId(categoryId);
+        if (categoryId == null) {
+            throw new BadRequestException("Produto não foi salvo porque deve ter categoria!");
         }
         if (product.getDetails() != null && !product.getDetails().isEmpty()) {
             newProd.setDetails(product.getDetails());
@@ -149,6 +152,13 @@ public class ProductService {
                 Set<Option> newOptions = new HashSet<>();
                 if (section.getOptions() != null && !section.getOptions().isEmpty()) {
                     for (Option option : section.getOptions()) {
+                        // Set das imagens da opção.
+                        try {
+                            String result = UploadDriveService.updateDriveFile(option.getMainImg(), option.getName());
+                            option.setMainImg(result);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                         optionService.saveOption(option);
                         newOptions.add(option);
                     }
@@ -167,24 +177,48 @@ public class ProductService {
         return productRepository.save(newProd);
     }
 
-    @Transactional
-    public Product updateFullProduct(Product product, Long categoryId) {
-        this.findProductOrThrowNotFoundException(product.getProductId());
-        // seta catId.
-        if (categoryId != null) {
-            product.setCategoryId(categoryId);
-        }
-        // Determina que esta vigente.
-        product.setIsRemoved(false);
-        // seta data de update;
-        product.setDtUpdated(LocalDateTime.now());
-        try {
-            String result = UploadDriveService.updateDriveFile(product.getMainImg(), product.getName());
-            product.setMainImg(result);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return productRepository.save(product);
+//    @Transactional
+//    public Product updateFullProduct(Product product, Long categoryId) {
+//        this.findProductOrThrowNotFoundException(product.getProductId());
+//        Product updatedProduct = product;
+//        if (categoryId == null) {
+//            throw new BadRequestException("Produto não foi salvo porque deve ter categoria!");
+//        }
+//        // Seta id da categoria para possuir sua referência no produto.
+//        updatedProduct.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
+//        updatedProduct.setCategoryId(categoryId);
+//        // Determina que esta vigente.
+//        updatedProduct.setIsRemoved(false);
+//        // Seta imagem principal.
+//        try {
+//            String result = UploadDriveService.updateDriveFile(product.getMainImg(), product.getName());
+//            updatedProduct.setMainImg(result);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        // Set de details.
+//        product.getDetails().forEach(detail -> detailService.saveDetail(detail, product));
+//        // Set de seções e itens internos.
+//        if (product.getSections() != null && !product.getSections().isEmpty()) {
+//            for (Section section : product.getSections()) {
+//                this.saveSection(section);
+//            }
+//        }
+//        // seta data de update;
+//        return productRepository.save(updatedProduct);
+//    }
+
+    private void saveSection(Section section) {
+            sectionService.saveSection(section);
+            section.getOptions().forEach(option -> {
+                try {
+                    String result = UploadDriveService.updateDriveFile(option.getMainImg(), option.getName());
+                    option.setMainImg(result);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                optionService.saveOption(option);
+            });
     }
 
     /**
@@ -241,23 +275,45 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(ProductPutDto productDto, Long productId) {
+    public Product updateProduct(Product productDto, Long categoryId) {
         // Encontra produto existente para atualizá-lo ou lança exceção.
-        Product existingProduct = this.findProductOrThrowNotFoundException(productId);
-        // Faz alterações no produto.
-        Product productToBeUpdated = ProductMapper.INSTANCE.productPutDtoToProduct(productDto);
+        Product productToBeUpdated = this.findProductOrThrowNotFoundException(productDto.getProductId());
+        if (categoryId == null) {
+            throw new BadRequestException("Produto não foi salvo porque deve ter categoria!");
+        }
         // id.
-        productToBeUpdated.setProductId(productId);
+        productToBeUpdated.setProductId(productDto.getProductId());
+        productToBeUpdated.setCategory(productDto.getCategory());
+        productToBeUpdated.setCategoryId(categoryId);
+        // nome
+        productToBeUpdated.setName(productDto.getName());
+        // valor
+        productToBeUpdated.setValue(productDto.getValue());
+        // quantidade
+        productToBeUpdated.setQuantity(productDto.getQuantity());
         // Vigente.
         productToBeUpdated.setIsRemoved(false);
-        // Seta data de atualização.
-        productToBeUpdated.setDtUpdated(LocalDateTime.now());
+        // Editavel.
+        productToBeUpdated.setEditable(productDto.getEditable());
+        // Imagem principal.
+        try {
+            String result = UploadDriveService.updateDriveFile(productDto.getMainImg(), productDto.getName());
+            productToBeUpdated.setMainImg(result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // details.
         if (productDto.getDetails() != null && !productDto.getDetails().isEmpty()) {
             productDto.getDetails().forEach(detailService::saveDetail);
         }
         // imagens secundarias.
         if (productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
+            try {
+                String result = UploadDriveService.updateDriveFile(productDto.getMainImg(), productDto.getName());
+                productToBeUpdated.setMainImg(result);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             productDto.getSecondaryImages().forEach(productImgService::saveProductImg);
         }
         // Set para salvar as seções.
@@ -267,6 +323,12 @@ public class ProductService {
                 Set<Option> updatedOptions = new HashSet<>();
                 if (section.getOptions() != null && !section.getOptions().isEmpty()) {
                     for (Option option : section.getOptions()) {
+                        try {
+                            String result = UploadDriveService.updateDriveFile(option.getMainImg(), option.getName());
+                            option.setMainImg(result);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                         optionService.saveOption(option);
                         updatedOptions.add(option);
                     }
@@ -278,8 +340,10 @@ public class ProductService {
         }
         // salvando seções.
         productToBeUpdated.setSections(updatedSections);
+        // Seta data de atualização.
+        productToBeUpdated.setDtUpdated(LocalDateTime.now());
         // Persiste alteracoes.
-        productRepository.save(productToBeUpdated);
+        return productRepository.save(productToBeUpdated);
     }
 
     /**
