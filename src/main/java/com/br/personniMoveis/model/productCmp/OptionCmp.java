@@ -30,6 +30,8 @@ public class OptionCmp {
     @Column(name = "img", columnDefinition = "TEXT")
     private String img;
 
+    private String descriptions;
+
     @Column(nullable = false)
     private Double price;
 
