@@ -2,7 +2,6 @@ package com.br.personniMoveis.service.product;
 
 import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
-import com.br.personniMoveis.dto.product.ProductPutDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.exception.AlreadyExistsException;
 import com.br.personniMoveis.exception.BadRequestException;
@@ -11,6 +10,7 @@ import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.mapper.product.ProductMapper;
 import com.br.personniMoveis.model.ProductImg;
 import com.br.personniMoveis.model.product.*;
+import com.br.personniMoveis.repository.ProductImgRepository;
 import com.br.personniMoveis.repository.ProductRepository;
 import com.br.personniMoveis.service.CategoryService;
 import com.br.personniMoveis.service.EmailService;
@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,10 +39,12 @@ public class ProductService {
     private final EmailService emailService;
     private final UploadDriveService uploadDriveService;
 
+    private final ProductImgRepository productImgRepository;
+
     @Autowired
     public ProductService(ProductRepository productRepository, ProductImgService productImgService,
                           CategoryService categoryService, DetailService detailService, SectionService sectionService,
-                          OptionService optionService, TagService tagService, AuthUtils authUtils, EmailService emailService, UploadDriveService uploadDriveService) {
+                          OptionService optionService, TagService tagService, AuthUtils authUtils, EmailService emailService, UploadDriveService uploadDriveService, ProductImgRepository productImgRepository) {
         this.productRepository = productRepository;
         this.productImgService = productImgService;
         this.categoryService = categoryService;
@@ -54,6 +55,7 @@ public class ProductService {
         this.authUtils = authUtils;
         this.emailService = emailService;
         this.uploadDriveService = uploadDriveService;
+        this.productImgRepository = productImgRepository;
     }
 
     public Product findProductOrThrowNotFoundException(Long id) {
@@ -142,17 +144,7 @@ public class ProductService {
         if (product.getDetails() != null && !product.getDetails().isEmpty()) {
             newProd.setDetails(product.getDetails());
         }
-        // seta imagens secundarias.
-        if (product.getSecondaryImages() != null && !product.getSecondaryImages().isEmpty()) {
-            for (ProductImg item:product.getSecondaryImages()) {
-                try {
-                    String result = UploadDriveService.uploadBase64File(item.getImg(), product.getName());
-                    newProd.setMainImg(result);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+
         // Set de seções.
         if (product.getSections() != null && !product.getSections().isEmpty()) {
             Set<Section> newSections = new HashSet<>();
@@ -182,6 +174,33 @@ public class ProductService {
         // Seta data de criação do prod para agora.
         newProd.setDtCreated(LocalDateTime.now());
         // Persiste produto.
+        productRepository.save(newProd);
+        // seta imagens secundarias.
+        if (product.getSecondaryImages() != null && !product.getSecondaryImages().isEmpty()) {
+            for (ProductImg item : product.getSecondaryImages()) {
+                try {
+                    String result = UploadDriveService.uploadBase64File(item.getImg(), product.getName());
+
+                    // Cria uma nova instância de ProductImg para cada imagem
+                    ProductImg newImg = new ProductImg();
+                    newImg.setImg(result);
+                    newImg.setProduct(newProd); // Configura a relação bidirecional
+
+                    // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
+                    productImgRepository.save(newImg);
+
+                    // Adiciona a nova instância ao conjunto de imagens secundárias de newProd
+                    newProd.getSecondaryImages().add(newImg);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            // Agora que todas as ProductImg foram salvas, salve newProd no banco de dados
+            productRepository.save(newProd);
+        }
+
+
         return productRepository.save(newProd);
     }
 

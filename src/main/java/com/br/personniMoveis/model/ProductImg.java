@@ -23,11 +23,11 @@ public class ProductImg {
     @Column(name = "product_img_id")
     private Long productImgId;
 
-    @Column
     private String img;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
 }
