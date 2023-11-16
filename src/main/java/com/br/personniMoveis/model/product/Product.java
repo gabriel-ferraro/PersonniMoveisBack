@@ -4,8 +4,10 @@ import com.br.personniMoveis.model.ProductImg;
 import com.br.personniMoveis.model.category.Category;
 import com.br.personniMoveis.model.user.OrderItem;
 import com.br.personniMoveis.model.user.UserEntity;
+import com.br.personniMoveis.utils.CustomProductImgDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,9 +81,13 @@ public class Product {
     /**
      * O produto pode ter imagens secundárias, que aparecem na página do produto single como imagens "adicionais".
      */
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonDeserialize(using = CustomProductImgDeserializer.class)
     private Set<ProductImg> secondaryImages = new HashSet<>();
+
+
+
+
 
     /**
      * Details são campos descritivos do produto, exemplo: peso do produto - A cadeira X é leve e tem só x kg.
