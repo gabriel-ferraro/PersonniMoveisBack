@@ -81,13 +81,14 @@ public class OptionCmpService {
         OptionBeUpdated.setId(optionCmpId);
         OptionBeUpdated.setElementCmp(optionCmp.getElementCmp()); // Mantém o mesmo elemento
 
-        try {
-            String url = UploadDriveService.updateDriveFile(optionCmpDto.getImg(), optionCmpDto.getName());
-            OptionBeUpdated.setImg(url);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if(optionCmp.getImg() != null){
+            try {
+                String url = UploadDriveService.updateDriveFile(optionCmpDto.getImg(), optionCmpDto.getName());
+                OptionBeUpdated.setImg(url);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-
         // Persiste alteracoes.
         optionCmpRepository.save(OptionBeUpdated);
     }
