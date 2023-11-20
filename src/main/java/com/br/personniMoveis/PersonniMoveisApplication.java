@@ -61,7 +61,7 @@ public class PersonniMoveisApplication {
         executorService.scheduleAtFixedRate(() -> {
             processOrders(ordersUrl);
             processOrders(ordersCmpUrl);
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 1000, TimeUnit.SECONDS);
     }
 
     private static void processOrders(String ordersUrl) {

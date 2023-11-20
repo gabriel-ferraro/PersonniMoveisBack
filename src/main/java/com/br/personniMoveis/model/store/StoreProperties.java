@@ -27,6 +27,12 @@ public class StoreProperties {
     @Column(name = "store_logo_path")
     private String storeLogoPath;
 
+    @Column(name = "store_logo_secondary_path")
+    private String storeSecondaryImgPath;
+
+    @Column(name = "store_placeholder_path")
+    private String storePlaceholdeImgPath;
+
     @Column(name = "store_email")
     private String storeEmail;
     
@@ -51,4 +57,18 @@ public class StoreProperties {
      */
     @Column(name = "is_client_order_evaluatd")
     private Boolean isClientOrderEvaluated;
+
+    public StoreProperties(StoreProperties sp) {
+        this.storeId = sp.getStoreId();
+        this.storeName = sp.getStoreName();
+        this.storeLogoPath = sp.getStoreLogoPath();
+        this.storeSecondaryImgPath = sp.getStoreSecondaryImgPath();
+        this.storePlaceholdeImgPath = sp.getStorePlaceholdeImgPath();
+        this.storeEmail = sp.getStoreEmail();
+        this.aboutUsInfo = sp.getAboutUsInfo();
+        this.storeAddress = sp.getStoreAddress();
+        this.storePhone = sp.getStorePhone();
+        this.primaryCollor = sp.getPrimaryCollor();
+        this.secondaryCollor = sp.getSecondaryCollor();
+    }
 }
