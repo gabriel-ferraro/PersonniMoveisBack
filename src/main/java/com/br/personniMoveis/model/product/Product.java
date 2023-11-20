@@ -85,14 +85,10 @@ public class Product {
     @JsonDeserialize(using = CustomProductImgDeserializer.class)
     private Set<ProductImg> secondaryImages = new HashSet<>();
 
-
-
-
-
     /**
      * Details são campos descritivos do produto, exemplo: peso do produto - A cadeira X é leve e tem só x kg.
      */
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany
     @JoinColumn(name = "product_id")
     private Set<Detail> details;
 
@@ -103,7 +99,7 @@ public class Product {
     @JoinTable(name = "product_material", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "material_id"))
     private Set<Material> materials;
 
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Set<Section> sections;
 

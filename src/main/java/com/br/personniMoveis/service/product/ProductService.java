@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -328,6 +329,8 @@ public class ProductService {
         productToBeUpdated.setIsRemoved(false);
         // Editavel.
         productToBeUpdated.setEditable(productDto.getEditable());
+        // Descrição principal do prod.
+        productToBeUpdated.setDescription(productDto.getDescription());
         // Imagem principal.
         try {
             String result = UploadDriveService.updateDriveFile(productDto.getMainImg(), productDto.getName());
@@ -336,9 +339,14 @@ public class ProductService {
             throw new RuntimeException(e);
         }
         // details.
+        Set<Detail> details = new HashSet<>();
         if (productDto.getDetails() != null && !productDto.getDetails().isEmpty()) {
-            productDto.getDetails().forEach(detailService::saveDetail);
+            productDto.getDetails().forEach(detail -> {
+                details.add(detail);
+                detailService.saveDetail(detail);
+            });
         }
+        productToBeUpdated.setDetails(details);
         // imagens secundarias.
         if (productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
             try {
