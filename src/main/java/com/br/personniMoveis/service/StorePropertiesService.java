@@ -5,6 +5,9 @@ import com.br.personniMoveis.repository.StorePropertiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 @Service
 public class StorePropertiesService {
 
@@ -16,9 +19,10 @@ public class StorePropertiesService {
     }
 
     public StoreProperties getStore() {
-        return storePropertiesRepository.findById(1L).orElse(this.createStore());
+        return storePropertiesRepository.findById(1L).orElseThrow(() -> new RuntimeException("Seilameu"));
     }
 
+    //@Transactional
     public StoreProperties createStore() {
         StoreProperties store = new StoreProperties();
         store.setStoreId(1L);
@@ -31,16 +35,35 @@ public class StorePropertiesService {
      * @param sp Dto de alterações.
      */
     public StoreProperties updateStore(StoreProperties sp) {
-        StoreProperties result = null;
-        // Só deve haver uma configuração persistida, então registro único deve possuir id 1.
-        if (storePropertiesRepository.findById(1L).isEmpty()) {
-            result = this.createStore();
-        } else {
-            StoreProperties store = this.getStore();
-            // Se de alguma forma id foi alterado, seta para 1 antes de salvar.
-            store.setStoreId(1L);
-            result = storePropertiesRepository.save(store);
+        // Obtém a instância do repositório ou cria uma nova se não existir
+//        StoreProperties store = storePropertiesRepository.findById(1L).orElseGet(StoreProperties::new);
+        StoreProperties store = storePropertiesRepository.findById(sp.getStoreId()).orElse(createStore());
+        store = new StoreProperties(sp);
+        if(store.getStoreLogoPath() != null) {
+            try {
+                String url = UploadDriveService.updateDriveFile(store.getStoreLogoPath(), store.getStoreName());
+                store.setStoreLogoPath(url);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-        return result;
+        if(store.getStoreSecondaryImgPath() != null) {
+            try {
+                String url = UploadDriveService.updateDriveFile(store.getStoreSecondaryImgPath(), store.getStoreName());
+                store.setStoreSecondaryImgPath(url);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(store.getStorePlaceholdeImgPath() != null) {
+            try {
+                String url = UploadDriveService.updateDriveFile(store.getStorePlaceholdeImgPath(), store.getStoreName());
+                store.setStorePlaceholdeImgPath(url);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return storePropertiesRepository.save(store);
     }
+
 }
