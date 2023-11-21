@@ -347,15 +347,36 @@ public class ProductService {
             });
         }
         productToBeUpdated.setDetails(details);
-        // imagens secundarias.
+        productRepository.save(productToBeUpdated);
+        // seta imagens secundarias.
         if (productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
-            try {
-                String result = UploadDriveService.updateDriveFile(productDto.getMainImg(), productDto.getName());
-                productToBeUpdated.setMainImg(result);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            for (ProductImg item : productDto.getSecondaryImages()) {
+                try {
+                    if (productDto.getSecondaryImages() != null) {
+                        String result = UploadDriveService.updateDriveFile(item.getImg(), productToBeUpdated.getName());
+                        if(item.getProductImgId() == null){
+                            // Cria uma nova instância de ProductImg para cada imagem
+                            ProductImg newImg = new ProductImg();
+                            newImg.setImg(result);
+                            newImg.setProduct(productToBeUpdated); // Configura a relação bidirecional
+
+                            // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
+                            productImgRepository.save(newImg);
+                            // Adiciona a nova instância ao conjunto de imagens secundárias de newProd
+                            productToBeUpdated.getSecondaryImages().add(newImg);
+
+                        }else{
+                            item.setImg(result);
+                            // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
+                            productImgRepository.save(item);
+                        }
+
+
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
-            productDto.getSecondaryImages().forEach(productImgService::saveProductImg);
         }
         // Set para salvar as seções.
         Set<Section> updatedSections = new HashSet<>();
