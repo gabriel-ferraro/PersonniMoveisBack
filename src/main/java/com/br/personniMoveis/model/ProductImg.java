@@ -26,8 +26,7 @@ public class ProductImg {
     private String img;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
 }
