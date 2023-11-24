@@ -25,12 +25,14 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
+    @Column
+    private String deliveryAddress;
+
     @Column(name = "total_price")
     private Double totalPrice;
 
     private LocalDateTime date;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
@@ -39,7 +41,6 @@ public class Order {
 
     private String txid;
 
-    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "order_id")
     private final List<OrderItem> orderItems = new ArrayList<>();

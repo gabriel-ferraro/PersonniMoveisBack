@@ -2,6 +2,7 @@ package com.br.personniMoveis.model.user;
 
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.productCmp.ProductCmp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,9 +37,10 @@ public class OrderItem {
     /**
      * Ordem de pedido dos produtos.
      */
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "orderItems")
+    @ManyToMany(mappedBy = "orderItems")
     private final List<Product> products = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

@@ -38,10 +38,9 @@ public class OrderController {
     @PostMapping(path = "/create-order")
     public ResponseEntity<String> createProductOrder(
             @RequestHeader("Authorization") String token,
-            @RequestBody @Valid OrderRequest orderRequest,
-            @RequestParam(name = "shipmentFee") Double shipmentFee) {
+            @RequestBody OrderRequest orderRequest) {
 
-        return ResponseEntity.ok(orderService.makeOrder(token, orderRequest, shipmentFee));
+        return ResponseEntity.ok(orderService.makeOrder(token, orderRequest));
     }
 
     /**
