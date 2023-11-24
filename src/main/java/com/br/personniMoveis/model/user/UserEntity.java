@@ -77,6 +77,7 @@ public class UserEntity implements UserDetails {
     /**
      * Pedidos do cliente.
      */
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private final List<Order> orders = new ArrayList<>();
