@@ -14,8 +14,8 @@ public class ProductImgService {
         this.productImgRepository = productImgRepository;
     }
 
-    public void saveProductImg(ProductImg prodImg) {
-        productImgRepository.save(prodImg);
+    public ProductImg saveProductImg(ProductImg prodImg) {
+        return productImgRepository.save(prodImg);
     }
 
     public void removeProductImg(Long id){

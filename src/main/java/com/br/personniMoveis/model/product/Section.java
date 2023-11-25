@@ -34,7 +34,7 @@ public class Section {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "section_id")
     private Set<Option> options;
 

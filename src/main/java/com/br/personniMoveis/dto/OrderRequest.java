@@ -1,5 +1,6 @@
 package com.br.personniMoveis.dto;
 
+import com.br.personniMoveis.model.user.ClientAddress;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,6 @@ public class OrderRequest {
 
     private List<RequestProduct> requestProduct;
     private List<RequestCmp> requestCmp;
+    private ClientAddress address;
+    private Double shipmentFee;
 }

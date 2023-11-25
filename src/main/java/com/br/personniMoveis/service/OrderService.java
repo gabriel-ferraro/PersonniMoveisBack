@@ -100,7 +100,7 @@ public class OrderService {
      * @param orderRequest Pedido do cliente.
      * @return qrcode pix.
      */
-    public String makeOrder(String token, OrderRequest orderRequest, Double shipmentFee) {
+    public String makeOrder(String token, OrderRequest orderRequest) {
         OrderAndTxId orderProdTxid = new OrderAndTxId();
         OrderAndTxId orderCmpTxid = new OrderAndTxId();
         try{
@@ -125,7 +125,7 @@ public class OrderService {
         }
 
         // Adicionando valor do frete ao pedido.
-        orderTotal += shipmentFee;
+        orderTotal += orderRequest.getShipmentFee();
 
         // Retorna qrCode Pix em base64.
         PixAndTxId pixAndTxId = getPixQrCode(user, orderTotal);
@@ -133,11 +133,21 @@ public class OrderService {
         if (orderProdTxid.getOrderId() != null) {
             Order order = findOrderOrThrowBadRequestException(orderProdTxid.getOrderId());
             order.setTxid(pixAndTxId.getTxId());
+//            String address = String.format("CEP: %s, Cidade: %s, Bairro : %s, Rua: %s, Número: %s, Observações: %s",
+//                    orderRequest.getAddress().getCEP(), orderRequest.getAddress().getCity(),
+//                    orderRequest.getAddress().getDistrict(), orderRequest.getAddress().getStreet(),
+//                    orderRequest.getAddress().getNumber(), orderRequest.getAddress().getDetails());
+//            order.setDeliveryAddress(address);
             orderRepository.save(order);
         }
         if (orderCmpTxid.getOrderId() != null) {
             OrderCmp orderCmp = orderCmpRepository.findById(orderCmpTxid.getOrderId()).orElseThrow();
             orderCmp.setTxid(pixAndTxId.getTxId());
+//            String address = String.format("CEP: %s, Cidade: %s, Bairro : %s, Rua: %s, Número: %s, Observações: %s",
+//                    orderRequest.getAddress().getCEP(), orderRequest.getAddress().getCity(),
+//                    orderRequest.getAddress().getDistrict(), orderRequest.getAddress().getStreet(),
+//                    orderRequest.getAddress().getNumber(), orderRequest.getAddress().getDetails());
+//            orderCmp.setDeliveryAddress(address);
             orderCmpRepository.save(orderCmp);
         }
 
