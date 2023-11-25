@@ -76,10 +76,10 @@ public class UserController {
         return ResponseEntity.ok(clientAddress);
     }
 
-    @PutMapping("/edit-user-address")
-    public ResponseEntity<String> updateAddress(@RequestHeader("Authorization") String token, @PathVariable Long addressId, @RequestBody ClientAddress updatedAddress) {
+    @PutMapping("/edit-user-address/")
+    public ResponseEntity<String> updateAddress(@RequestHeader("Authorization") String token, @RequestBody ClientAddress updatedAddress) {
         try {
-            userService.updateAddress(token, addressId, updatedAddress);
+            userService.updateAddress(token, updatedAddress);
             return ResponseEntity.ok("Endereço atualizado com sucesso.");
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

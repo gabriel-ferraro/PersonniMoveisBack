@@ -100,21 +100,14 @@ public class UserService {
     }
 
     @Transactional
-    public void updateAddress(String token, Long addressId, ClientAddress updatedAddress) {
+    public void updateAddress(String token,ClientAddress updatedAddress) {
         Long userId = authUtils.getUserId(token);
         UserEntity user = findUserOrThrowNotFoundException(userId);
 
-        // Encontre o endereço a ser atualizado na lista de endereços do usuário
-        Optional<ClientAddress> addressToUpdate = user.getAddresses().stream()
-                .filter(address -> address.getAddressId().equals(addressId))
-                .findFirst();
+        updatedAddress.setClientAddress(user);
 
-        if (addressToUpdate.isPresent()) {
-            ClientAddress address = addressToUpdate.get();
-            address.updateFrom(updatedAddress);
-
-            // Salve as alterações
-            saveUser(user);
+        if (updatedAddress != null) {
+          addressRepository.save(updatedAddress);
         } else {
             throw new ResourceNotFoundException("Endereço não encontrado ou não pertence ao usuário.");
         }
