@@ -85,6 +85,7 @@ public class ClientAddress {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private UserEntity clientAddress;
 
     @Override
