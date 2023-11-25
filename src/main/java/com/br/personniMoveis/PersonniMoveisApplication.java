@@ -61,7 +61,7 @@ public class PersonniMoveisApplication {
         executorService.scheduleAtFixedRate(() -> {
             processOrders(ordersUrl);
             processOrders(ordersCmpUrl);
-        }, 0, 1000, TimeUnit.SECONDS);
+        }, 0, 10, TimeUnit.SECONDS);
     }
 
     private static void processOrders(String ordersUrl) {
@@ -87,8 +87,9 @@ public class PersonniMoveisApplication {
                 JSONArray orders = new JSONArray(response.toString());
                 for (int i = 0; i < orders.length(); i++) {
                     JSONObject order = orders.getJSONObject(i);
-                    String txid = order.getString("txid");
-                    JSONArray dateArray = order.getJSONArray("date"); // Obtém o array JSON da data
+                    String txid = order.isNull("txid") ? null : order.getString("txid");
+                    JSONArray dateArray = order.isNull("date") ? new JSONArray() : order.getJSONArray("date");
+
 
                     // Converte o array JSON da data para uma string no formato "yyyy-MM-dd HH:mm:ss.SSS"
                     String date = String.format(
