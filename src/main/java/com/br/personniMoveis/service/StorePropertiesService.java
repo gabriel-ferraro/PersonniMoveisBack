@@ -19,7 +19,7 @@ public class StorePropertiesService {
     }
 
     public StoreProperties getStore() {
-        return storePropertiesRepository.findById(1L).orElseThrow(() -> new RuntimeException("Seilameu"));
+        return storePropertiesRepository.findById(1L).orElseThrow(() -> new RuntimeException("Erro ao carregar dados da config da loja"));
     }
 
     //@Transactional

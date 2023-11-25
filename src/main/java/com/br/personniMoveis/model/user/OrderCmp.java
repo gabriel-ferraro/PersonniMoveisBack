@@ -27,6 +27,9 @@ public class OrderCmp {
     @Column(name = "order_cmp_id")
     private Long orderCmpId;
 
+    @Column
+    private String deliveryAddress;
+
     @Column(name = "total_price")
     private Double totalPrice;
 

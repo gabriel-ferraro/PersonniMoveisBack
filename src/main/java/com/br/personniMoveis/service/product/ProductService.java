@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -144,8 +143,14 @@ public class ProductService {
         if (categoryId == null) {
             throw new BadRequestException("Produto não foi salvo porque deve ter categoria!");
         }
+        // details.
+        Set<Detail> details = new HashSet<>();
         if (product.getDetails() != null && !product.getDetails().isEmpty()) {
-            newProd.setDetails(product.getDetails());
+            product.getDetails().forEach(detail -> {
+                details.add(detail);
+                detailService.saveDetail(detail);
+            });
+            newProd.setDetails(details);
         }
 
         // Set de seções.
@@ -209,50 +214,6 @@ public class ProductService {
 
 
         return productRepository.save(newProd);
-    }
-
-//    @Transactional
-//    public Product updateFullProduct(Product product, Long categoryId) {
-//        this.findProductOrThrowNotFoundException(product.getProductId());
-//        Product updatedProduct = product;
-//        if (categoryId == null) {
-//            throw new BadRequestException("Produto não foi salvo porque deve ter categoria!");
-//        }
-//        // Seta id da categoria para possuir sua referência no produto.
-//        updatedProduct.setCategory(categoryService.findCategoryOrThrowNotFoundException(categoryId));
-//        updatedProduct.setCategoryId(categoryId);
-//        // Determina que esta vigente.
-//        updatedProduct.setIsRemoved(false);
-//        // Seta imagem principal.
-//        try {
-//            String result = UploadDriveService.updateDriveFile(product.getMainImg(), product.getName());
-//            updatedProduct.setMainImg(result);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        // Set de details.
-//        product.getDetails().forEach(detail -> detailService.saveDetail(detail, product));
-//        // Set de seções e itens internos.
-//        if (product.getSections() != null && !product.getSections().isEmpty()) {
-//            for (Section section : product.getSections()) {
-//                this.saveSection(section);
-//            }
-//        }
-//        // seta data de update;
-//        return productRepository.save(updatedProduct);
-//    }
-
-    private void saveSection(Section section) {
-            sectionService.saveSection(section);
-            section.getOptions().forEach(option -> {
-                try {
-                    String result = UploadDriveService.updateDriveFile(option.getMainImg(), option.getName());
-                    option.setMainImg(result);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                optionService.saveOption(option);
-            });
     }
 
     /**
@@ -345,38 +306,7 @@ public class ProductService {
                 details.add(detail);
                 detailService.saveDetail(detail);
             });
-        }
-        productToBeUpdated.setDetails(details);
-        productRepository.save(productToBeUpdated);
-        // seta imagens secundarias.
-        if (productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
-            for (ProductImg item : productDto.getSecondaryImages()) {
-                try {
-                    if (productDto.getSecondaryImages() != null) {
-                        String result = UploadDriveService.updateDriveFile(item.getImg(), productToBeUpdated.getName());
-                        if(item.getProductImgId() == null){
-                            // Cria uma nova instância de ProductImg para cada imagem
-                            ProductImg newImg = new ProductImg();
-                            newImg.setImg(result);
-                            newImg.setProduct(productToBeUpdated); // Configura a relação bidirecional
-
-                            // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
-                            productImgRepository.save(newImg);
-                            // Adiciona a nova instância ao conjunto de imagens secundárias de newProd
-                            productToBeUpdated.getSecondaryImages().add(newImg);
-
-                        }else{
-                            item.setImg(result);
-                            // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
-                            productImgRepository.save(item);
-                        }
-
-
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            productToBeUpdated.setDetails(details);
         }
         // Set para salvar as seções.
         Set<Section> updatedSections = new HashSet<>();

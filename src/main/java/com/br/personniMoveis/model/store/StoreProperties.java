@@ -21,6 +21,9 @@ public class StoreProperties {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long storeId;
 
+    @Column(name = "address_meta")
+    private String addressMeta;
+
     @Column(name = "store_name")
     private String storeName;
 
@@ -70,5 +73,6 @@ public class StoreProperties {
         this.storePhone = sp.getStorePhone();
         this.primaryCollor = sp.getPrimaryCollor();
         this.secondaryCollor = sp.getSecondaryCollor();
+        this.addressMeta = sp.getAddressMeta();
     }
 }

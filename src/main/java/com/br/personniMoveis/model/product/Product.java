@@ -123,7 +123,7 @@ public class Product {
      * ao retornar à disponibilidade).
      */
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "productWaitingList")
+    @ManyToMany(mappedBy = "productWaitingList")
     private final List<UserEntity> users = new ArrayList<>();
 
     @JsonIgnore
