@@ -133,11 +133,7 @@ public class OrderService {
         if (orderProdTxid.getOrderId() != null) {
             Order order = findOrderOrThrowBadRequestException(orderProdTxid.getOrderId());
             order.setTxid(pixAndTxId.getTxId());
-//            String address = String.format("CEP: %s, Cidade: %s, Bairro : %s, Rua: %s, Número: %s, Observações: %s",
-//                    orderRequest.getAddress().getCEP(), orderRequest.getAddress().getCity(),
-//                    orderRequest.getAddress().getDistrict(), orderRequest.getAddress().getStreet(),
-//                    orderRequest.getAddress().getNumber(), orderRequest.getAddress().getDetails());
-//            order.setDeliveryAddress(address);
+            order.setDeliveryAddress(orderRequest.getDeliveryAddress());
             orderRepository.save(order);
         }
         if (orderCmpTxid.getOrderId() != null) {

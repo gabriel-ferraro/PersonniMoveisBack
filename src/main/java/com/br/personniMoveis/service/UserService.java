@@ -1,5 +1,6 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.dto.NewPassDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
@@ -20,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -99,6 +99,13 @@ public class UserService {
         // Salva relação.
         userRepository.save(user);
         return newAddress;
+    }
+
+    public void updatePassword(NewPassDto newPassDto) {
+        UserEntity user = userRepository.findUserByEmail(tokenService.getClaimFromToken(newPassDto.getToken(), "email"));
+        String encryptedPassword = passwordEncoder.encode(newPassDto.getUpdatedPassword());
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
     }
 
     public List<ClientAddress> getAllUserAddresses(String token) {
