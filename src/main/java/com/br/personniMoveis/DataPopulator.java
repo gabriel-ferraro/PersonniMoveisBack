@@ -65,7 +65,7 @@ public class DataPopulator implements CommandLineRunner {
         // Cria user USER.
         UserAdminCreateAccountDto normalUser = UserAdminCreateAccountDto.builder()
                 .name("João")
-                .email("joao@personni.com")
+                .email("gabrielferraro00@gmail.com")
                 .password("123")
                 .cpf("62233746074")
                 .phoneNumber("41922516269")

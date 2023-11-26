@@ -31,7 +31,7 @@ public class ClientAddress {
     private String addressNickname;
 
     @Column(name = "cep", nullable = false)
-    private String CEP;
+    private String cep;
 
     @Column(nullable = false)
     private String state;
@@ -60,8 +60,8 @@ public class ClientAddress {
         if (updatedAddress.getAddressNickname() != null) {
             this.setAddressNickname(updatedAddress.getAddressNickname());
         }
-        if (updatedAddress.getCEP() != null) {
-            this.setCEP(updatedAddress.getCEP());
+        if (updatedAddress.getCep() != null) {
+            this.setCep(updatedAddress.getCep());
         }
         if (updatedAddress.getState() != null) {
             this.setState(updatedAddress.getState());

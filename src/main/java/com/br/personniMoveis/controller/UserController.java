@@ -1,6 +1,7 @@
 package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.MessageRequestDto;
+import com.br.personniMoveis.dto.NewPassDto;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserGetDto;
@@ -103,6 +104,12 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody UserUpdateInfoDto userUpdateInfoDto, @RequestHeader("Authorization") String token) throws ChangeSetPersister.NotFoundException {
         userService.updateUserInfo(userUpdateInfoDto, token);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(path = "/update-pass")
+    public ResponseEntity<HttpStatus> updatePassword(@RequestBody NewPassDto newPassDto) throws ChangeSetPersister.NotFoundException {
+        userService.updatePassword(newPassDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
