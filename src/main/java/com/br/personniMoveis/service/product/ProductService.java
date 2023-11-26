@@ -330,6 +330,33 @@ public class ProductService {
                 updatedSections.add(section);
             }
         }
+        productRepository.save(productToBeUpdated);
+        // seta imagens secundarias.
+        if (productDto.getSecondaryImages() != null && !productDto.getSecondaryImages().isEmpty()) {
+            for (ProductImg item : productDto.getSecondaryImages()) {
+                try {
+                    if (productDto.getSecondaryImages() != null) {
+                        String result = UploadDriveService.uploadBase64File(item.getImg(), productDto.getName());
+
+                        // Cria uma nova instância de ProductImg para cada imagem
+                        ProductImg newImg = new ProductImg();
+                        newImg.setImg(result);
+                        newImg.setProduct(productDto); // Configura a relação bidirecional
+
+                        // Salva a nova instância de ProductImg no banco de dados antes de associá-la a newProd
+                        productImgRepository.save(newImg);
+
+                        // Adiciona a nova instância ao conjunto de imagens secundárias de newProd
+                        productToBeUpdated.getSecondaryImages().add(newImg);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            // Agora que todas as ProductImg foram salvas, salve newProd no banco de dados
+            productRepository.save(productToBeUpdated);
+        }
         // salvando seções.
         productToBeUpdated.setSections(updatedSections);
         // Seta data de atualização.
