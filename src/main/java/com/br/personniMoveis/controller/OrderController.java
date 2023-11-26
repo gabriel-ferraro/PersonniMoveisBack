@@ -36,7 +36,6 @@ public class OrderController {
     public ResponseEntity<String> createProductOrder(
             @RequestHeader("Authorization") String token,
             @RequestBody OrderRequest orderRequest) {
-
         return ResponseEntity.ok(orderService.makeOrder(token, orderRequest));
     }
 

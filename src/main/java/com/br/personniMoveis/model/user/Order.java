@@ -25,7 +25,7 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column
+    @Column(name = "delivery_address")
     private String deliveryAddress;
 
     @Column(name = "total_price")
