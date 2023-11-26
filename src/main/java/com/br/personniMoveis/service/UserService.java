@@ -12,6 +12,7 @@ import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.AddressRepository;
 import com.br.personniMoveis.repository.UserRepository;
 import com.br.personniMoveis.utils.AuthUtils;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -30,16 +31,47 @@ public class UserService {
     private final AuthUtils authUtils;
     private final AddressRepository addressRepository;
     private final UserEntityMapper userEntityMapper;
+    private final TokenService tokenService;
+    private final EmailService emailService;
 
     @Autowired
     public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, AddressService addressService,
-                       AuthUtils authUtils, AddressRepository addressRepository, UserEntityMapper userEntityMapper) {
+                       AuthUtils authUtils, AddressRepository addressRepository, UserEntityMapper userEntityMapper, TokenService tokenService, EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.addressService = addressService;
         this.authUtils = authUtils;
         this.addressRepository = addressRepository;
         this.userEntityMapper = userEntityMapper;
+        this.tokenService = tokenService;
+        this.emailService = emailService;
+    }
+
+    /**
+     * Deve retornar um true caso tudo ocorra bem.
+     */
+    public boolean validateAccount(UserEntity user) {
+        boolean result = true;
+        try {
+            // Tudo ocorreu bem.
+            emailService.validateAccount(user.getEmail(), user.getName(), tokenService.generateConfirmationToken(user));
+        } catch (Exception e) {
+            //
+            try {
+                throw new Exception(e);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return result;
+    }
+
+    public void changePassword(String userEmail) {
+        try {
+            emailService.changePassword(userEmail, tokenService.generateUpdatePasswordToken(userEmail));
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public UserEntity createAccount(UserCreateAccountDto data) {

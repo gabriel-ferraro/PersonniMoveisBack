@@ -7,9 +7,11 @@ import com.br.personniMoveis.model.user.Order;
 import com.br.personniMoveis.model.user.OrderCmp;
 import com.br.personniMoveis.repository.OrderCmpRepository;
 import com.br.personniMoveis.repository.OrderRepository;
+import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.service.payment.Credentials;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -30,13 +32,14 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication
 public class PersonniMoveisApplication {
     private static OrderRepository orderRepository;
-
     private static OrderCmpRepository orderCmpRepository;
+    private final EmailService emailService;
 
-
-    public PersonniMoveisApplication(OrderRepository orderRepository, OrderCmpRepository orderCmpRepository) {
+    @Autowired
+    public PersonniMoveisApplication(OrderRepository orderRepository, OrderCmpRepository orderCmpRepository, EmailService emailService) {
         this.orderRepository = orderRepository;
         this.orderCmpRepository = orderCmpRepository;
+        this.emailService = emailService;
     }
 
     public static void main(String[] args) throws GeneralSecurityException, IOException {
@@ -111,6 +114,7 @@ public class PersonniMoveisApplication {
                                 Order orderWithStatus = findOrderWithTxid(id);
                                 if (orderWithStatus != null) {
                                     orderWithStatus.setStatus(status);
+                                    //emailService.sendProdApprovedEmail();
                                     orderRepository.save(orderWithStatus);
                                 }
                             } else if (idCmp != null) {
@@ -123,6 +127,7 @@ public class PersonniMoveisApplication {
                             // 4. Verifique a data de criação
                             if (isOrderCreatedMoreThan5MinutesAgo(date)) {
                                 status = "CANCELADO";
+                                //emailService.sendProdCancelledEmail();
                             }
                             if (id != null) {
                                 Order orderWithStatus = findOrderWithTxid(id);

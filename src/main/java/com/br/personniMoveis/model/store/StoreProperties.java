@@ -54,12 +54,8 @@ public class StoreProperties {
     @Column(name = "secondary_collor")
     private String secondaryCollor;
 
-    /**
-     * Controle para definir se pedidos CMP devem ser avaliados ou não antes do
-     * cliente poder realizar a compra.
-     */
-    @Column(name = "is_client_order_evaluatd")
-    private Boolean isClientOrderEvaluated;
+    @Column(name = "site_context")
+    private String siteContext;
 
     public StoreProperties(StoreProperties sp) {
         this.storeId = sp.getStoreId();
@@ -74,5 +70,6 @@ public class StoreProperties {
         this.primaryCollor = sp.getPrimaryCollor();
         this.secondaryCollor = sp.getSecondaryCollor();
         this.addressMeta = sp.getAddressMeta();
+        this.siteContext =  sp.getSiteContext();
     }
 }
