@@ -36,7 +36,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
     private String status;
 
     private String txid;

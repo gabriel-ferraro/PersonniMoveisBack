@@ -8,6 +8,7 @@ import com.br.personniMoveis.dto.UserAdminInfo;
 import com.br.personniMoveis.dto.UserUpdateInfoDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.user.ClientAddress;
+import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.repository.UserRepository;
 import com.br.personniMoveis.service.EmailService;
 import com.br.personniMoveis.service.UserService;
@@ -48,6 +49,17 @@ public class UserController {
     @PostMapping(path = "/create-account")
     public ResponseEntity<HttpStatus> createUserAccount(@RequestBody @Valid UserCreateAccountDto createAccountDto) {
         userService.createAccount(createAccountDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/validate-account")
+    public ResponseEntity<Boolean> validateAccount(@RequestBody @Valid UserEntity userData) {
+        return ResponseEntity.ok(userService.validateAccount(userData));
+    }
+
+    @PutMapping(path = "/change-password")
+    public ResponseEntity<HttpStatus> validateAccount(@RequestBody String userEmail) {
+        userService.changePassword(userEmail);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -1,5 +1,6 @@
 package com.br.personniMoveis.service;
 
+import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.product.Product;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -18,7 +19,6 @@ import java.util.logging.Logger;
  * Internet Mail Extensions) do objeto MimeMessage.
  * E-mail Personni Móveis: personnimoveis@gmail.com
  * senha: PersonniMoveis123
- * senha para uso como cliente do g-mail: nzszgltxuasaauok
  */
 @Service
 public class EmailService {
@@ -53,7 +53,11 @@ public class EmailService {
             javaMailSender.send(message);
 
         } catch (MessagingException ex) {
-            Logger.getLogger(EmailService.class.getName()).log(Level.SEVERE, "Erro ao criar e enviar mensagem de e-mail.", ex);
+            try {
+                throw new Exception("Erro ao criar e enviar mensagem de e-mail.");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -70,13 +74,13 @@ public class EmailService {
         ).orElse("");
         // Se houver mensagem complementar para mostrar, cria parágrado com msg.
         String complementMessagePtag = complementMessage.map(
-                msg -> String.format("<p style=\"font-size:16px;\">\"%s\"</p><br><br>", msg)
+                msg -> String.format("<p style='font-size:16px;'>%s</p><br><br>", msg)
         ).orElse("");
         // Retorna HTML com argumentos formatados no corpo do e-mail.
         return """
                  <div style="justify-content: center;">
                      <h1>%s</h1>
-                     %s
+                     <p>%s<p/>
                      %s
                      %s
                  </div>
@@ -102,30 +106,6 @@ public class EmailService {
     }
 
     /**
-     * Envia mensagem indicando se orçamento CMP foi aprovado ou recusado.
-     *
-     * @param to             Endereço de e-mail de destino.
-     * @param storeName      Nome da loja do e-commerce.
-     * @param approved       Mensagem indicando se orçamento foi aprovado ou recusado.
-     * @param orderUrl       URL do orçamento do cliente.
-     * @param detailsMessage Detalhes da aprovação / reprovação.
-     * @param clientName     Nome do cliente recém cadastrado.
-     * @throws jakarta.mail.MessagingException Exceção no envio da mensagem.
-     */
-    public void orderResponseMessage(String to, String storeName, String approved, String detailsMessage, String orderUrl, String clientName) throws MessagingException {
-        // Constrói strings de conteúdo do e-mail.
-        String subject = "Seu orçamento foi avaliado por nossa loja - ".concat(storeName);
-        String mainContent = generateDiv(
-                "Olá ".concat(clientName).concat(", veja o resultado do seu orçamento:").concat(approved),
-                Optional.of(detailsMessage),
-                Optional.empty(),
-                "Ver na loja",
-                orderUrl);
-        // Envia e-mail.
-        sendEmail(to, subject, mainContent, Optional.empty());
-    }
-
-    /**
      * Notifica o cliente de que um produto indisponível de sua lista de espera
      * retornou à loja.
      *
@@ -147,35 +127,41 @@ public class EmailService {
         sendEmail(to, subject, mainContent, Optional.empty());
     }
 
+    public void productSent(String to, String clientName, Product product, String productUrl) {
+
+    }
+
     /**
      * Envia mensagem para usuário validar a conta após cria-la.
      *
      * @param to         Endereço de e-mail de destino.
      * @param clientName Nome do cliente recém cadastrado.
-     * @param storeName  Nome da loja do e-commerce.
      * @throws jakarta.mail.MessagingException Exceção no envio da mensagem.
      */
-    public void validateAccount(String to, String clientName, String storeName) throws MessagingException {
+    public void validateAccount(String to, String clientName, String token) throws MessagingException {
+        // configs loja.
+        var store = storeService.getStore();
         // Constrói strings de conteúdo do e-mail.
-        String subject = "Valide sua conta da ".concat(storeName);
+        String subject = "Valide sua conta da ".concat(storeService.getStore().getStoreName());
         String mainContent = generateDiv(
-                "Olá ".concat(clientName).concat(" falta pouco para criar sua conta na ").concat(storeName),
+                "Olá ".concat(clientName).concat(" falta pouco para criar sua conta na ").concat(store.getStoreName()),
                 Optional.of("Acesse sua conta com seu e-mail e senha."),
                 Optional.empty(),
                 "Valide clicando aqui",
-                "");
+                store.getSiteContext().concat("validated-account/?token=").concat(token));
         sendEmail(to, subject, mainContent, Optional.empty());
     }
 
-    public void changePassword(String to, String clientName, String storeName) throws MessagingException {
+    public void changePassword(String to, String token) throws MessagingException {
+        var store = storeService.getStore();
         // Constrói strings de conteúdo do e-mail.
-        String subject = "Mude a senha da sua conta - ".concat(storeName);
+        String subject = "Mude a senha da sua conta na - ".concat(storeService.getStore().getStoreName());
         String mainContent = generateDiv(
-                "Olá ".concat(clientName).concat(" parece que você quer redefinir sua senha"),
+                "Parece que você quer redefinir sua senha",
                 Optional.of("Ignore esse e-mail caso não queira modificar sua senha."),
                 Optional.empty(),
                 "Mude a senha clicando aqui",
-                "");
+                store.getSiteContext().concat("update-password/?token=").concat(token));
         sendEmail(to, subject, mainContent, Optional.empty());
     }
 

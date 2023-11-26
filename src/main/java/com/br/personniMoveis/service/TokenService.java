@@ -15,7 +15,6 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-
     @Value("{api.security.token.secret}") // Passando o valor da senha em properties para a variavel.
     private String secret;
 
@@ -33,6 +32,38 @@ public class TokenService {
                     .withSubject(user.getEmail())
                     .withClaim("userId", user.getUserId())
                     .withClaim("userRole", user.getProfile().toString())
+                    .withExpiresAt(expirationDate())
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Error at generating JWT Token", exception);
+        }
+    }
+
+    public String generateConfirmationToken(UserEntity user) {
+        try {
+            var algorithm = Algorithm.HMAC256(secret); // Senha da API
+            return JWT.create()
+                    .withIssuer("PersonniMoveis API")
+                    .withSubject(user.getEmail())
+                    .withClaim("name", user.getName())
+                    .withClaim("email", user.getEmail())
+                    .withClaim("cpf", user.getCpf())
+                    .withClaim("phone", user.getPhoneNumber())
+                    .withClaim("password", user.getPassword())
+                    .withExpiresAt(expirationDate())
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Error at generating JWT Token", exception);
+        }
+    }
+
+    public String generateUpdatePasswordToken(String email) {
+        try {
+            var algorithm = Algorithm.HMAC256(secret); // Senha da API
+            return JWT.create()
+                    .withIssuer("PersonniMoveis API")
+                    .withSubject(email)
+                    .withClaim("email", email)
                     .withExpiresAt(expirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
