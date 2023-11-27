@@ -49,6 +49,7 @@ public class Product {
     @Column(name = "main_img", length = 1000)
     private String mainImg;
 
+    @Column(length = 1000)
     private String description;
 
     @Column(name = "dt_created")
