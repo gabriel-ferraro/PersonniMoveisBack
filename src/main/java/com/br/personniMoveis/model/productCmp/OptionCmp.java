@@ -23,7 +23,7 @@ public class OptionCmp {
     private Long id;
 
     @Column(nullable = false)
-    private String optionCmps;
+    private String name;
 
     @Column(name = "img")
     private String img;
