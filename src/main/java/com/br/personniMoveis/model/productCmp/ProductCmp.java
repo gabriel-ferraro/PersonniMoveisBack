@@ -32,8 +32,7 @@ public class ProductCmp {
     @Column(nullable = false)
     private Long quantity;
 
-    @Lob
-    @Column(name = "mainImg", columnDefinition = "TEXT")
+    @Column(name = "mainImg")
     private String img;
 
     private String description;
