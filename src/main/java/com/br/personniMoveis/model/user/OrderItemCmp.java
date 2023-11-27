@@ -2,6 +2,7 @@ package com.br.personniMoveis.model.user;
 
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.productCmp.ProductCmp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,7 @@ public class OrderItemCmp {
     @ManyToMany(mappedBy = "orderCmps")
     private final List<ProductCmp> productCmps = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_cmp_id")
     private OrderCmp orderCmp;

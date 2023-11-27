@@ -57,6 +57,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrders(token));
     }
 
+    @GetMapping(path = "/client-cmp-orders")
+    public ResponseEntity<List<OrderCmp>> getOrdersCmp(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(orderService.getUserCmpOrders(token));
+    }
+
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteOrder(Long orderId) {
         orderService.deleteOrder(orderId);

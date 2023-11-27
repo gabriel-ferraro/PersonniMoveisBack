@@ -85,12 +85,13 @@ public class OrderService {
         return user.getOrders();
     }
 
-    public List<Order> getUserCmpOrders(String token) {
+    @Transactional
+    public List<OrderCmp> getUserCmpOrders(String token) {
         // Identifica se usuário indicado existe.
         Long userId = authUtils.getUserId(token);
         UserEntity user = userService.findUserOrThrowNotFoundException(userId);
         // Retorna pedidos do usuário
-        return user.getOrders();
+        return user.getOrderCmps();
     }
 
     /**

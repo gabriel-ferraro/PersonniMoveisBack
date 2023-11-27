@@ -79,13 +79,13 @@ public class CategoryService {
     }
 
 
-    public void createCategoryCmp(CategoryCmpDto categoryCmpDto) {
+    public Category createCategoryCmp(CategoryCmpDto categoryCmpDto) {
         // Cria nova categoria.
         Category newCategory = CategoryMapper.INSTANCE.categoryCmpDtoToCategory(categoryCmpDto);
         // Seta que categoria existe.
         newCategory.setIsRemoved(false);
         // Persiste no BD.
-        categoryRepository.save(newCategory);
+        var category = categoryRepository.save(newCategory);
 
         //Vê se tem alguma seção cadastrada junto com a categoria
         if (categoryCmpDto.getSectionCmpDtos() != null) {
@@ -95,6 +95,7 @@ public class CategoryService {
                 }
             });
         }
+        return category;
     }
 
     public void updateCategoryCmp(CategoryCmpDto categoryCmpDto, Long categoryId) {

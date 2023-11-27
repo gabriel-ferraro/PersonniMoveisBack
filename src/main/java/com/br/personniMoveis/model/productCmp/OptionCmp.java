@@ -2,7 +2,6 @@ package com.br.personniMoveis.model.productCmp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,10 +23,9 @@ public class OptionCmp {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String optionCmps;
 
-    @Lob
-    @Column(name = "img", columnDefinition = "TEXT")
+    @Column(name = "img")
     private String img;
 
     private String descriptions;

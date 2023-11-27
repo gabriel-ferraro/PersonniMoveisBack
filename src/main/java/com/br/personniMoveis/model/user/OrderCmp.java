@@ -35,7 +35,6 @@ public class OrderCmp {
 
     private LocalDateTime date;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
@@ -44,7 +43,6 @@ public class OrderCmp {
 
     private String txid;
 
-    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "order_cmp_id")
     private final List<OrderItemCmp> orderCmpItems = new ArrayList<>();

@@ -290,6 +290,8 @@ public class ProductService {
         productToBeUpdated.setIsRemoved(false);
         // Editavel.
         productToBeUpdated.setEditable(productDto.getEditable());
+        // Seta disponibilidade de produto de acordo com a quantidade em estoque.
+        productToBeUpdated.setAvailable(productDto.getAvailable() && productDto.getQuantity() > 0);
         // Descrição principal do prod.
         productToBeUpdated.setDescription(productDto.getDescription());
         // Imagem principal.
