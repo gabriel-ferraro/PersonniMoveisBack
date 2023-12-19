@@ -1,6 +1,6 @@
 package com.br.personniMoveis.dto.product;
 
-import com.br.personniMoveis.model.ProductImg;
+import com.br.personniMoveis.model.product.ProductImg;
 import com.br.personniMoveis.model.product.Detail;
 import com.br.personniMoveis.model.product.Section;
 import com.br.personniMoveis.model.user.OrderItem;

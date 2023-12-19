@@ -5,7 +5,7 @@ import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpDto;
 import com.br.personniMoveis.dto.SectionCmpDto.SectionCmpGetDto;
 import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.mapper.SectionCmp.SectionCmpMapper;
-import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.Category;
 import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
 import com.br.personniMoveis.repository.CategoryRepository;

@@ -8,7 +8,7 @@ import com.br.personniMoveis.exception.BadRequestException;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.mapper.product.ProductMapper;
-import com.br.personniMoveis.model.ProductImg;
+import com.br.personniMoveis.model.product.ProductImg;
 import com.br.personniMoveis.model.product.*;
 import com.br.personniMoveis.repository.ProductImgRepository;
 import com.br.personniMoveis.repository.ProductRepository;
@@ -29,7 +29,6 @@ import java.util.Set;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductImgService productImgService;
     private final CategoryService categoryService;
     private final DetailService detailService;
     private final SectionService sectionService;
@@ -37,16 +36,15 @@ public class ProductService {
     private final TagService tagService;
     private final AuthUtils authUtils;
     private final EmailService emailService;
-    private final UploadDriveService uploadDriveService;
 
     private final ProductImgRepository productImgRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductImgService productImgService,
-                          CategoryService categoryService, DetailService detailService, SectionService sectionService,
-                          OptionService optionService, TagService tagService, AuthUtils authUtils, EmailService emailService, UploadDriveService uploadDriveService, ProductImgRepository productImgRepository) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService,
+                          DetailService detailService, SectionService sectionService,
+                          OptionService optionService, TagService tagService, AuthUtils authUtils,
+                          EmailService emailService, ProductImgRepository productImgRepository) {
         this.productRepository = productRepository;
-        this.productImgService = productImgService;
         this.categoryService = categoryService;
         this.detailService = detailService;
         this.sectionService = sectionService;
@@ -54,7 +52,6 @@ public class ProductService {
         this.tagService = tagService;
         this.authUtils = authUtils;
         this.emailService = emailService;
-        this.uploadDriveService = uploadDriveService;
         this.productImgRepository = productImgRepository;
     }
 
@@ -128,7 +125,7 @@ public class ProductService {
         newProd.setQuantity(product.getQuantity());
         newProd.setEditable(product.getEditable());
         try {
-            if(product.getMainImg() != null) {
+            if (product.getMainImg() != null) {
                 String result = UploadDriveService.uploadBase64File(product.getMainImg(), product.getName());
                 newProd.setMainImg(result);
             }
@@ -162,7 +159,7 @@ public class ProductService {
                     for (Option option : section.getOptions()) {
                         // Set das imagens da opção.
                         try {
-                            if(option.getMainImg() != null) {
+                            if (option.getMainImg() != null) {
                                 String result = UploadDriveService.updateDriveFile(option.getMainImg(), option.getName());
                                 option.setMainImg(result);
                             }

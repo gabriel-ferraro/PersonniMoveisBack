@@ -1,6 +1,5 @@
 package com.br.personniMoveis.model.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,7 @@ public class OrderCmp {
     @Column(name = "order_cmp_id")
     private Long orderCmpId;
 
-    
+
     @Column(name = "delivery_address")
     private String deliveryAddress;
 

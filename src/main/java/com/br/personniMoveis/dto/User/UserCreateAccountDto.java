@@ -20,20 +20,4 @@ public class UserCreateAccountDto {
     private String cpf;
 
     private String phoneNumber;
-
-
-//    private Profiles profile;
-//
-//    public UserCreateAccountDto() {
-//        this.profile = Profiles.USER;
-//    }
-
-//    public void setProfile(Profiles profile) {
-//        if (profile == null || profile.toString().trim().isEmpty()) {
-//            this.profile = null;
-//        } else {
-//            this.profile = profile;
-//        }
-//    }
-
 }

@@ -1,6 +1,6 @@
 package com.br.personniMoveis.model.productCmp;
 
-import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.Category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 

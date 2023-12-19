@@ -1,32 +1,32 @@
 package com.br.personniMoveis.model;
 
-import com.br.personniMoveis.model.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product_img")
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductImg {
+@Table(name = "requests")
+public class Requests {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "product_img_id")
-    private Long productImgId;
+    @Column(name = "requests_id")
+    private Long requestId;
 
-    private String img;
+    @Column(nullable = false)
+    private String name;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Product product;
-
+    @ManyToMany(mappedBy = "requests")
+    private final List<Situation> situations = new ArrayList<>();
 }

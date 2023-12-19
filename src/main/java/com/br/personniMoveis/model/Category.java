@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model.category;
+package com.br.personniMoveis.model;
 
 import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.model.productCmp.SectionCmp;

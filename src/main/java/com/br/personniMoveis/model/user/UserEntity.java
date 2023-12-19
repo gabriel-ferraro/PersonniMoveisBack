@@ -1,6 +1,6 @@
 package com.br.personniMoveis.model.user;
 
-import com.br.personniMoveis.constant.Profiles;
+import com.br.personniMoveis.enums.Profiles;
 import com.br.personniMoveis.dto.User.UserAdminCreateAccountDto;
 import com.br.personniMoveis.dto.User.UserCreateAccountDto;
 import com.br.personniMoveis.dto.UserAdminInfo;

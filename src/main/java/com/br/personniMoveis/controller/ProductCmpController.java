@@ -18,12 +18,9 @@ public class ProductCmpController {
 
     private final ProductCmpService productCmpService;
 
-//    private final GenericFilterService<ProductCmp> genericFilterService;
-
     @Autowired
     public ProductCmpController(ProductCmpService productCmpService) {
         this.productCmpService = productCmpService;
-//        this.genericFilterService = genericFilterService;
     }
 
 

@@ -1,7 +1,6 @@
 package com.br.personniMoveis.dto.ElementCmpDto;
 
 import com.br.personniMoveis.dto.OptionCmpDto.OptionCmpDto;
-import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.model.productCmp.SectionCmp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

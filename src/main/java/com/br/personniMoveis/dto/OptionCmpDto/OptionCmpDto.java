@@ -1,7 +1,6 @@
 package com.br.personniMoveis.dto.OptionCmpDto;
 
 import com.br.personniMoveis.model.productCmp.ElementCmp;
-import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

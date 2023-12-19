@@ -4,9 +4,7 @@ import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.mapper.product.DetailMapper;
 import com.br.personniMoveis.model.product.Detail;
-import com.br.personniMoveis.model.product.Product;
 import com.br.personniMoveis.repository.DetailRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

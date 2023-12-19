@@ -36,7 +36,8 @@ public class UserService {
 
     @Autowired
     public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, AddressService addressService,
-                       AuthUtils authUtils, AddressRepository addressRepository, UserEntityMapper userEntityMapper, TokenService tokenService, EmailService emailService) {
+                       AuthUtils authUtils, AddressRepository addressRepository, UserEntityMapper userEntityMapper,
+                       TokenService tokenService, EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.addressService = addressService;

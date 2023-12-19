@@ -1,6 +1,6 @@
 package com.br.personniMoveis.dto.User;
 
-import com.br.personniMoveis.constant.Profiles;
+import com.br.personniMoveis.enums.Profiles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

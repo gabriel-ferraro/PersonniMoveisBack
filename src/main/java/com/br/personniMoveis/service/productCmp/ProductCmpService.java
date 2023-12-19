@@ -34,7 +34,8 @@ public class ProductCmpService {
     private final OptionCmpRepository optionCmpRepository;
 
     @Autowired
-    public ProductCmpService(ProductCmpRepository productCmpRepository, SectionCmpRepository sectionCmpRepository, ElementCmpRepository elementCmpRepository, OptionCmpRepository optionCmpRepository) {
+    public ProductCmpService(ProductCmpRepository productCmpRepository, SectionCmpRepository sectionCmpRepository,
+                             ElementCmpRepository elementCmpRepository, OptionCmpRepository optionCmpRepository) {
         this.productCmpRepository = productCmpRepository;
         this.sectionCmpRepository = sectionCmpRepository;
         this.elementCmpRepository = elementCmpRepository;

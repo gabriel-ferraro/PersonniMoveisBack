@@ -1,7 +1,6 @@
 package com.br.personniMoveis.repository;
 
-import com.br.personniMoveis.model.ProductImg;
-import com.br.personniMoveis.model.product.Product;
+import com.br.personniMoveis.model.product.ProductImg;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

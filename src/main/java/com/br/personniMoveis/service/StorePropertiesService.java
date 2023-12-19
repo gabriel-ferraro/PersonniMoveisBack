@@ -1,12 +1,9 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.model.store.StoreProperties;
+import com.br.personniMoveis.model.StoreProperties;
 import com.br.personniMoveis.repository.StorePropertiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 @Service
 public class StorePropertiesService {
@@ -36,7 +33,6 @@ public class StorePropertiesService {
      */
     public StoreProperties updateStore(StoreProperties sp) {
         // Obtém a instância do repositório ou cria uma nova se não existir
-//        StoreProperties store = storePropertiesRepository.findById(1L).orElseGet(StoreProperties::new);
         StoreProperties store = storePropertiesRepository.findById(sp.getStoreId()).orElse(createStore());
         store = new StoreProperties(sp);
         if(store.getStoreLogoPath() != null) {

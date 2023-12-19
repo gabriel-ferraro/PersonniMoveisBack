@@ -31,7 +31,8 @@ public class ElementCmpService {
 
 
     @Autowired
-    public ElementCmpService(ElementCmpRepository elementCmpRepository, SectionCmpRepository sectionCmpRepository,OptionCmpService optionCmpService, OptionCmpRepository optionCmpRepository)
+    public ElementCmpService(ElementCmpRepository elementCmpRepository, SectionCmpRepository sectionCmpRepository,
+                             OptionCmpService optionCmpService, OptionCmpRepository optionCmpRepository)
     {
         this.elementCmpRepository = elementCmpRepository;
         this.sectionCmpRepository = sectionCmpRepository;
