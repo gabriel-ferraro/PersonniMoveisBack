@@ -1,6 +1,6 @@
 package com.br.personniMoveis.dto.product;
 
-import com.br.personniMoveis.model.ProductImg;
+import com.br.personniMoveis.model.product.ProductImg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

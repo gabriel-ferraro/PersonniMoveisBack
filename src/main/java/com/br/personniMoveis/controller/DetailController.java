@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("details")
-@CrossOrigin(origins = "*")
 public class DetailController {
 
     private final DetailService detailService;

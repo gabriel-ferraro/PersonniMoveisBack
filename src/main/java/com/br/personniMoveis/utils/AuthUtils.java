@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * Métodos utiliztários para autenticação.
+ * Métodos utilitários para autenticação.
  */
 @Component
 public class AuthUtils {

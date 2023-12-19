@@ -1,6 +1,6 @@
 package com.br.personniMoveis.model.user;
 
-import com.br.personniMoveis.constant.UserEntityRoleType;
+import com.br.personniMoveis.enums.Profiles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,5 +27,5 @@ public class UserEntityRole {
     private Long id;
     
     @Enumerated
-    private UserEntityRoleType role;
+    private Profiles role;
 }

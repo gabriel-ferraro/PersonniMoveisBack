@@ -1,0 +1,1 @@
+Local onde deve ser inserido o certificado para utilização da API gerencianet (o certificado foi removido do projeto para exibição no repositório aberto).

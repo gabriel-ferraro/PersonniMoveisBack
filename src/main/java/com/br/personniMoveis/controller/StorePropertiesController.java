@@ -1,6 +1,6 @@
 package com.br.personniMoveis.controller;
 
-import com.br.personniMoveis.model.store.StoreProperties;
+import com.br.personniMoveis.model.StoreProperties;
 import com.br.personniMoveis.service.StorePropertiesService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

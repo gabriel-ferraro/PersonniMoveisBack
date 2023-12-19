@@ -1,4 +1,4 @@
-package com.br.personniMoveis.model.store;
+package com.br.personniMoveis.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

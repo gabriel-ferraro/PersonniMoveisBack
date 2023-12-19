@@ -47,14 +47,6 @@ public class SectionCmpController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-
-
-//    @PutMapping(path = "/{sectionCmpId}")
-//    public ResponseEntity updateSectionCmp(@RequestBody @Valid Set<SectionCmpPutDto> sectionCmpPutDto, @PathVariable("sectionCmpId") Long sectionCmpId) {
-//        sectionCmpService.updateSectionCmp(sectionCmpPutDto, sectionCmpId);
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
-
     @DeleteMapping(path = "/{sectionCmpId}")
     public ResponseEntity deleteSectionCmpById(@PathVariable("sectionCmpId") Long sectionCmpId) {
         sectionCmpService.deleteSectionById(sectionCmpId);

@@ -27,9 +27,8 @@ import java.util.List;
 /**
  * Controladora do usuário. Define métodos para autenticação, login, logout
  * alteração e visualização de dados, etc. Validações enviadas para o usuário
- * por e-mail são feitas com o "nosso" e-mail: personnimoveis@gmail.com - senha
- * de acesso: PersonniMoveis123 - A loja que utiliza o sistema pode modificar o
- * e-mail via enpoint em StorePropertiesController.
+ * por e-mail são feitas com o "nosso" e-mail: personnimoveis@gmail.com
+ * A loja que utiliza o sistema pode modificar o e-mail via enpoint em StorePropertiesController.
  */
 @RestController
 @RequestMapping("users")
@@ -72,7 +71,6 @@ public class UserController {
         return ResponseEntity.ok(Users);
     }
 
-    // Metodo para pegar info do usuario logado
     @GetMapping(path = "/user-info")
     @SecurityRequirement(name = "bearer-key")
     @PreAuthorize("hasRole('USER')")

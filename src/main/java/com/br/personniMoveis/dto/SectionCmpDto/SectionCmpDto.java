@@ -1,7 +1,7 @@
 package com.br.personniMoveis.dto.SectionCmpDto;
 
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
-import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.Category;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

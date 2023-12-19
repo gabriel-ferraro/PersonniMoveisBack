@@ -42,8 +42,9 @@ public class OrderService {
     private final ProductCmpService productCmpService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderCmpRepository orderCmpRepository, OrderItemRepository orderItemRepository,
-                        OrderItemCmpRepository orderItemCmpRepository, ProductService productService, UserService userService, PaymentService paymentService,
+    public OrderService(OrderRepository orderRepository, OrderCmpRepository orderCmpRepository,
+                        OrderItemRepository orderItemRepository, OrderItemCmpRepository orderItemCmpRepository,
+                        ProductService productService, UserService userService, PaymentService paymentService,
                         OptionRepository optionRepository, AuthUtils authUtils, ProductCmpService productCmpService) {
         this.orderRepository = orderRepository;
         this.orderCmpRepository = orderCmpRepository;

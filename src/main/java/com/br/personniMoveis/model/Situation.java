@@ -1,6 +1,5 @@
-package com.br.personniMoveis.model.situation;
+package com.br.personniMoveis.model;
 
-import com.br.personniMoveis.model.requests.Requests;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

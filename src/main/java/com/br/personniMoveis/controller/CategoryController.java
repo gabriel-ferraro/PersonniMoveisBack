@@ -4,7 +4,7 @@ import com.br.personniMoveis.dto.CategoryDto.CategoryCmpDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetByIdDto;
 import com.br.personniMoveis.dto.CategoryDto.CategoryGetDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
-import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.Category;
 import com.br.personniMoveis.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -49,12 +49,6 @@ public class CategoryController {
         List<CategoryGetDto> Category = categoryService.getAllCategories();
         return ResponseEntity.ok(Category);
     }
-
-//    @Operation(summary = "Busca categoria por Id com relacionamentos", description = "Lista todas as categorias mas com relacionamento")
-//    @GetMapping(path = "/{categoryId}")
-//    public ResponseEntity<CategoryGetByIdDto> getCategoryById (@PathVariable("categoryId") Long categoryId) {
-//        return ResponseEntity.ok(categoryService.findCategoryCmpByIdOrThrowBadRequestException(categoryId));
-//    }
 
     @Operation(summary = "Cria Categoria", description = "Cria categoria com seções, elementos e opções")
     @PostMapping

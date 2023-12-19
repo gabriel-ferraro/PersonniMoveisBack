@@ -1,6 +1,6 @@
 package com.br.personniMoveis.utils;
 
-import com.br.personniMoveis.model.ProductImg;
+import com.br.personniMoveis.model.product.ProductImg;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,7 +35,6 @@ public class CustomProductImgDeserializer extends StdDeserializer<Set<ProductImg
                 secondaryImages.add(img);
             }
         }
-
         return secondaryImages;
     }
 }

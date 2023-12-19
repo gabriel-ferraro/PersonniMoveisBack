@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -55,33 +53,6 @@ public class ClientAddress {
      * Detalhes do endereço (referência ou detalhes).
      */
     private String details;
-
-    public void updateFrom(ClientAddress updatedAddress) {
-        if (updatedAddress.getAddressNickname() != null) {
-            this.setAddressNickname(updatedAddress.getAddressNickname());
-        }
-        if (updatedAddress.getCep() != null) {
-            this.setCep(updatedAddress.getCep());
-        }
-        if (updatedAddress.getState() != null) {
-            this.setState(updatedAddress.getState());
-        }
-        if (updatedAddress.getCity() != null) {
-            this.setCity(updatedAddress.getCity());
-        }
-        if (updatedAddress.getDistrict() != null) {
-            this.setDistrict(updatedAddress.getDistrict());
-        }
-        if (updatedAddress.getStreet() != null) {
-            this.setStreet(updatedAddress.getStreet());
-        }
-        if (updatedAddress.getNumber() != null) {
-            this.setNumber(updatedAddress.getNumber());
-        }
-        if (updatedAddress.getDetails() != null) {
-            this.setDetails(updatedAddress.getDetails());
-        }
-    }
 
     @ManyToOne
     @JoinColumn(name = "user_id")

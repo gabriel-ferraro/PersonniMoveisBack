@@ -2,7 +2,6 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.product.DetailDto;
 import com.br.personniMoveis.dto.product.ProductDto;
-import com.br.personniMoveis.dto.product.ProductPutDto;
 import com.br.personniMoveis.dto.product.get.ProductGetDto;
 import com.br.personniMoveis.model.product.Detail;
 import com.br.personniMoveis.model.product.Product;
@@ -13,7 +12,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -140,12 +138,6 @@ public class ProductController {
             @RequestBody @Valid Product product) {
         return ResponseEntity.ok(productService.updateProduct(product, categoryId));
     }
-
-//    @PutMapping(path = "/{productId}")
-//    public ResponseEntity<HttpStatus> updateProduct(@RequestBody @Valid ProductPutDto productDto, @PathVariable("productId") Long productId) {
-//        productService.updateProduct(productDto, productId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 
     /**
      * Faz remoção lógica do produto (não remove do BD, so altera flag para que produto não apareça como disponível ou filtravel).

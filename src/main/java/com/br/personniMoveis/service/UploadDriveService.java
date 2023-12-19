@@ -18,7 +18,10 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
@@ -31,7 +34,7 @@ public class UploadDriveService {
 
     private static final String APPLICATION_NAME = "PersonniMoveisWeb";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "1//04H-HCyydvwYdCgYIARAAGAQSNwF-L9IrTNAqmtEscSEQx_f25nBxsCVLIw7d1qIcRcQEeeYpZJKzNE9F6zd5Bkjz1_Vzh_ibhhY";
+    private static final String TOKENS_DIRECTORY_PATH = ""; // Removido para disponibilização do repositório de forma aberta.
     private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_APPDATA, DriveScopes.DRIVE_METADATA);
     private static final String CREDENTIALS_FILE_PATH = "/credentialsDrive.json";
 
@@ -58,7 +61,7 @@ public class UploadDriveService {
     }
 
     public static String uploadBase64File(String base64String, String fileName) throws IOException, GeneralSecurityException {
-        String folderId = "1f3L9G6EB7OtNxacpVN9o4JRL8-mGSlx_";
+        String folderId = ""; // Removido para disponibilização do repositório de forma aberta.
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -109,7 +112,7 @@ public class UploadDriveService {
                 return null;
             }
 
-            String folderId = "1f3L9G6EB7OtNxacpVN9o4JRL8-mGSlx_";
+            String folderId = ""; // Removido para disponibilização do repositório de forma aberta.
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                     .setApplicationName(APPLICATION_NAME)

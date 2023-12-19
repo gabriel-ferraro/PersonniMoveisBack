@@ -2,7 +2,6 @@ package com.br.personniMoveis.controller;
 
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpDto;
 import com.br.personniMoveis.dto.ElementCmpDto.ElementCmpGetDto;
-import com.br.personniMoveis.model.productCmp.ElementCmp;
 import com.br.personniMoveis.service.productCmp.ElementCmpService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -45,12 +44,6 @@ public class ElementCmpController {
         elementCmpService.createElementCmp(elementCmpDto, sectionCmpId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
-
-//    @PutMapping(path = "/{sectionCmpId}")
-//    public ResponseEntity updateElementCmp(@RequestBody @Valid ElementCmpPutDto elementCmpPutDto, @PathVariable("sectionCmpId") Long sectionCmpId) {
-//        elementCmpService.updateElementCmp(elementCmpPutDto, sectionCmpId);
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
 
     @DeleteMapping(path = "/{sectionCmpId}")
     public ResponseEntity deleteElementById(@PathVariable("sectionCmpId") Long sectionCmpId) {

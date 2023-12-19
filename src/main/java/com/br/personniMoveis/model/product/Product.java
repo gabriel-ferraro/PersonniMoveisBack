@@ -1,7 +1,6 @@
 package com.br.personniMoveis.model.product;
 
-import com.br.personniMoveis.model.ProductImg;
-import com.br.personniMoveis.model.category.Category;
+import com.br.personniMoveis.model.Category;
 import com.br.personniMoveis.model.user.OrderItem;
 import com.br.personniMoveis.model.user.UserEntity;
 import com.br.personniMoveis.utils.CustomProductImgDeserializer;

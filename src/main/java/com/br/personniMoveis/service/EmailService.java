@@ -1,6 +1,5 @@
 package com.br.personniMoveis.service;
 
-import com.br.personniMoveis.exception.ResourceNotFoundException;
 import com.br.personniMoveis.model.product.Product;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -10,15 +9,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Serviço para fazer gerenciamento de envio de e-mails. Para ampliar
  * capacidades de transmissão de dados via e-mail, usa MIME (Multipurpose
  * Internet Mail Extensions) do objeto MimeMessage.
- * E-mail Personni Móveis: personnimoveis@gmail.com
- * senha: PersonniMoveis123
  */
 @Service
 public class EmailService {
@@ -168,8 +163,6 @@ public class EmailService {
     public void test(String to, String storeName, String clientName) {
         // Constrói strings de conteúdo do e-mail.
         String subject = "Olá vindo da ".concat(storeName);
-        // Anexa imagem:
-        //helper.addInline("imagem_anexada", new ClassPathResource(testImg)); // Adiciona conteúdo como anexo. manter em caso de uso futuro.
         // gera conteúdo central.
         String mainContent = generateDiv(
                 "Olá ".concat(clientName).concat(", isso é uma mensagem teste. Mensagem complementar e imagem teste abaixo:"),
