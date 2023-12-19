@@ -1,22 +1,12 @@
 # Personni Móveis Back-end
 
-Este projeto de software é parte integrante do trabalho de conclusão de curso em Engenharia de Software. O objetivo principal do projeto é desenvolver um sistema de e-commerce com elementos criação e visualização de móveis em passos, entregando ferramentas gerenciáveis para que os administradores do e-commerce possam disponibilizar uma experiência dinâmica e interativa à seus clientes.
-
-## Sumário
-
-  * [Funcionalidades](#funcionalidades)
-  * [Arquitetura](#arquitetura)
-  * [Tecnologias](#tecnologias)
-  * [Setup](#setup)
-  * [Bibliotecas](#bibliotecas)
+O objetivo principal do projeto foi desenvolver um sistema de e-commerce com elementos modelagem e visualização de móveis em passos, entregando ferramentas gerenciáveis para que os administradores do e-commerce possam disponibilizar uma experiência dinâmica e interativa à seus clientes. O resualtado foi alcançado e o código para o back-end da platforma foi disponibilizado como código aberto.
 
 ## Funcionalidades
 
-<details>
-  <summary><b>Clique para expandir</b></summary>
-
-  * A fazer...
-</details>
+  * Administradores da loja podem criar modelos de móveis que servem como molde para as escolhas disponibilizadas aos clientes, na modelagem de móveis em passos.
+  * O Cliente pode personalizar móveis regulares que permitem a personalização.
+  * O Cliente pode comprar móveis regulares, aqueles que são pré-estabelecidos.
 
 ## Arquitetura
 
@@ -29,26 +19,13 @@ Este projeto de software é parte integrante do trabalho de conclusão de curso 
   * Java 17
   * Spring Boot
   * Docker
+  * API de pagamentos gerencianet
   * Gerenciador de dependências: Maven
-
-## Setup
-
-Faça o docker compose para rodar o projeto, senão, use sua IDE para iniciar manualmente, ou, para rodar com comandos, vá para pasta raiz do projeto e execute:
-
-  * Rodar o projeto: ./mvnw spring-boot:run
-  * Atualizar dependências: ./mvnw install - Em caso de poblemas com dependências, tente rodar: ./mvnw clean install
-
-Para ver os endpoints da API, acessar a URL do swagger-ui:
-
-  * http://localhost:8081/swagger-ui/index.html
 
 ## Bibliotecas
 
-  * Spring boot - [Exemplo de uso](https://www.youtube.com/playlist?list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H) - [Página oficial](https://spring.io/projects/spring-boot)
-  * Lombok - Oferece anotações para reduzir o código boilerplate. [Exemplo de uso](https://www.youtube.com/watch?v=L0hTlaIEObM&ab_channel=FelipeP%C3%BAblio) - [Página oficial](https://projectlombok.org/)
-  * Mapstruct - Oferece anotações e classes para realizar o mapeamento de DTOs ou entidades, tornando a instanciação de objetos e validação mais simples e menos verbosa. [Exemplo de uso](https://www.youtube.com/watch?v=A9-Inky1Fjo&list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H&index=16&ab_channel=DevDojo) - [Página oficial](https://mapstruct.org/)
-  * Spring Security - biblioteca integrada ao spring-boot para gerenciar autenticação e autorização. [Exemplo de uso](https://www.youtube.com/watch?v=tpGGuCyuSnw&list=PL62G310vn6nFBIxp6ZwGnm8xMcGE3VA5H&index=41) - [Página oficial](https://spring.io/projects/spring-security)
-  * Java Mail Sender - Entrega classes facilitadoras para o envio de e-mails. [Exemplo de uso](https://pt.linkedin.com/pulse/envio-de-e-mail-com-spring-boot-tiago-perroni) - [Página oficial](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mail.html)
-  * springdoc-openapi-starter-webmvc-ui - Oferece uma interface gráfica que expões os enpoints da API.
-
-  - <b>ATENÇÃO</b>: Este projeto usa Spring-boot v3, algumas bibliotecas podem ser incompátiveis com suas versões do Spring v2, ou podem precisar de outras bibliotecas adicionais para o funcionamento esperado, como é o caso das libs lombok e mapstruct que precisam de outra lib adicional para funcionar em conjunto.
+  * Spring boot
+  * Lombok
+  * Spring Security/projects/spring-security)
+  * Java Mail Sender
+  * springdoc-openapi-starter-webmvc-ui - Para ver os endpoints da API, acessar a URL: http://localhost:8081/swagger-ui/index.html
