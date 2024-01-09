@@ -1,6 +1,6 @@
 # Personni Móveis Back-end
 
-O objetivo principal do projeto foi desenvolver um sistema de e-commerce com elementos modelagem e visualização de móveis em passos, entregando ferramentas gerenciáveis para que os administradores do e-commerce possam disponibilizar uma experiência dinâmica e interativa à seus clientes. O resualtado foi alcançado e o código para o back-end da platforma foi disponibilizado como código aberto.
+O objetivo principal do projeto foi desenvolver um sistema de e-commerce com elementos modelagem e visualização de móveis em passos, entregando ferramentas gerenciáveis para que os administradores do e-commerce possam disponibilizar uma experiência dinâmica e interativa à seus clientes. O resultado foi alcançado e o código para o back-end da platforma foi disponibilizado como código aberto.
 
 ## Funcionalidades
 
